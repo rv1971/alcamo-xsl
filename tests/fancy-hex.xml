@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="#xslt" type="text/xml"?>
+
+<a:doc xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <xsl:stylesheet
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xml:id="xslt"
+      version="1.0">
+    <xsl:import href="../xsl/fancy.xsl"/>
+
+    <xsl:template match="/">
+      <a:result>
+        <xsl:apply-templates select="/a:doc/a:data"/>
+      </a:result>
+    </xsl:template>
+
+    <xsl:template match="a:item">
+      <a:item>
+        <xsl:value-of select="."/>
+        <xsl:value-of select="' '"/>
+        <xsl:apply-templates select="." mode="a:hex"/>
+      </a:item>
+    </xsl:template>
+  </xsl:stylesheet>
+
+  <a:data>
+    <a:item>0</a:item>
+    <a:item>1</a:item>
+    <a:item>9</a:item>
+    <a:item>10</a:item>
+    <a:item>11</a:item>
+    <a:item>12</a:item>
+    <a:item>13</a:item>
+    <a:item>14</a:item>
+    <a:item>15</a:item>
+    <a:item>16</a:item>
+    <a:item>17</a:item>
+    <a:item>18</a:item>
+    <a:item>31</a:item>
+    <a:item>32</a:item>
+    <a:item>33</a:item>
+    <a:item>255</a:item>
+    <a:item>256</a:item>
+    <a:item>257</a:item>
+    <a:item>65535</a:item>
+    <a:item>65536</a:item>
+    <a:item>4294967295</a:item>
+    <a:item>4294967296</a:item>
+    <a:item>4294967297</a:item>
+  </a:data>
+</a:doc>

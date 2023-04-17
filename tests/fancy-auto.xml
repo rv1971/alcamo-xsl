@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="#xslt" type="text/xml"?>
+
+<a:doc
+    xmlns:dc="http://purl.org/dc/terms/"
+    xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <xsl:stylesheet
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xml:id="xslt"
+      version="1.0">
+    <xsl:import href="../xsl/fancy.xsl"/>
+
+    <xsl:template match="/">
+      <a:result>
+        <xsl:apply-templates select="/a:doc/a:data"/>
+      </a:result>
+    </xsl:template>
+
+    <xsl:template match="a:item">
+      <a:item>
+        <xsl:value-of select="@*"/>
+        <xsl:value-of select="' '"/>
+        <xsl:apply-templates select="@*" mode="a:auto"/>
+      </a:item>
+    </xsl:template>
+  </xsl:stylesheet>
+
+  <a:data>
+    <a:item foo="bar"/>
+    <a:item dc:created="2023-04-17T14:48:05+02:00"/>
+    <a:item dc:created="2023-04-17T14:48:13+02:00"/>
+  </a:data>
+</a:doc>
