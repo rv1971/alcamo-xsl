@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <a:item>0 0</a:item>
+  <a:item>1 1</a:item>
+  <a:item>9 9</a:item>
+  <a:item>10 A</a:item>
+  <a:item>11 B</a:item>
+  <a:item>12 C</a:item>
+  <a:item>13 D</a:item>
+  <a:item>14 E</a:item>
+  <a:item>15 F</a:item>
+  <a:item>16 10</a:item>
+  <a:item>17 11</a:item>
+  <a:item>18 12</a:item>
+  <a:item>31 1F</a:item>
+  <a:item>32 20</a:item>
+  <a:item>33 21</a:item>
+  <a:item>255 FF</a:item>
+  <a:item>256 100</a:item>
+  <a:item>257 101</a:item>
+  <a:item>65535 FFFF</a:item>
+  <a:item>65536 10000</a:item>
+  <a:item>4294967295 FFFFFFFF</a:item>
+  <a:item>4294967296 100000000</a:item>
+  <a:item>4294967297 100000001</a:item>
+</a:result>

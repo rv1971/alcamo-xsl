@@ -12,7 +12,7 @@
     <xsl:template match="/">
       <a:result>
         <xsl:apply-templates select="/a:doc/a:data"/>
-      </a:result>
+     </a:result>
     </xsl:template>
 
     <xsl:template match="a:item">
