@@ -13,7 +13,7 @@
     dc:title="Extract metadata from a document"
     dc:creator="rv1971@web.de"
     dc:created="2023-04-13"
-    dc:modified="2023-04-13">
+    dc:modified="2023-04-17">
   <xsd:annotation>
     <xsd:documentation>
       <p>Define a number of metadata parameters and get their default
@@ -28,23 +28,24 @@
     <xsl:variable
         name="stylesheet"
         select="/processing-instruction()[local-name(.) = 'xml-stylesheet'][1]"/>
+
     <xsl:choose>
       <xsl:when test="contains($stylesheet, 'href=&quot;')">
         <xsl:value-of
             select="substring-before(substring-after($stylesheet, 'href=&quot;'), '&quot;')"/>
       </xsl:when>
 
-      <xsl:when test="contains($stylesheet, 'href=&apos;')">
+      <xsl:when test='contains($stylesheet, "href=&apos;")'>
         <xsl:value-of
-            select="substring-before(substring-after($stylesheet, 'href=&apos;'), '&apos;')"/>
+            select='substring-before(substring-after($stylesheet, "href=&apos;"), "&apos;")'/>
       </xsl:when>
     </xsl:choose>
   </xsl:param>
 
   <xsl:param
-      name="a:xslBaseUrl"
+      name="a:xslDirUrl"
       rdfs:label="URL of directory containing a:xslUrl">
-    <xsl:call-template name="a:basename">
+    <xsl:call-template name="a:dirname">
       <xsl:with-param name="path" select="$a:xslUrl"/>
     </xsl:call-template>
   </xsl:param>
@@ -94,25 +95,58 @@
       name="owl:versionInfo"
       select="$a:metaRoot/@owl:versionInfo|$a:metaRoot/owl:versionInfo"/>
 
-  <xsl:template name="a:basename">
-    <xsl:param name="path" select="."/>
-    <xsl:param name="pos" select="1"/>
-    <xsl:param name="tail" select="$path"/>
+  <xsl:template
+      name="a:basename"
+      rdfs:label="Get string after last directory separator, complete $path if it does not contain any">
+    <xsl:param name="path" select="." rdfs:label="Path to reduce to base name"/>
+    <xsl:param name="sep" select="'/'" rdfs:label="Directory separator"/>
 
     <xsl:choose>
-      <xsl:when test="contains($tail, '/')">
+      <xsl:when test="contains($path, $sep)">
         <xsl:call-template name="a:basename">
-          <xsl:with-param name="path" select="$path"/>
-          <xsl:with-param
-              name="pos"
-              select="$pos + string-length(substring-before($tail, '/')) + 1"/>
-          <xsl:with-param name="tail" select="substring-after($tail, '/')"/>
+          <xsl:with-param name="path" select="substring-after($path, $sep)"/>
+          <xsl:with-param name="sep" select="$sep"/>
         </xsl:call-template>
       </xsl:when>
 
       <xsl:otherwise>
-        <xsl:value-of select="substrint($path, $pos)"/>
+        <xsl:value-of select="$path"/>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="*|@*" mode="a:basename">
+    <xsl:param name="sep" select="'/'" rdfs:label="Directory separator"/>
+
+    <xsl:call-template name="a:basename">
+      <xsl:with-param name="sep" select="$sep"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template
+      name="a:dirname"
+      rdfs:label="Get string up to and including last directory separator, empty string if $path does not contain any">
+    <xsl:param name="path" select="." rdfs:label="Path to reduce to base name"/>
+    <xsl:param name="sep" select="'/'" rdfs:label="Directory separator"/>
+
+    <xsl:if test="contains($path, $sep)">
+      <xsl:variable name="basename">
+        <xsl:call-template name="a:basename">
+          <xsl:with-param name="path" select="$path"/>
+          <xsl:with-param name="sep" select="$sep"/>
+        </xsl:call-template>
+      </xsl:variable>
+
+      <xsl:value-of
+          select="substring($path, 1, string-length($path) - string-length($basename))"/>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="*|@*" mode="a:dirname">
+    <xsl:param name="sep" select="'/'" rdfs:label="Directory separator"/>
+
+    <xsl:call-template name="a:dirname">
+      <xsl:with-param name="sep" select="$sep"/>
+    </xsl:call-template>
   </xsl:template>
 </xsl:stylesheet>

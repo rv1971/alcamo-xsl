@@ -15,13 +15,23 @@ class Test extends TestCase
 
         $doc->load($filePath);
 
+        $xslt = $doc->getElementById('xslt');
+
         $xsltDoc = new DOMDocument();
 
-        $xsltDoc->documentURI = $filePath;
+        if (isset($xslt)) {
+            $xsltDoc->documentURI = $filePath;
 
-        $xsltDoc->appendChild(
-            $xsltDoc->importNode($doc->getElementById('xslt'), true)
-        );
+            $xsltDoc->appendChild($xsltDoc->importNode($xslt, true));
+        } else {
+            $firstPi = (new \DOMXPath($doc))
+                ->query('/processing-instruction("xml-stylesheet")')[0];
+
+            $xsltDoc->load(
+                __DIR__ . DIRECTORY_SEPARATOR .
+                simplexml_load_string("<x {$firstPi->nodeValue}/>")['href']
+            );
+        }
 
         $xsltProcessor = new \XSLTProcessor();
 

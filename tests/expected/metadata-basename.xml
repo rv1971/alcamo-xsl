@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <a:item>foo foo oo  f</a:item>
+  <a:item>file:///foo/bar/baz.xml baz.xml oo/bar/baz.xml file:///foo/bar/ file:///f</a:item>
+  <a:item>qux/fox/  ox/ qux/fox/ qux/f</a:item>
+</a:result>

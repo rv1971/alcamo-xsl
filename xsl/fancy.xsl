@@ -77,7 +77,9 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template name="a:number">
+  <xsl:template
+      name="a:number"
+      rdfs:label="Create spelled-out number if available, otherwise unchanged $value ">
     <xsl:param name="value" select="." rdfs:label="Number to spell out"/>
 
     <xsl:for-each select="document('')">
@@ -158,7 +160,7 @@
 
   <xsl:template
       name="a:iso-8601-timestamp"
-      rdfs:label="create timestamp text">
+      rdfs:label="Create timestamp text">
     <xsl:param name="value" select="." rdfs:label="Timestamp to format"/>
 
     <xsl:value-of select="translate($value, 'T', ' ')"/>
