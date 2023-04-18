@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="#xslt" type="text/xml"?>
+
+<a:doc
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsl:stylesheet
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xh="http://www.w3.org/1999/xhtml"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xml:id="xslt"
+      version="1.0"
+      exclude-result-prefixes="xsd">
+    <xsl:import href="../xsl/annotation.xsl"/>
+
+    <xsl:template match="/">
+      <a:result xmlns:dc="http://purl.org/dc/terms/">
+        <ul id="toc">
+          <xsl:apply-templates
+              select="/a:doc/xsd:annotation/xsd:documentation/xh:h2"
+              mode="a:toc-li"/>
+        </ul>
+
+        <xsl:apply-templates select="/a:doc/xsd:annotation/xsd:documentation"/>
+     </a:result>
+    </xsl:template>
+
+    <xsl:template match="xsd:annotation/xsd:documentation">
+      <div>
+        <xsl:apply-templates select="*" mode="a:copy"/>
+      </div>
+    </xsl:template>
+  </xsl:stylesheet>
+
+  <h2>Not part of documentation</h2>
+
+  <xsd:annotation>
+    <xsd:documentation>
+      <h2 id="foo">Foo</h2>
+
+      <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+      diam nonumy eirmod tempor invidunt ut labore et dolore magna
+      aliquyam erat, sed diam voluptua.</p>
+
+      <h3 id="foo-1">First section</h3>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <h3>Not part of documentation</h3>
+
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>Lorem ipsum dolor sit amet.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <h2>Not part of documentation</h2>
+
+  <xsd:annotation>
+    <xsd:documentation>
+      <h3 id="foo-2">Second section</h3>
+
+      <p>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+      invidunt ut labore et dolore magna aliquyam erat.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:annotation>
+    <xsd:documentation>
+      <h2 id="bar">Bar</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>At vero eos et accusam et justo duo dolores et ea rebum. Stet
+      clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+      dolor sit amet.</p>
+
+      <h2 id="baz">Baz</h2>
+
+      <p>At vero eos et accusam et justo duo dolores et ea rebum.</p>
+
+      <h3 id="baz-1">First baz section</h3>
+
+      <p>Stet clita kasd gubergren, no sea takimata sanctus est Lorem
+      ipsum dolor sit amet.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+</a:doc>

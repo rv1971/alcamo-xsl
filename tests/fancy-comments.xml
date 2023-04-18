@@ -10,7 +10,8 @@
       xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
       xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
       xml:id="xslt"
-      version="1.0">
+      version="1.0"
+      exclude-result-prefixes="rdfs">
     <xsl:import href="../xsl/fancy-html.xsl"/>
 
     <xsl:template match="/">

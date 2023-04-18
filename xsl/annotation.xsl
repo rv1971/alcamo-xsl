@@ -6,15 +6,17 @@
     xmlns:dc="http://purl.org/dc/terms/"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:xh="http://www.w3.org/1999/xhtml"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
+    exclude-result-prefixes="a dc owl rdfs xh xsd"
     xml:lang="en"
     dc:identifier="annotation"
     dc:title="Process &lt;xsd:annotation&gt;"
     dc:creator="rv1971@web.de"
     dc:created="2023-04-13"
-    dc:modified="2023-04-13">
+    dc:modified="2023-04-18">
   <xsl:import href="html-output.xsl"/>
 
   <xsd:annotation>
@@ -39,7 +41,7 @@
   </xsd:annotation>
 
   <xsl:template
-      match="h2|h3|h4|h5|h6"
+      match="xh:h2|xh:h3|xh:h4|xh:h5|xh:h6"
       mode="a:copy"
       rdfs:label="create heading element with ID">
     <xsl:element name="{name(.)}">
@@ -57,6 +59,12 @@
       name="a:htmlDoc"
       select="//xsd:annotation/xsd:documentation//xh:*"
       rdfs:label="All HTML elements in documentation blocks"/>
+
+  <xsd:annotation>
+    <xsd:documentation>
+      <h2 id="toc-items">TOC items</h2>
+    </xsd:documentation>
+  </xsd:annotation>
 
   <xsl:template match="*" mode="a:toc-li"/>
 
@@ -78,7 +86,10 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="h2" mode="a:toc-li" rdfs:label="create TOC &lt;li&gt;">
+  <xsl:template
+      match="xh:h2"
+      mode="a:toc-li"
+      rdfs:label="create TOC &lt;li&gt;">
     <li>
       <xsl:apply-templates select="." mode="a:a"/>
 
@@ -88,7 +99,7 @@
 
       <xsl:variable
           name="h3f"
-          select="following::h3[count($a:htmlDoc | .) = count($a:htmlDoc)]"/>
+          select="following::xh:h3[count($a:htmlDoc | .) = count($a:htmlDoc)]"/>
 
       <xsl:if test="$h3f">
         <!-- Get the next <h2> element, if any. To do that, intersect
@@ -98,7 +109,7 @@
 
         <xsl:variable
             name="h2f"
-            select="following::h2[count($a:htmlDoc | .) = count($a:htmlDoc)][1]"/>
+            select="following::xh:h2[count($a:htmlDoc | .) = count($a:htmlDoc)][1]"/>
 
         <!-- Then intersect h3f with the set of all <h3> elements
              preceding the next <h2> element. If there is no
@@ -109,7 +120,7 @@
           <xsl:choose>
             <xsl:when test="$h2f">
               <xsl:apply-templates
-                  select="$h2f/preceding::h3[count($h3f | .) = count($h3f)]"
+                  select="$h2f/preceding::xh:h3[count($h3f | .) = count($h3f)]"
                   mode="a:toc-li"/>
             </xsl:when>
 
