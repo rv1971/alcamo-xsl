@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="#xslt" type="text/xml"?>
+
+<a:doc
+    xmlns:dc="http://purl.org/dc/terms/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
+    dc:identifier="html-output"
+    dc:title="Test for html output"
+    dc:creator="Alice"
+    dc:publisher="example.org"
+    dc:created="2023-04-18T11:57:00+02:00"
+    dc:modified="2023-04-18T11:57:05+02:00"
+    dc:accessRights="public"
+    dc:rights="© Example.org 2023"
+    dc:rigtsHolder="Example.org"
+    owl:versionInfo="0.42.0">
+  <xsl:stylesheet
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xh="http://www.w3.org/1999/xhtml"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
+      xml:id="xslt"
+      version="1.0"
+      exclude-result-prefixes="a xh">
+    <xsl:import href="../xsl/html-output.xsl"/>
+
+    <xsl:param name="a:cssList" select="'foo.css  bar.css baz.css'"/>
+    <xsl:param name="a:jsList" select="'qux.js foo.js'"/>
+
+    <xsl:template match="/">
+      <html xmlns:dc="http://purl.org/dc/terms/">
+        <xsl:call-template name="a:head"/>
+
+        <body>
+          <p id="p1">Paragraph 1</p>
+
+          <p>
+            <xsl:apply-templates select="/a:doc/xsl:stylesheet" mode="a:id"/>
+          </p>
+
+          <p>
+            <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:id"/>
+          </p>
+
+          <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:a"/>
+        </body>
+      </html>
+    </xsl:template>
+  </xsl:stylesheet>
+</a:doc>

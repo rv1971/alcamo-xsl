@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xsl:stylesheet
-    version="1.0"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:dc="http://purl.org/dc/terms/"
-    xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
+    version="1.0"
+    exclude-result-prefixes="a rdfs xsd"
     xml:lang="en"
     dc:identifier="html-output"
     dc:title="Basic definitions to create HTML output"
     dc:creator="rv1971@web.de"
     dc:created="2023-04-13"
-    dc:modified="2023-04-13">
+    dc:modified="2023-04-18">
   <xsl:import href="metadata.xsl"/>
 
   <xsd:annotation>
@@ -61,7 +61,7 @@
   <xsl:template name="a:cssLinks" rdfs:label="Create CSS &lt;link>s">
     <xsl:param
         name="cssList"
-        select="$a:cssList"
+        select="normalize-space($a:cssList)"
         rdfs:label="Whitespace-separated list of CSS files to link to"/>
 
     <xsl:if test="$cssList != ''">
@@ -91,7 +91,7 @@
   <xsl:template name="a:jsLinks" rdfs:label="Create JS &lt;script>s">
     <xsl:param
         name="jsList"
-        select="$doc:jsList"
+        select="normalize-space($a:jsList)"
         rdfs:label="Whitespace-separated list of JS files to link to"/>
 
     <xsl:if test="$jsList != ''">
@@ -123,7 +123,10 @@
       name="a:extraHeadContent"
       rdfs:label="Create extra content to include in &lt;head&gt; element"/>
 
-  <xsl:template name="a:head" rdfs:label="Create &lt;head&gt; element">
+  <xsl:template
+      xmlns:owl="http://www.w3.org/2002/07/owl#"
+      name="a:head"
+      rdfs:label="Create &lt;head&gt; element">
     <head>
       <meta charset="utf-8"/>
 
@@ -182,6 +185,10 @@
     </xsd:documentation>
   </xsd:annotation>
 
+  <xsl:template match="*[@xml:id]" mode="a:id" rdfs:label="Create ID text">
+    <xsl:value-of select="@xml:id"/>
+  </xsl:template>
+
   <xsl:template match="*[@id]" mode="a:id" rdfs:label="Create ID text">
     <xsl:value-of select="@id"/>
   </xsl:template>
@@ -194,7 +201,7 @@
     <xsl:value-of select="."/>
   </xsl:template>
 
-  <xsl:template match="*" mode="a:a" rdfs:label="Create &lt;&gt;">
+  <xsl:template match="*" mode="a:a" rdfs:label="Create &lt;a&gt;">
     <a>
       <xsl:attribute name="href">
         <xsl:value-of select="'#'"/>
@@ -204,5 +211,4 @@
       <xsl:apply-templates select="." mode="a:label"/>
     </a>
   </xsl:template>
-
 </xsl:stylesheet>

@@ -3,9 +3,9 @@
 <?xml-stylesheet href="#xslt" type="text/xml"?>
 
 <a:doc
-    xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
     xmlns:dc="http://purl.org/dc/terms/"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
     dc:identifier="metadata-params"
     dc:title="Test for metadata parameters"
     dc:creator="Alice"

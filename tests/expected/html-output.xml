@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns:dc="http://purl.org/dc/terms/" xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns:owl="http://www.w3.org/2002/07/owl#">
+    <meta charset="utf-8"/>
+    <meta property="dc:identifier" content="html-output"/>
+    <title property="dc:title">Test for html output</title>
+    <meta property="dc:creator" name="author" content="Alice"/>
+    <meta property="dc:created" content="2023-04-18T11:57:00+02:00"/>
+    <meta property="dc:modified" content="2023-04-18T11:57:05+02:00"/>
+    <meta property="dc:accessRights" content="public"/>
+    <meta property="dc:rights" content="© Example.org 2023"/>
+    <meta property="owl:versionInfo" content="0.42.0"/>
+    <link rel="stylesheet" type="text/css" href="foo.css"/>
+    <link rel="stylesheet" type="text/css" href="bar.css"/>
+    <link rel="stylesheet" type="text/css" href="baz.css"/>
+    <script type="text/javascript" src="qux.js"> </script>
+    <script type="text/javascript" src="foo.js"> </script>
+  </head>
+  <body>
+    <p id="p1">Paragraph 1</p>
+    <p>xslt</p>
+    <p>p1</p>
+    <a href="#p1">Paragraph 1</a>
+  </body>
+</html>
