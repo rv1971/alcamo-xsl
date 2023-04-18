@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#" xmlns:dc="http://purl.org/dc/terms/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+  <a:item>dc:identifier metadata-params</a:item>
+  <a:item>dc:title Test for metadata parameters</a:item>
+  <a:item>dc:creator Alice</a:item>
+  <a:item>dc:publisher example.org</a:item>
+  <a:item>dc:created 2023-04-18T11:28:00+02:00</a:item>
+  <a:item>dc:modified 2023-04-18T11:29:23+02:00</a:item>
+  <a:item>dc:accessRights public</a:item>
+  <a:item>dc:rights &#xA9; Example.org 2023</a:item>
+  <a:item>dc:rightsHolder </a:item>
+  <a:item>owl:versionInfo 0.42.0</a:item>
+</a:result>
