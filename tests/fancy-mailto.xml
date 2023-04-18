@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="#xslt" type="text/xml"?>
+
+<a:doc xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <xsl:stylesheet
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xml:id="xslt"
+      version="1.0">
+    <xsl:import href="../xsl/fancy-html.xsl"/>
+
+    <xsl:template match="/">
+      <a:result>
+        <xsl:apply-templates select="/a:doc/a:data"/>
+     </a:result>
+    </xsl:template>
+
+    <xsl:template match="a:item">
+      <a:item>
+        <xsl:value-of select="."/>
+        <xsl:value-of select="' '"/>
+        <xsl:apply-templates select="." mode="a:mailto"/>
+      </a:item>
+    </xsl:template>
+  </xsl:stylesheet>
+
+  <a:data>
+    <a:item>no-mail</a:item>
+    <a:item>alice@example.org</a:item>
+    <a:item>mailto:bob@example.org</a:item>
+    <a:item>Ken &lt;ken@example.org&gt;</a:item>
+  </a:data>
+</a:doc>

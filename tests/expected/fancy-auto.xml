@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
-<a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+<a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#" xmlns:dc="http://purl.org/dc/terms/">
   <a:item>bar bar</a:item>
   <a:item>2023-04-17T14:48:05+02:00 2023-04-17 14:48:05+02:00</a:item>
   <a:item>2023-04-17T14:48:13+02:00 2023-04-17 14:48:13+02:00</a:item>
+  <a:item>2023-04-18T16:02:33+02:00 2023-04-18 16:02:33+02:00</a:item>
+  <a:item>2023-04-18T16:03:00+02:00 2023-04-18 16:03:00+02:00</a:item>
 </a:result>

@@ -3,18 +3,18 @@
 <xsl:stylesheet
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:dc="http://purl.org/dc/terms/"
-    xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
     version="1.0"
+    exclude-result-prefixes="a rdfs xsd"
     xml:lang="en"
     dc:identifier="fancy"
     dc:title="Fancy representation of content"
     dc:creator="rv1971@web.de"
     dc:created="2023-04-13"
-    dc:modified="2023-04-13">
+    dc:modified="2023-04-18">
   <xsl:import href="fancy.xsl"/>
 
   <xsd:annotation>
@@ -62,6 +62,38 @@
 
   <xsl:template match="*|@*" mode="a:mailto">
     <xsl:call-template name="a:mailto"/>
+  </xsl:template>
+
+  <xsl:template
+      name="a:agent"
+      rdfs:label="Create link if value is an URL, else mailto: link if value contains a @">
+    <xsl:param name="value" select="." rdfs:label="Value to format"/>
+
+    <xsl:choose>
+      <xsl:when test="starts-with($value, 'https://')">
+        <a href="{$value}">
+          <xsl:value-of
+              select="substring-after($value, 'https://')"/>
+        </a>
+      </xsl:when>
+
+      <xsl:when test="starts-with($value, 'http://')">
+        <a href="{$value}">
+          <xsl:value-of
+              select="substring-after($value, 'http://')"/>
+        </a>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:call-template name="a:mailto">
+          <xsl:with-param name="value" select="$value"/>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="*|@*" mode="a:agent">
+    <xsl:call-template name="a:agent"/>
   </xsl:template>
 
   <xsd:annotation>
@@ -125,13 +157,21 @@
       <xsl:if test="substring-after($tokens, ' ')">
         <xsl:call-template name="a:tokens2links">
           <xsl:with-param name="tokens" select="substring-after($tokens, ' ')"/>
+          <xsl:with-param name="urlPrefix" select="$urlPrefix"/>
         </xsl:call-template>
       </xsl:if>
     </xsl:if>
   </xsl:template>
 
   <xsl:template match="*|@*" mode="a:tokens2links">
-    <xsl:call-template name="a:tokens2links"/>
+    <xsl:param
+        name="urlPrefix"
+        select="'#'"
+        rdfs:label="URL to prepend to link targets"/>
+
+    <xsl:call-template name="a:tokens2links">
+      <xsl:with-param name="urlPrefix" select="$urlPrefix"/>
+    </xsl:call-template>
   </xsl:template>
 
   <xsd:annotation>
@@ -155,9 +195,9 @@
   <xsl:template
       match="*|@*"
       mode="a:th"
-      rdfs:label="Create &lt;th> containing node name">
+      rdfs:label="Create &lt;th> containing local node name">
     <th>
-      <xsl:value-of select="name(.)"/>
+      <xsl:value-of select="local-name(.)"/>
     </th>
   </xsl:template>
 
@@ -178,10 +218,10 @@
   </xsd:annotation>
 
   <xsl:template
-      match="@dc:creator|@dc:publisher|@dc:rightsHolder"
+      match="@dc:creator|dc:creator|@dc:publisher|dc:publisher|@dc:rightsHolder|dc:rightsHolder"
       mode="a:auto"
-      rdfs:label="Create mailto: link if value contains a @">
-    <xsl:call-template name="a:mailto"/>
+      rdfs:label="Call a:agent">
+    <xsl:call-template name="a:agent"/>
   </xsl:template>
 
   <xsl:template

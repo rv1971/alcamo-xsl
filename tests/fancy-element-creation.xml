@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="#xslt" type="text/xml"?>
+
+<a:doc
+    xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
+    xmlns:dc="http://purl.org/dc/terms/">
+  <xsl:stylesheet
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:dc="http://purl.org/dc/terms/"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xml:id="xslt"
+      version="1.0">
+    <xsl:import href="../xsl/fancy-html.xsl"/>
+
+    <xsl:template match="/">
+      <a:result>
+        <xsl:apply-templates select="/a:doc/a:data/*"/>
+     </a:result>
+    </xsl:template>
+
+    <xsl:template match="a:*|dc:*">
+      <xsl:apply-templates select="." mode="a:li"/>
+      <xsl:apply-templates select="." mode="a:tr"/>
+    </xsl:template>
+
+    <xsl:template match="dc:rightsHolder" mode="a:th">
+      <th>Rights</th>
+    </xsl:template>
+  </xsl:stylesheet>
+
+  <a:data>
+    <a:item>foo</a:item>
+    <dc:creator>alice@example.org</dc:creator>
+    <dc:rightsHolder>mailto:bob@example.org</dc:rightsHolder>
+  </a:data>
+</a:doc>

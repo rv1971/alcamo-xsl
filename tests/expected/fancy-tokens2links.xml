@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#" xmlns="http://www.w3.org/1999/xhtml">
+  <ul>
+    <p>foo</p>
+    <li>
+      <a href="#foo">foo</a>
+    </li>
+    <li>
+      <a href="https://www.example.org/foo">foo</a>
+    </li>
+  </ul>
+  <ul>
+    <p>bar   baz QUX</p>
+    <li>
+      <a href="#bar">bar</a>
+    </li>
+    <li>
+      <a href="#baz">baz</a>
+    </li>
+    <li>
+      <a href="#QUX">QUX</a>
+    </li>
+    <li>
+      <a href="https://www.example.org/bar">bar</a>
+    </li>
+    <li>
+      <a href="https://www.example.org/baz">baz</a>
+    </li>
+    <li>
+      <a href="https://www.example.org/QUX">QUX</a>
+    </li>
+  </ul>
+  <ul>
+    <p>quux
+corge</p>
+    <li>
+      <a href="#quux">quux</a>
+    </li>
+    <li>
+      <a href="#corge">corge</a>
+    </li>
+    <li>
+      <a href="https://www.example.org/quux">quux</a>
+    </li>
+    <li>
+      <a href="https://www.example.org/corge">corge</a>
+    </li>
+  </ul>
+</a:result>

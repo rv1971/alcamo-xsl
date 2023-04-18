@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#" xmlns="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/terms/">
+  <a:item>no-mail no-mail</a:item>
+  <a:item>alice@example.org <a href="mailto:alice@example.org">alice</a></a:item>
+  <a:item>mailto:bob@example.org <a href="mailto:bob@example.org">bob</a></a:item>
+  <a:item>Ken &lt;ken@example.org&gt; <a href="mailto:ken@example.org">Ken</a></a:item>
+  <a:item>http://www.example.com <a href="http://www.example.com">www.example.com</a></a:item>
+  <a:item>https://www.example.info/mary <a href="https://www.example.info/mary">www.example.info/mary</a></a:item>
+</a:result>

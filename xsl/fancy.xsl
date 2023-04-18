@@ -336,7 +336,7 @@
   </xsl:template>
 
   <xsl:template
-      match="@dc:created|@dc:modified"
+      match="@dc:created|dc:created|@dc:modified|dc:modified"
       mode="a:auto"
       rdfs:label="Create timestamp text">
     <xsl:call-template name="a:iso-8601-timestamp"/>
