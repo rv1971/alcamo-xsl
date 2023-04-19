@@ -21,7 +21,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="mailto-links"><code>mailto:</code> links</h2>
+      <h2>Links to agents</h2>
 
       <p>Create a <code>mailto</code> link if the value contains a
       <code>@</code>. Also works with values that are already
@@ -100,7 +100,28 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="token lists">Token lists</h2>
+      <h2>Links to HTML elements</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template match="*" mode="a:label" rdfs:label="Create label text">
+    <xsl:value-of select="."/>
+  </xsl:template>
+
+  <xsl:template match="*" mode="a:a" rdfs:label="Create &lt;a&gt;">
+    <a>
+      <xsl:attribute name="href">
+        <xsl:value-of select="'#'"/>
+        <xsl:apply-templates select="." mode="a:id"/>
+      </xsl:attribute>
+
+      <xsl:apply-templates select="." mode="a:label"/>
+    </a>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Token lists</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -178,7 +199,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="element-creation">Element creation</h2>
+      <h2>Element creation</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -215,7 +236,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="auto-mode"><code>auto</code> mode</h2>
+      <h2><code>auto</code> mode</h2>
     </xsd:documentation>
   </xsd:annotation>
 

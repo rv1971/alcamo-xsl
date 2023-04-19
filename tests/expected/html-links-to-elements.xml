@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<body xmlns:dc="http://purl.org/dc/terms/" xmlns="http://www.w3.org/1999/xhtml">
+  <p id="p1">Paragraph 1</p>
+  <a href="#p1">Paragraph 1</a>
+</body>

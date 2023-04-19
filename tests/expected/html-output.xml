@@ -16,10 +16,4 @@
     <script type="text/javascript" src="qux.js"> </script>
     <script type="text/javascript" src="foo.js"> </script>
   </head>
-  <body>
-    <p id="p1">Paragraph 1</p>
-    <p>xslt</p>
-    <p>p1</p>
-    <a href="#p1">Paragraph 1</a>
-  </body>
 </html>

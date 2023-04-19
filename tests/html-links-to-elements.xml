@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="#xslt" type="text/xml"?>
+
+<a:doc xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <xsl:stylesheet
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xh="http://www.w3.org/1999/xhtml"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xml:id="xslt"
+      version="1.0"
+      exclude-result-prefixes="a xh">
+    <xsl:import href="../xsl/html.xsl"/>
+
+    <xsl:template match="/">
+      <body xmlns:dc="http://purl.org/dc/terms/">
+        <p id="p1">Paragraph 1</p>
+
+        <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:a"/>
+      </body>
+    </xsl:template>
+  </xsl:stylesheet>
+</a:doc>

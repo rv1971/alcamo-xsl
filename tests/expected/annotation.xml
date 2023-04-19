@@ -20,7 +20,7 @@
       <a href="#baz">Baz</a>
       <ul>
         <li>
-          <a href="#baz-1">First baz section</a>
+          <a href="#first-baz-section">First baz section</a>
         </li>
       </ul>
     </li>
@@ -49,7 +49,7 @@
       dolor sit amet.</p>
     <h2 id="baz">Baz</h2>
     <p>At vero eos et accusam et justo duo dolores et ea rebum.</p>
-    <h3 id="baz-1">First baz section</h3>
+    <h3 id="first-baz-section">First baz section</h3>
     <p>Stet clita kasd gubergren, no sea takimata sanctus est Lorem
       ipsum dolor sit amet.</p>
   </div>

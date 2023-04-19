@@ -15,7 +15,7 @@
     dc:created="2023-04-13"
     dc:modified="2023-04-19">
   <xsd:annotation>
-    <h2 id="intro">Introduction</h2>
+    <h2>Introduction</h2>
 
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <p>Define a number of metadata parameters and get their default

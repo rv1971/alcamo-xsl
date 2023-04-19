@@ -14,12 +14,13 @@
     dc:title="Basic definitions to create HTML output"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-04-18">
+    dc:modified="2023-04-19">
   <xsl:import href="metadata.xsl"/>
+  <xsl:import href="text.xsl"/>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="output-method">Output method</h2>
+      <h2>Output method</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -31,7 +32,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="parameters">Parameters</h2>
+      <h2>Parameters</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -45,7 +46,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="head-element">&lt;head&gt; element</h2>
+      <h2>&lt;head&gt; element</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -170,45 +171,5 @@
 
       <xsl:call-template name="a:extraHeadContent"/>
     </head>
-  </xsl:template>
-
-  <xsd:annotation>
-    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="document-structure">Document structure</h2>
-    </xsd:documentation>
-  </xsd:annotation>
-
-  <xsd:annotation>
-    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <p>Use an existing <code>id</code> attribute, or generate one of
-      there is none.</p>
-    </xsd:documentation>
-  </xsd:annotation>
-
-  <xsl:template match="*[@xml:id]" mode="a:id" rdfs:label="Create ID text">
-    <xsl:value-of select="@xml:id"/>
-  </xsl:template>
-
-  <xsl:template match="*[@id]" mode="a:id" rdfs:label="Create ID text">
-    <xsl:value-of select="@id"/>
-  </xsl:template>
-
-  <xsl:template match="*" mode="a:id" rdfs:label="Create ID text">
-    <xsl:value-of select="generate-id(.)"/>
-  </xsl:template>
-
-  <xsl:template match="*" mode="a:label" rdfs:label="Create label text">
-    <xsl:value-of select="."/>
-  </xsl:template>
-
-  <xsl:template match="*" mode="a:a" rdfs:label="Create &lt;a&gt;">
-    <a>
-      <xsl:attribute name="href">
-        <xsl:value-of select="'#'"/>
-        <xsl:apply-templates select="." mode="a:id"/>
-      </xsl:attribute>
-
-      <xsl:apply-templates select="." mode="a:label"/>
-    </a>
   </xsl:template>
 </xsl:stylesheet>

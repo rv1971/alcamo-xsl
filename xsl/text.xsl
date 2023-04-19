@@ -19,7 +19,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="embedded">Embedded data</h2>
+      <h2>Embedded data</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -109,7 +109,47 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="numbers">Numbers</h2>
+      <h2>ID handling</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      name="a:to-id"
+      rdfs:label="Convert to lowercase ID, replacing spaces by hyphens and removing punctuation">
+    <xsl:param name="text" select="." rdfs:label="Text to convert"/>
+
+    <xsl:variable name="from">ABCDEFGHIJKLMNOPQRSTUVWXYZ !"#$%&amp;'()*+,./:;&lt;&gt;?@[\]^`{|}~</xsl:variable>
+
+    <xsl:value-of
+        select="translate($text, $from, 'abcdefghijklmnopqrstuvwxyz-')"/>
+  </xsl:template>
+
+  <xsl:template match="*|@*" mode="a:to-id">
+    <xsl:call-template name="a:to-id"/>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>Use an existing <code>id</code> attribute, or generate one of
+      there is none.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template match="*[@xml:id]" mode="a:id" rdfs:label="Create ID text">
+    <xsl:value-of select="@xml:id"/>
+  </xsl:template>
+
+  <xsl:template match="*[@id]" mode="a:id" rdfs:label="Create ID text">
+    <xsl:value-of select="@id"/>
+  </xsl:template>
+
+  <xsl:template match="*" mode="a:id" rdfs:label="Create ID text">
+    <xsl:call-template name="a:to-id"/>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Numbers</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -164,7 +204,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="plurals">Plurals</h2>
+      <h2>Plurals</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -189,7 +229,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="iso-8601">ISO 8601</h2>
+      <h2>ISO 8601</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -365,7 +405,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="auto-mode"><code>auto</code> mode</h2>
+      <h2><code>auto</code> mode</h2>
 
       <p>By default, the <code>auto</code> mode copies a node value
       verbatim to the result tree. Hence this mode can be used to

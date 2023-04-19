@@ -32,20 +32,6 @@
     <xsl:template match="/">
       <html xmlns:dc="http://purl.org/dc/terms/">
         <xsl:call-template name="a:head"/>
-
-        <body>
-          <p id="p1">Paragraph 1</p>
-
-          <p>
-            <xsl:apply-templates select="/a:doc/xsl:stylesheet" mode="a:id"/>
-          </p>
-
-          <p>
-            <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:id"/>
-          </p>
-
-          <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:a"/>
-        </body>
       </html>
     </xsl:template>
   </xsl:stylesheet>

@@ -16,12 +16,12 @@
     dc:title="Process &lt;xsd:annotation&gt;"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-04-18">
+    dc:modified="2023-04-19">
   <xsl:import href="html-output.xsl"/>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="general">General</h2>
+      <h2>General</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -36,7 +36,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="html">HTML</h2>
+      <h2>HTML</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -47,7 +47,7 @@
     <xsl:element name="{name(.)}">
       <xsl:if test="not(@id)">
         <xsl:attribute name="id">
-          <xsl:value-of select="generate-id(.)"/>
+          <xsl:call-template name="a:to-id"/>
         </xsl:attribute>
       </xsl:if>
 
@@ -62,7 +62,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2 id="toc-items">TOC items</h2>
+      <h2>TOC items</h2>
     </xsd:documentation>
   </xsd:annotation>
 
