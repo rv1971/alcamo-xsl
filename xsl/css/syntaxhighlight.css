@@ -1,0 +1,26 @@
+pre .sh-attr {
+    color: #a0522d;
+}
+
+pre .sh-attr-value {
+    color: #8b2271;
+}
+
+pre .sh-error {
+    color: #ff0000;
+}
+
+pre .sh-text {
+}
+
+pre .sh-comment {
+    color: #c04d9a;
+}
+
+pre .sh-element {
+    color: #0000ff;
+}
+
+pre .sh-prefix {
+    color: #483d8b;
+}

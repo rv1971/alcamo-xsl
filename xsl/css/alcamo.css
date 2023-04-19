@@ -1,0 +1,103 @@
+/* == by element == */
+
+a {
+    text-decoration: none;
+}
+
+code,
+pre {
+    font-family: monospace;
+}
+
+small {
+    font-size: 90%;
+}
+
+tbody > tr > th {
+    text-align: left;
+}
+
+/* == by attribute == */
+
+@media screen {
+    [title] {
+        text-decoration: underline dotted;
+    }
+}
+
+/* == generic classes == */
+
+.block {
+    display: block;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.center {
+    text-align: center;
+}
+
+.code,
+.monospace {
+    font-family: monospace;
+}
+
+.inline {
+    display: inline;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.children-inline > * {
+    display: inline;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.left {
+    text-align: left;
+}
+
+.middle {
+    vertical-align: middle;
+}
+
+@media print {
+    .noprint {
+        display: none !important;
+    }
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.right {
+    text-align: right;
+}
+
+.small {
+    font-size: 90%;
+}
+
+.x-small {
+    font-size: 80%;
+}
+
+.h-sticky {
+    position: sticky;
+    left: 0;
+    right: 0;
+}
+
+.v-sticky {
+    position: sticky;
+    top: 0;
+    bottom: 0;
+}
