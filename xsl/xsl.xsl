@@ -21,9 +21,7 @@
     dc:created="2023-04-18"
     dc:modified="2023-04-19">
   <xsl:import href="annotation.xsl"/>
-  <xsl:import href="html.xsl"/>
   <xsl:import href="html-document.xsl"/>
-  <xsl:import href="metadata.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
 
   <xsd:annotation>
@@ -69,7 +67,6 @@
 
   <xsl:param
       name="a:cssList"
-      rdfs:label="Whitespace-separated list of CSS files to link to"
       select="concat($a:xslDirUrl, 'css/alcamo.css', ' ', $a:xslDirUrl, 'css/syntaxhighlight.css', ' ', $a:xslDirUrl, 'css/xsl.css')"/>
 
   <xsl:param name="sh:maxInlineAttrs" select="3"/>
@@ -168,7 +165,7 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="xsl:param" mode="ax:tr">
+  <xsl:template match="xsl:param" mode="ax:tr" rdfs:label="Create &lt;tr&gt;">
     <tr>
       <td>
         <xsl:value-of select="@name"/>
@@ -186,7 +183,10 @@
 
   <xsl:template match="*" mode="ax:inner"/>
 
-  <xsl:template match="xsl:template" mode="ax:inner">
+  <xsl:template
+      match="xsl:template"
+      mode="ax:inner"
+      rdfs:label="Create &lt;table&gt; of parameters, if any">
     <xsl:if test="xsl:param">
       <table class="param-doc">
         <thead>
@@ -265,7 +265,10 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="xh:h2" mode="ax:toc-li">
+  <xsl:template
+      match="xh:h2"
+      mode="ax:toc-li"
+      rdfs:label="Create &lt;li&gt; for the TOC">
     <li>
       <xsl:apply-templates select="." mode="a:a"/>
 
@@ -306,7 +309,8 @@
     </li>
   </xsl:template>
 
-  <xsl:template name="a:toc">
+  <xsl:template name="a:toc" rdfs:label="Create TOC &lt;ul&gt;">
+>
     <ul id="toc">
      <xsl:if test="$ax:intro">
         <li><a href="#introduction">Introduction</a></li>

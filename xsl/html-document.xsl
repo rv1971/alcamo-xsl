@@ -55,7 +55,7 @@
 
   <xsl:template
       name="a:resourceUrl"
-      rdfs:label="create URL for a resource">
+      rdfs:label="Create URL for a resource">
     <xsl:param name="item" rdfs:label="URL"/>
     <xsl:param name="type" rdfs:label="css|js|icon"/>
 

@@ -116,7 +116,7 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="*" mode="a:h2">
+  <xsl:template match="*" mode="a:h2" rdfs:label="Create &lt;h2&gt; with id">
     <h2>
       <xsl:attribute name="id">
         <xsl:apply-templates select="." mode="a:id"/>
@@ -126,7 +126,7 @@
     </h2>
   </xsl:template>
 
-  <xsl:template match="*" mode="a:h3">
+  <xsl:template match="*" mode="a:h3" rdfs:label="Create &lt;h3&gt; with id">
     <h3>
       <xsl:attribute name="id">
         <xsl:apply-templates select="." mode="a:id"/>
@@ -136,7 +136,7 @@
     </h3>
   </xsl:template>
 
-  <xsl:template match="*" mode="a:h4">
+  <xsl:template match="*" mode="a:h4" rdfs:label="Create &lt;h4&gt; with id">
     <h4>
       <xsl:attribute name="id">
         <xsl:apply-templates select="." mode="a:id"/>
@@ -146,7 +146,7 @@
     </h4>
   </xsl:template>
 
-  <xsl:template match="*" mode="a:h5">
+  <xsl:template match="*" mode="a:h5" rdfs:label="Create &lt;h5&gt; with id">
     <h5>
       <xsl:attribute name="id">
         <xsl:apply-templates select="." mode="a:id"/>
@@ -156,7 +156,7 @@
     </h5>
   </xsl:template>
 
-  <xsl:template match="*" mode="a:h6">
+  <xsl:template match="*" mode="a:h6" rdfs:label="Create &lt;h6&gt; with id">
     <h6>
       <xsl:attribute name="id">
         <xsl:apply-templates select="." mode="a:id"/>
@@ -313,9 +313,17 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template name="a:created-modified">
-    <xsl:param name="created" select="$dc:created"/>
-    <xsl:param name="modified" select="$dc:modified"/>
+  <xsl:template
+      name="a:created-modified"
+      rdfs:label="Create last modification timestamp, potentially with tooltip about creation timestamp">
+    <xsl:param
+        name="created"
+        select="$dc:created"
+        rdfs:label="Creation timestamp"/>
+    <xsl:param
+        name="modified"
+        select="$dc:modified"
+        rdfs:label="Modification timestamp"/>
 
     <xsl:choose>
       <xsl:when test="$modified">

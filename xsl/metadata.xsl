@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?xml-stylesheet href="xsl.xsl" type="text/xsl"?>
+
 <xsl:stylesheet
     xmlns:dc="http://purl.org/dc/terms/"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -15,12 +17,18 @@
     dc:created="2023-04-13"
     dc:modified="2023-04-19">
   <xsd:annotation>
-    <h2>Introduction</h2>
-
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Introduction</h2>
+
       <p>Define a number of metadata parameters and get their default
       values from corresponding attributes or children of
       <code>$a:metaRoot</code>.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Parameters</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -57,45 +65,61 @@
       select="/*"
       rdfs:label="Element where metadata is taken from"/>
 
-  <xsl:variable
+  <xsl:param
       name="dc:identifier"
-      select="$a:metaRoot/@dc:identifier|$a:metaRoot/dc:identifier"/>
+      select="$a:metaRoot/@dc:identifier|$a:metaRoot/dc:identifier"
+      rdfs:label="An unambiguous reference to the resource within a given context"/>
 
-  <xsl:variable
+  <xsl:param
       name="dc:title"
-      select="$a:metaRoot/@dc:title|$a:metaRoot/dc:title"/>
+      select="$a:metaRoot/@dc:title|$a:metaRoot/dc:title"
+      rdfs:label="A name given to the resource"/>
 
-  <xsl:variable
+  <xsl:param
       name="dc:creator"
-      select="$a:metaRoot/@dc:creator|$a:metaRoot/dc:creator"/>
+      select="$a:metaRoot/@dc:creator|$a:metaRoot/dc:creator"
+      rdfs:label="An entity responsible for making the resource"/>
 
-  <xsl:variable
+  <xsl:param
       name="dc:publisher"
-      select="$a:metaRoot/@dc:publisher|$a:metaRoot/dc:publisher"/>
+      select="$a:metaRoot/@dc:publisher|$a:metaRoot/dc:publisher"
+      rdfs:label="An entity responsible for making the resource available"/>
 
-  <xsl:variable
+  <xsl:param
       name="dc:created"
-      select="$a:metaRoot/@dc:created|$a:metaRoot/dc:created"/>
+      select="$a:metaRoot/@dc:created|$a:metaRoot/dc:created"
+      rdfs:label="Date of creation of the resource"/>
 
-  <xsl:variable
+  <xsl:param
       name="dc:modified"
-      select="$a:metaRoot/@dc:modified|$a:metaRoot/dc:modified"/>
+      select="$a:metaRoot/@dc:modified|$a:metaRoot/dc:modified"
+      rdfs:label="Date on which the resource was changed"/>
 
-  <xsl:variable
+  <xsl:param
       name="dc:accessRights"
-      select="$a:metaRoot/@dc:accessRights|$a:metaRoot/dc:accessRights"/>
+      select="$a:metaRoot/@dc:accessRights|$a:metaRoot/dc:accessRights"
+      rdfs:label="Information about who access the resource or an indication of its security status"/>
 
-  <xsl:variable
+  <xsl:param
       name="dc:rights"
-      select="$a:metaRoot/@dc:rights|$a:metaRoot/dc:rights"/>
+      select="$a:metaRoot/@dc:rights|$a:metaRoot/dc:rights"
+      rdfs:label="Information about rights held in and over the resource"/>
 
-  <xsl:variable
+  <xsl:param
       name="dc:rightsHolder"
-      select="$a:metaRoot/@dc:rightsHolder|$a:metaRoot/dc:rightsHolder"/>
+      select="$a:metaRoot/@dc:rightsHolder|$a:metaRoot/dc:rightsHolder"
+      rdfs:label="A person or organization owning or managing rights over the resource"/>
 
-  <xsl:variable
+  <xsl:param
       name="owl:versionInfo"
-      select="$a:metaRoot/@owl:versionInfo|$a:metaRoot/owl:versionInfo"/>
+      select="$a:metaRoot/@owl:versionInfo|$a:metaRoot/owl:versionInfo"
+      rdfs:label="Version information"/>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Templates</h2>
+    </xsd:documentation>
+  </xsd:annotation>
 
   <xsl:template
       name="a:basename"
