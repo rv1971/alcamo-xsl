@@ -7,33 +7,29 @@
       xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
       xml:id="xslt"
       version="1.0">
-    <xsl:import href="../xsl/fancy.xsl"/>
+    <xsl:import href="../xsl/text.xsl"/>
 
     <xsl:template match="/">
       <a:result>
         <xsl:apply-templates select="/a:doc/a:data"/>
-      </a:result>
+     </a:result>
     </xsl:template>
 
     <xsl:template match="a:item">
       <a:item>
         <xsl:value-of select="."/>
         <xsl:value-of select="' '"/>
-        <xsl:apply-templates select="." mode="a:iso-8601-duration"/>
+        <xsl:apply-templates select="." mode="a:number"/>
       </a:item>
     </xsl:template>
   </xsl:stylesheet>
 
   <a:data>
-    <a:item>P1D</a:item>
-    <a:item>P1W2D</a:item>
-    <a:item>P1M2D</a:item>
-    <a:item>P1Y2M3D</a:item>
-    <a:item>PT2H</a:item>
-    <a:item>PT2H3M</a:item>
-    <a:item>PT2H3M4S</a:item>
-    <a:item>PT2H3M4.567890S</a:item>
-    <a:item>P7Y5DT4M1.3S</a:item>
-    <a:item>P3WT1S</a:item>
+    <a:item>1</a:item>
+    <a:item>3</a:item>
+    <a:item>9</a:item>
+    <a:item>10</a:item>
+    <a:item>11</a:item>
+    <a:item>20</a:item>
   </a:data>
 </a:doc>

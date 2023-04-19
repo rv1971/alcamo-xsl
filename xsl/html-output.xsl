@@ -12,13 +12,13 @@
     xml:lang="en"
     dc:identifier="html-output"
     dc:title="Basic definitions to create HTML output"
-    dc:creator="rv1971@web.de"
+    dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
     dc:modified="2023-04-18">
   <xsl:import href="metadata.xsl"/>
 
   <xsd:annotation>
-    <xsd:documentation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2 id="output-method">Output method</h2>
     </xsd:documentation>
   </xsd:annotation>
@@ -30,7 +30,7 @@
       media-type="application/xhtml+xml"/>
 
   <xsd:annotation>
-    <xsd:documentation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2 id="parameters">Parameters</h2>
     </xsd:documentation>
   </xsd:annotation>
@@ -44,7 +44,7 @@
       rdfs:label="Whitespace-separated list of JS files to link to"/>
 
   <xsd:annotation>
-    <xsd:documentation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2 id="head-element">&lt;head&gt; element</h2>
     </xsd:documentation>
   </xsd:annotation>
@@ -173,13 +173,13 @@
   </xsl:template>
 
   <xsd:annotation>
-    <xsd:documentation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2 id="document-structure">Document structure</h2>
     </xsd:documentation>
   </xsd:annotation>
 
   <xsd:annotation>
-    <xsd:documentation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <p>Use an existing <code>id</code> attribute, or generate one of
       there is none.</p>
     </xsd:documentation>

@@ -8,7 +8,7 @@
       xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
       xml:id="xslt"
       version="1.0">
-    <xsl:import href="../xsl/fancy-html.xsl"/>
+    <xsl:import href="../xsl/html.xsl"/>
 
     <xsl:template match="/">
       <a:result>
@@ -21,7 +21,11 @@
         <p>
           <xsl:value-of select="."/>
         </p>
-        <xsl:apply-templates select="." mode="a:tokens2items"/>
+        <xsl:apply-templates select="." mode="a:tokens2links"/>
+
+        <xsl:apply-templates select="." mode="a:tokens2links">
+          <xsl:with-param name="urlPrefix" select="'https://www.example.org/'"/>
+        </xsl:apply-templates>
       </ul>
     </xsl:template>
   </xsl:stylesheet>

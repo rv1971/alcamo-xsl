@@ -4,10 +4,11 @@
 
 <a:doc xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
   <xsl:stylesheet
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
       xml:id="xslt"
       version="1.0">
-    <xsl:import href="../xsl/fancy.xsl"/>
+    <xsl:import href="../xsl/html.xsl"/>
 
     <xsl:template match="/">
       <a:result>
@@ -19,17 +20,15 @@
       <a:item>
         <xsl:value-of select="."/>
         <xsl:value-of select="' '"/>
-        <xsl:apply-templates select="." mode="a:number"/>
+        <xsl:apply-templates select="." mode="a:mailto"/>
       </a:item>
     </xsl:template>
   </xsl:stylesheet>
 
   <a:data>
-    <a:item>1</a:item>
-    <a:item>3</a:item>
-    <a:item>9</a:item>
-    <a:item>10</a:item>
-    <a:item>11</a:item>
-    <a:item>20</a:item>
+    <a:item>no-mail</a:item>
+    <a:item>alice@example.org</a:item>
+    <a:item>mailto:bob@example.org</a:item>
+    <a:item>Ken &lt;ken@example.org&gt;</a:item>
   </a:data>
 </a:doc>

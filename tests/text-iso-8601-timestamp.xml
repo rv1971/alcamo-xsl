@@ -7,7 +7,7 @@
       xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
       xml:id="xslt"
       version="1.0">
-    <xsl:import href="../xsl/fancy.xsl"/>
+    <xsl:import href="../xsl/text.xsl"/>
 
     <xsl:template match="/">
       <a:result>
@@ -17,24 +17,16 @@
 
     <xsl:template match="a:item">
       <a:item>
-        <xsl:call-template select="." name="a:plural">
-          <xsl:with-param name="singular" select="'cow'"/>
-        </xsl:call-template>
-
-        <xsl:value-of select="', '"/>
-
-        <xsl:call-template select="." name="a:plural">
-          <xsl:with-param name="singular" select="'ox'"/>
-          <xsl:with-param name="plural" select="'oxen'"/>
-        </xsl:call-template>
+        <xsl:value-of select="."/>
+        <xsl:value-of select="' '"/>
+        <xsl:apply-templates select="." mode="a:iso-8601-timestamp"/>
       </a:item>
     </xsl:template>
   </xsl:stylesheet>
 
   <a:data>
-    <a:item>0</a:item>
-    <a:item>1</a:item>
-    <a:item>2</a:item>
-    <a:item>32</a:item>
+    <a:item>2023-04-17</a:item>
+    <a:item>13:54:12+02:00</a:item>
+    <a:item>2023-04-17T13:54:12+02:00</a:item>
   </a:data>
 </a:doc>

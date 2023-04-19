@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?xml-stylesheet href="xsl.xsl" type="text/xsl"?>
+
 <xsl:stylesheet
     xmlns:dc="http://purl.org/dc/terms/"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -9,14 +11,14 @@
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
     version="1.0"
     xml:lang="en"
-    dc:identifier="fancy"
-    dc:title="Fancy representation of content"
-    dc:creator="rv1971@web.de"
+    dc:identifier="text"
+    dc:title="Text generation"
+    dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-04-17">
+    dc:modified="2023-04-19">
 
   <xsd:annotation>
-    <xsd:documentation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2 id="embedded">Embedded data</h2>
     </xsd:documentation>
   </xsd:annotation>
@@ -65,13 +67,13 @@
       use="@id"/>
 
   <xsd:annotation>
-    <xsd:documentation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2 id="numbers">Numbers</h2>
     </xsd:documentation>
   </xsd:annotation>
 
   <xsd:annotation>
-    <xsd:documentation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <p>Spell out a number if present in the above table, otherwise
       output it unchanged.</p>
     </xsd:documentation>
@@ -120,7 +122,7 @@
   </xsl:template>
 
   <xsd:annotation>
-    <xsd:documentation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2 id="plurals">Plurals</h2>
     </xsd:documentation>
   </xsd:annotation>
@@ -145,13 +147,13 @@
   </xsl:template>
 
   <xsd:annotation>
-    <xsd:documentation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2 id="iso-8601">ISO 8601</h2>
     </xsd:documentation>
   </xsd:annotation>
 
   <xsd:annotation>
-    <xsd:documentation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <p>If a value expressing an ISO 8601 timestamp contains a
       <code>T</code>, replace it by one space for better
       readibility.</p>
@@ -321,7 +323,7 @@
   </xsl:template>
 
   <xsd:annotation>
-    <xsd:documentation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2 id="auto-mode"><code>auto</code> mode</h2>
 
       <p>By default, the <code>auto</code> mode copies a node value

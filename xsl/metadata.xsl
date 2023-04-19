@@ -11,11 +11,13 @@
     xml:lang="en"
     dc:identifier="metadata"
     dc:title="Extract metadata from a document"
-    dc:creator="rv1971@web.de"
+    dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-04-17">
+    dc:modified="2023-04-19">
   <xsd:annotation>
-    <xsd:documentation>
+    <h2 id="intro">Introduction</h2>
+
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <p>Define a number of metadata parameters and get their default
       values from corresponding attributes or children of
       <code>$a:metaRoot</code>.</p>
