@@ -22,7 +22,7 @@
     dc:modified="2023-04-19">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html.xsl"/>
-  <xsl:import href="html-output.xsl"/>
+  <xsl:import href="html-document.xsl"/>
   <xsl:import href="metadata.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
 
@@ -306,7 +306,7 @@
     </li>
   </xsl:template>
 
-  <xsl:template name="ax:toc">
+  <xsl:template name="a:toc">
     <ul id="toc">
      <xsl:if test="$ax:intro">
         <li><a href="#introduction">Introduction</a></li>
@@ -321,23 +321,6 @@
           mode="ax:toc-li"/>
       <li><a href="#xslt-refs">XSLT references</a></li>
     </ul>
-  </xsl:template>
-
-  <xsl:template name="ax:page-header">
-    <header>
-      <h1>
-        <xsl:value-of select="$dc:title"/>
-      </h1>
-
-      <p>
-        <xsl:apply-templates select="$dc:creator" mode="a:agent"/>
-        <xsl:value-of select="', '"/>
-
-        <xsl:call-template name="a:created-modified"/>
-      </p>
-
-      <xsl:call-template name="ax:toc"/>
-    </header>
   </xsl:template>
 
   <xsl:template
@@ -374,38 +357,25 @@
     </ul>
   </xsl:template>
 
-  <xsl:template match="/" rdfs:label="Create the document">
-    <html>
-      <xsl:for-each select="$a:metaRoot/@xml:lang">
-        <xsl:copy/>
-      </xsl:for-each>
+  <xsl:template name="a:page-main">
+    <xsl:if test="$ax:intro">
+      <xsl:apply-templates select="$ax:intro" mode="ax:main"/>
+    </xsl:if>
 
-      <xsl:call-template name="a:head"/>
+    <xsl:if test="/*/xsl:import">
+      <xsl:call-template name="ax:imports"/>
+    </xsl:if>
 
-      <body>
-        <xsl:call-template name="ax:page-header"/>
+    <xsl:choose>
+      <xsl:when test="$ax:intro">
+        <xsl:apply-templates select="/*/*[. != $ax:intro]" mode="ax:main"/>
+      </xsl:when>
 
-        <xsl:if test="$ax:intro">
-          <xsl:apply-templates select="$ax:intro" mode="ax:main"/>
-        </xsl:if>
+      <xsl:otherwise>
+        <xsl:apply-templates select="/*/*" mode="ax:main"/>
+      </xsl:otherwise>
+    </xsl:choose>
 
-        <xsl:if test="/*/xsl:import">
-          <xsl:call-template name="ax:imports"/>
-        </xsl:if>
-
-
-        <xsl:choose>
-          <xsl:when test="$ax:intro">
-            <xsl:apply-templates select="/*/*[. != $ax:intro]" mode="ax:main"/>
-          </xsl:when>
-
-          <xsl:otherwise>
-            <xsl:apply-templates select="/*/*" mode="ax:main"/>
-          </xsl:otherwise>
-        </xsl:choose>
-
-        <xsl:call-template name="ax:references"/>
-      </body>
-    </html>
+    <xsl:call-template name="ax:references"/>
   </xsl:template>
 </xsl:stylesheet>

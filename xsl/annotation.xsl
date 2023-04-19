@@ -18,7 +18,6 @@
     dc:created="2023-04-13"
     dc:modified="2023-04-19">
   <xsl:import href="html.xsl"/>
-  <xsl:import href="html-output.xsl"/>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">

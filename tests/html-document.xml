@@ -6,8 +6,8 @@
     xmlns:dc="http://purl.org/dc/terms/"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
-    dc:identifier="html-output"
-    dc:title="Test for html output"
+    dc:identifier="html-document"
+    dc:title="Test for html document"
     dc:creator="Alice"
     dc:publisher="example.org"
     dc:created="2023-04-18T11:57:00+02:00"
@@ -24,15 +24,9 @@
       xml:id="xslt"
       version="1.0"
       exclude-result-prefixes="a xh">
-    <xsl:import href="../xsl/html-output.xsl"/>
+    <xsl:import href="../xsl/html-document.xsl"/>
 
     <xsl:param name="a:cssList" select="'foo.css  bar.css baz.css'"/>
     <xsl:param name="a:jsList" select="'qux.js foo.js'"/>
-
-    <xsl:template match="/">
-      <html xmlns:dc="http://purl.org/dc/terms/">
-        <xsl:call-template name="a:head"/>
-      </html>
-    </xsl:template>
   </xsl:stylesheet>
 </a:doc>

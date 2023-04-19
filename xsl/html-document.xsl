@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?xml-stylesheet href="xsl.xsl" type="text/xsl"?>
+
 <xsl:stylesheet
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:dc="http://purl.org/dc/terms/"
@@ -10,11 +12,12 @@
     version="1.0"
     exclude-result-prefixes="a rdfs xsd"
     xml:lang="en"
-    dc:identifier="html-output"
-    dc:title="Basic definitions to create HTML output"
+    dc:identifier="html-document"
+    dc:title="HTML document creation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
     dc:modified="2023-04-19">
+  <xsl:import href="html.xsl"/>
   <xsl:import href="metadata.xsl"/>
   <xsl:import href="text.xsl"/>
 
@@ -171,5 +174,58 @@
 
       <xsl:call-template name="a:extraHeadContent"/>
     </head>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Page header</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template name="a:toc" rdfs:label="Create table of contents"/>
+
+  <xsl:template
+      name="a:page-header"
+      rdfs:label="Create &lt;header&gt; element for page">
+    <header>
+      <h1>
+        <xsl:value-of select="$dc:title"/>
+      </h1>
+
+      <p>
+        <xsl:apply-templates select="$dc:creator" mode="a:agent"/>
+        <xsl:value-of select="', '"/>
+
+        <xsl:call-template name="a:created-modified"/>
+      </p>
+
+      <xsl:call-template name="a:toc"/>
+    </header>
+  </xsl:template>
+
+  <xsl:template
+      name="a:page-main"
+      rdfs:label="Create main part of page page"/>
+
+  <xsl:template
+      name="a:page-footer"
+      rdfs:label="Create &lt;footer&gt; element for page"/>
+
+  <xsl:template match="/" rdfs:label="Create the document">
+    <html>
+      <xsl:for-each select="$a:metaRoot/@xml:lang">
+        <xsl:copy/>
+      </xsl:for-each>
+
+      <xsl:call-template name="a:head"/>
+
+      <body>
+        <xsl:call-template name="a:page-header"/>
+
+        <xsl:call-template name="a:page-main"/>
+
+        <xsl:call-template name="a:page-footer"/>
+      </body>
+    </html>
   </xsl:template>
 </xsl:stylesheet>

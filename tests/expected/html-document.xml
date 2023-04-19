@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns:dc="http://purl.org/dc/terms/" xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/terms/">
   <head xmlns:owl="http://www.w3.org/2002/07/owl#">
     <meta charset="utf-8"/>
-    <meta property="dc:identifier" content="html-output"/>
-    <title property="dc:title">Test for html output</title>
+    <meta property="dc:identifier" content="html-document"/>
+    <title property="dc:title">Test for html document</title>
     <meta property="dc:creator" name="author" content="Alice"/>
     <meta property="dc:created" content="2023-04-18T11:57:00+02:00"/>
     <meta property="dc:modified" content="2023-04-18T11:57:05+02:00"/>
@@ -16,4 +16,10 @@
     <script type="text/javascript" src="qux.js"> </script>
     <script type="text/javascript" src="foo.js"> </script>
   </head>
+  <body>
+    <header>
+      <h1>Test for html document</h1>
+      <p>Alice, <span title="created 2023-04-18T11:57:00+02:00">2023-04-18T11:57:05+02:00</span></p>
+    </header>
+  </body>
 </html>
