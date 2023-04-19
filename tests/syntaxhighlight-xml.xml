@@ -29,6 +29,8 @@ be indented.</xsl:text>
   <!-- comment -->
   <foo bar="long value which makes the total length exceed 60 characters"/>
 
+  <foo>Short inline text.</foo>
+
   <foo>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</foo>
 
   <bar content="elements without child nodes are not surrounded by empty lines"/>

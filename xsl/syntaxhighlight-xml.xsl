@@ -60,6 +60,12 @@
     <xsl:value-of select="60"/>
   </xsl:param>
 
+  <xsl:param
+      name="sh:maxInlineTextLength"
+      rdfs:label="Maximum length of inline text">
+    <xsl:value-of select="40"/>
+  </xsl:param>
+
   <xsd:annotation>
     <xsd:documentation>
       <h2>Auxiliary templates</h2>
@@ -178,11 +184,21 @@
     <xsl:variable name="normalizedText" select="normalize-space(.)"/>
 
     <xsl:if test="$normalizedText">
-      <xsl:value-of select="concat('&#x0a;', $prepend)"/>
+      <xsl:choose>
+        <xsl:when test="string-length($normalizedText) &lt;= $sh:maxInlineTextLength">
+          <span class="sh-text">
+            <xsl:value-of select="$normalizedText"/>
+          </span>
+        </xsl:when>
 
-      <span class="sh-text">
-        <xsl:value-of select="$normalizedText"/>
-      </span>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('&#x0a;', $prepend)"/>
+
+          <span class="sh-text">
+            <xsl:value-of select="$normalizedText"/>
+          </span>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:if>
   </xsl:template>
 
@@ -306,7 +322,11 @@
           <xsl:with-param name="prepend" select="concat($prepend, $sh:indent)"/>
         </xsl:apply-templates>
 
-        <xsl:value-of select="concat('&#x0a;', $prepend, '&lt;/')"/>
+        <xsl:if test="*|text()[string-length(normalize-space(.)) &gt; $sh:maxInlineTextLength]|comment()">
+          <xsl:value-of select="concat('&#x0a;', $prepend)"/>
+        </xsl:if>
+
+        <xsl:value-of select="'&lt;/'"/>
 
         <xsl:apply-templates select="." mode="sh:name"/>
 

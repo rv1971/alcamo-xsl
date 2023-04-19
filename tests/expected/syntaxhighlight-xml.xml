@@ -15,8 +15,7 @@
     &lt;<span class="sh-prefix">xsl</span>:<span class="sh-element">template</span> <span class="sh-attr">name</span>=<span class="sh-attr-value">"foo"</span>&gt;
       &lt;<span class="sh-prefix">xsl</span>:<span class="sh-element">text</span>&gt;<span class="sh-text">This text
 will not
-be indented.</span>
-      &lt;/<span class="sh-prefix">xsl</span>:<span class="sh-element">text</span>&gt;
+be indented.</span>&lt;/<span class="sh-prefix">xsl</span>:<span class="sh-element">text</span>&gt;
     &lt;/<span class="sh-prefix">xsl</span>:<span class="sh-element">template</span>&gt;
   &lt;/<span class="sh-prefix">xsl</span>:<span class="sh-element">stylesheet</span>&gt;<span class="sh-comment">
 
@@ -24,6 +23,8 @@ be indented.</span>
 </span>
   &lt;<span class="sh-element">foo</span>
       <span class="sh-attr">bar</span>=<span class="sh-attr-value">"long value which makes the total length exceed 60 characters"</span>/&gt;
+
+  &lt;<span class="sh-element">foo</span>&gt;<span class="sh-text">Short inline text.</span>&lt;/<span class="sh-element">foo</span>&gt;
 
   &lt;<span class="sh-element">foo</span>&gt;
     <span class="sh-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</span>
