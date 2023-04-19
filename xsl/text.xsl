@@ -68,6 +68,47 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Case folding</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template name="a:tolower" rdfs:label="Convert to lowercase">
+    <xsl:param name="text" select="." rdfs:label="Text to convert"/>
+
+    <xsl:value-of
+        select="translate($text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
+  </xsl:template>
+
+  <xsl:template match="*|@*" mode="a:tolower">
+    <xsl:call-template name="a:tolower"/>
+  </xsl:template>
+
+  <xsl:template name="a:toupper" rdfs:label="Convert to uppercase">
+    <xsl:param name="text" select="." rdfs:label="Text to convert"/>
+
+    <xsl:value-of
+        select="translate($text, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
+  </xsl:template>
+
+  <xsl:template match="*|@*" mode="a:toupper">
+    <xsl:call-template name="a:toupper"/>
+  </xsl:template>
+
+  <xsl:template
+      name="a:ucfirst"
+      rdfs:label="Convert first character to uppercase">
+    <xsl:param name="text" select="." rdfs:label="Text to convert"/>
+
+    <xsl:value-of
+        select="concat(translate(substring($text, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring($text, 2))"/>
+  </xsl:template>
+
+  <xsl:template match="*|@*" mode="a:ucfirst">
+    <xsl:call-template name="a:ucfirst"/>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2 id="numbers">Numbers</h2>
     </xsd:documentation>
   </xsd:annotation>
