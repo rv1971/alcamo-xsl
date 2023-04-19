@@ -19,7 +19,7 @@
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-04-18">
+    dc:modified="2023-04-19">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html.xsl"/>
   <xsl:import href="html-output.xsl"/>
@@ -114,7 +114,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="xsl:param[@name]" mode="a:label">
+  <xsl:template match="xsl:param" mode="a:label">
     <xsl:value-of select="'Parameter '"/>
 
     <code>
@@ -154,28 +154,12 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="xsl:variable[@name]" mode="a:label">
+  <xsl:template match="xsl:variable" mode="a:label">
     <xsl:value-of select="'Variable '"/>
 
     <code>
       <xsl:value-of select="concat('$', @name)"/>
     </code>
-  </xsl:template>
-
-  <xsl:template match="*" mode="ax:heading">
-    <xsl:variable name="text">
-      <xsl:apply-templates select="." mode="a:label"/>
-    </xsl:variable>
-
-    <h3>
-      <xsl:attribute name="id">
-        <xsl:call-template name="a:to-id">
-          <xsl:with-param name="text" select="$text"/>
-        </xsl:call-template>
-      </xsl:attribute>
-
-      <xsl:copy-of select="$text"/>
-    </h3>
   </xsl:template>
 
   <xsd:annotation>
@@ -221,7 +205,7 @@
   </xsl:template>
 
   <xsl:template match="*" mode="ax:main">
-    <xsl:apply-templates select="." mode="ax:heading"/>
+    <xsl:apply-templates select="." mode="a:h3"/>
 
     <!-- insert immediately preceding documentation block if the block
          does not contain heading elements. -->
@@ -324,12 +308,12 @@
 
   <xsl:template name="ax:toc">
     <ul id="toc">
-      <xsl:if test="/*/xsl:import">
-        <li><a href="#imports">Imports</a></li>
-      </xsl:if>
-
      <xsl:if test="$ax:intro">
         <li><a href="#introduction">Introduction</a></li>
+      </xsl:if>
+
+      <xsl:if test="/*/xsl:import">
+        <li><a href="#imports">Imports</a></li>
       </xsl:if>
 
       <xsl:apply-templates

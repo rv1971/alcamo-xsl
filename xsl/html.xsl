@@ -112,6 +112,62 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Headings</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template match="*" mode="a:h2">
+    <h2>
+      <xsl:attribute name="id">
+        <xsl:apply-templates select="." mode="a:id"/>
+      </xsl:attribute>
+
+      <xsl:apply-templates select="." mode="a:label"/>
+    </h2>
+  </xsl:template>
+
+  <xsl:template match="*" mode="a:h3">
+    <h3>
+      <xsl:attribute name="id">
+        <xsl:apply-templates select="." mode="a:id"/>
+      </xsl:attribute>
+
+      <xsl:apply-templates select="." mode="a:label"/>
+    </h3>
+  </xsl:template>
+
+  <xsl:template match="*" mode="a:h4">
+    <h4>
+      <xsl:attribute name="id">
+        <xsl:apply-templates select="." mode="a:id"/>
+      </xsl:attribute>
+
+      <xsl:apply-templates select="." mode="a:label"/>
+    </h4>
+  </xsl:template>
+
+  <xsl:template match="*" mode="a:h5">
+    <h5>
+      <xsl:attribute name="id">
+        <xsl:apply-templates select="." mode="a:id"/>
+      </xsl:attribute>
+
+      <xsl:apply-templates select="." mode="a:label"/>
+    </h5>
+  </xsl:template>
+
+  <xsl:template match="*" mode="a:h6">
+    <h6>
+      <xsl:attribute name="id">
+        <xsl:apply-templates select="." mode="a:id"/>
+      </xsl:attribute>
+
+      <xsl:apply-templates select="." mode="a:label"/>
+    </h6>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Links to HTML elements</h2>
     </xsd:documentation>
   </xsd:annotation>

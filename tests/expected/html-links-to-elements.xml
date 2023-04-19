@@ -5,4 +5,9 @@
   <li>
     <a href="#p1">Paragraph 1</a>
   </li>
+  <h2 id="p1">Paragraph 1</h2>
+  <h3 id="p1">Paragraph 1</h3>
+  <h4 id="p1">Paragraph 1</h4>
+  <h5 id="p1">Paragraph 1</h5>
+  <h6 id="p1">Paragraph 1</h6>
 </body>

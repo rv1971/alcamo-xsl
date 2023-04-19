@@ -20,6 +20,16 @@
         <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:a"/>
 
         <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:li-a"/>
+
+        <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:h2"/>
+
+        <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:h3"/>
+
+        <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:h4"/>
+
+        <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:h5"/>
+
+        <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:h6"/>
       </body>
     </xsl:template>
   </xsl:stylesheet>
