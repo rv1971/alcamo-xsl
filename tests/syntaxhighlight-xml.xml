@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="#xslt" type="text/xml"?>
+
+<a:doc xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <xsl:stylesheet
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
+      xmlns:sh="tag:rv1971@web.de,2021:alcamo-xsl:syntaxhighlight:xml#"
+      xml:id="xslt"
+      version="1.0"
+      exclude-result-prefixes="a sh">
+    <xsl:import href="../xsl/syntaxhighlight-xml.xsl"/>
+
+    <xsl:template match="/">
+      <pre>
+        <xsl:apply-templates mode="sh:xml"/>
+     </pre>
+    </xsl:template>
+
+    <xsl:template name="foo">
+      <xsl:text>This text
+will not
+be indented.</xsl:text>
+    </xsl:template>
+  </xsl:stylesheet>
+
+  <!-- comment -->
+  <foo bar="long value which makes the total length exceed 60 characters"/>
+
+  <foo>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</foo>
+
+  <bar content="elements without child nodes are not surrounded by empty lines"/>
+  <baz content="elements without child nodes are not surrounded by empty lines"/>
+</a:doc>

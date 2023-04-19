@@ -44,7 +44,9 @@ class Test extends TestCase
             LIBXML_NOBLANKS
         );
 
-        $outputDoc->formatOutput = true;
+        if ($filename != 'syntaxhighlight-xml.xml') {
+            $outputDoc->formatOutput = true;
+        }
 
         $this->assertSame(
             file_get_contents(

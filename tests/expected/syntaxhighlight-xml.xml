@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<pre xmlns="http://www.w3.org/1999/xhtml">&lt;<span class="sh-prefix">a</span>:<span class="sh-element">doc</span>&gt;
+  &lt;<span class="sh-prefix">xsl</span>:<span class="sh-element">stylesheet</span>
+      <span class="sh-prefix">xml</span>:<span class="sh-attr">id</span>=<span class="sh-attr-value">"xslt"</span>
+      <span class="sh-attr">version</span>=<span class="sh-attr-value">"1.0"</span>
+      <span class="sh-attr">exclude-result-prefixes</span>=<span class="sh-attr-value">"a sh"</span>&gt;
+    &lt;<span class="sh-prefix">xsl</span>:<span class="sh-element">import</span> <span class="sh-attr">href</span>=<span class="sh-attr-value">"../xsl/syntaxhighlight-xml.xsl"</span>/&gt;
+
+    &lt;<span class="sh-prefix">xsl</span>:<span class="sh-element">template</span> <span class="sh-attr">match</span>=<span class="sh-attr-value">"/"</span>&gt;
+      &lt;<span class="sh-element">pre</span>&gt;
+        &lt;<span class="sh-prefix">xsl</span>:<span class="sh-element">apply-templates</span> <span class="sh-attr">mode</span>=<span class="sh-attr-value">"sh:xml"</span>/&gt;
+      &lt;/<span class="sh-element">pre</span>&gt;
+    &lt;/<span class="sh-prefix">xsl</span>:<span class="sh-element">template</span>&gt;
+
+    &lt;<span class="sh-prefix">xsl</span>:<span class="sh-element">template</span> <span class="sh-attr">name</span>=<span class="sh-attr-value">"foo"</span>&gt;
+      &lt;<span class="sh-prefix">xsl</span>:<span class="sh-element">text</span>&gt;<span class="sh-text">This text
+will not
+be indented.</span>
+      &lt;/<span class="sh-prefix">xsl</span>:<span class="sh-element">text</span>&gt;
+    &lt;/<span class="sh-prefix">xsl</span>:<span class="sh-element">template</span>&gt;
+  &lt;/<span class="sh-prefix">xsl</span>:<span class="sh-element">stylesheet</span>&gt;<span class="sh-comment">
+
+  &lt;!-- comment --&gt;
+</span>
+  &lt;<span class="sh-element">foo</span>
+      <span class="sh-attr">bar</span>=<span class="sh-attr-value">"long value which makes the total length exceed 60 characters"</span>/&gt;
+
+  &lt;<span class="sh-element">foo</span>&gt;
+    <span class="sh-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</span>
+  &lt;/<span class="sh-element">foo</span>&gt;
+
+  &lt;<span class="sh-element">bar</span>
+      <span class="sh-attr">content</span>=<span class="sh-attr-value">"elements without child nodes are not surrounded by empty lines"</span>/&gt;
+  &lt;<span class="sh-element">baz</span>
+      <span class="sh-attr">content</span>=<span class="sh-attr-value">"elements without child nodes are not surrounded by empty lines"</span>/&gt;
+&lt;/<span class="sh-prefix">a</span>:<span class="sh-element">doc</span>&gt;</pre>
