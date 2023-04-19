@@ -67,8 +67,6 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="*" mode="a:toc-li"/>
-
   <xsl:template
       match="*"
       mode="a:toc-li"

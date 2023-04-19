@@ -21,8 +21,20 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Links to agents</h2>
+      <h2>Introduction</h2>
 
+      <p>General-purpose templates that generate HTML code.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Links to agents</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <p>Create a <code>mailto</code> link if the value contains a
       <code>@</code>. Also works with values that are already
       <code>mailto:</code> URLs and with values of the form <code>Bob
@@ -104,10 +116,6 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="*" mode="a:label" rdfs:label="Create label text">
-    <xsl:value-of select="."/>
-  </xsl:template>
-
   <xsl:template match="*" mode="a:a" rdfs:label="Create &lt;a&gt;">
     <a>
       <xsl:attribute name="href">
@@ -117,6 +125,15 @@
 
       <xsl:apply-templates select="." mode="a:label"/>
     </a>
+  </xsl:template>
+
+  <xsl:template
+      match="*"
+      mode="a:li-a"
+      rdfs:label="Create &lt;li&gt; containing &lt;a&gt;">
+    <li>
+      <xsl:apply-templates select="." mode="a:a"/>
+    </li>
   </xsl:template>
 
   <xsd:annotation>

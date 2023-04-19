@@ -18,6 +18,8 @@
         <p id="p1">Paragraph 1</p>
 
         <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:a"/>
+
+        <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:li-a"/>
       </body>
     </xsl:template>
   </xsl:stylesheet>

@@ -113,10 +113,16 @@
     </xsd:documentation>
   </xsd:annotation>
 
+  <xsl:template match="*" mode="a:label" rdfs:label="Create label text">
+    <xsl:value-of select="."/>
+  </xsl:template>
+
   <xsl:template
       name="a:to-id"
       rdfs:label="Convert to lowercase ID, replacing spaces by hyphens and removing punctuation">
-    <xsl:param name="text" select="." rdfs:label="Text to convert"/>
+    <xsl:param name="text" rdfs:label="Text to convert">
+      <xsl:apply-templates select="." mode="a:label"/>
+    </xsl:param>
 
     <xsl:variable name="from">ABCDEFGHIJKLMNOPQRSTUVWXYZ !"#$%&amp;'()*+,./:;&lt;&gt;?@[\]^`{|}~</xsl:variable>
 
