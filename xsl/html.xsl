@@ -236,6 +236,57 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Metadata</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template name="a:created-modified">
+    <xsl:param name="created" select="$dc:created"/>
+    <xsl:param name="modified" select="$dc:modified"/>
+
+    <xsl:choose>
+      <xsl:when test="$modified">
+        <xsl:choose>
+          <xsl:when test="$created">
+            <span>
+              <xsl:attribute name="title">
+                <xsl:value-of select="'created '"/>
+                <xsl:apply-templates
+                    select="$created"
+                    mode="a:iso-8583-timestamp"/>
+              </xsl:attribute>
+
+              <xsl:apply-templates
+                  select="$modified"
+                  mode="a:iso-8583-timestamp"/>
+            </span>
+          </xsl:when>
+
+          <xsl:otherwise>
+            <xsl:apply-templates
+                select="$modified"
+                mode="a:iso-8583-timestamp"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+
+      <xsl:when test="$created">
+        <xsl:apply-templates
+            select="$created"
+            mode="a:iso-8583-timestamp"/>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="*|@*" mode="a:created-modified">
+    <xsl:call-template name="a:created-modified">
+      <xsl:with-param name="created" select="@dc:created"/>
+      <xsl:with-param name="modified" select="@dc:modified"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2><code>auto</code> mode</h2>
     </xsd:documentation>
   </xsd:annotation>

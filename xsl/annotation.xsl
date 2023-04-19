@@ -17,6 +17,7 @@
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
     dc:modified="2023-04-19">
+  <xsl:import href="html.xsl"/>
   <xsl:import href="html-output.xsl"/>
 
   <xsd:annotation>

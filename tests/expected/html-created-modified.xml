@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#" xmlns="http://www.w3.org/1999/xhtml">
+  <a:item/>
+  <a:item>2023-04-13</a:item>
+  <a:item>2023-04-19</a:item>
+  <a:item>
+    <span title="created 2023-04-13">2023-04-19</span>
+  </a:item>
+</a:result>
