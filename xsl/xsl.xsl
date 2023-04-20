@@ -29,23 +29,30 @@
       <h2>Introduction</h2>
 
       <p>This stylesheet is used to format stylesheets for human
-      readers. You may insert <code>&lt;xsd:annotation></code>
-      elements containing <code>&lt;xsd:documentation></code> at the
-      top level into the source documents. Such documentation
-      blocks may contain level 2 headings.</p>
+      readers.</p>
+
+      <p>You may insert <code>&lt;xsd:annotation></code> elements
+      containing <code>&lt;xsd:documentation></code> at the top level
+      into the source documents. Such documentation blocks may contain
+      level 2 and level 3 headings; there must be at least one such
+      heading at the beginning of the source document because the
+      table of contents relies on this.</p>
 
       <p>Each top-level element other than documentation gets a level
       3 heading. The stylesheet generates a table of contents from all
       level 2 and 3 headings. If there are imports and there is a
       level 2 heading containing exactly the word
       <code>Introduction</code>, the whole documentation block is
-      output before the imports, even though in the source document
-      the imports necessarily precede the documentation.</p>
+      copied to the output before the imports, even though in the
+      source document the imports necessarily precede the
+      documentation.</p>
 
-      <p>To make the automatic creation of section titles work
-      correctly, documentation blocks containing an
-      <code>&lt;h2></code> element and documentation blocks explaining
-      a single subsequent element must be contained in distinct
+      <p>A documentation block that contains no headings and is
+      immediately followed by a non-XSD element is expected to
+      document that element and copied to the output <i>after</i> the
+      level 3 heading. To make this work correctly, documentation
+      blocks containing headings and documentation blocks explaining
+      the immediately following element must be contained in distinct
       <code>&lt;xsd:annotation></code> elements.</p>
 
       <p>Content of <code>&lt;xsd:documentation></code> within
@@ -80,7 +87,7 @@
   <xsl:variable
       name="ax:intro"
       select="/*/xsd:annotation[xsd:documentation/xh:h2[. = 'Introduction']]"
-      rdfs:label="Annotation containing introduction heading"/>
+      rdfs:label="Annotation containing introduction heading, if any"/>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -181,7 +188,10 @@
     </tr>
   </xsl:template>
 
-  <xsl:template match="*" mode="ax:inner"/>
+  <xsl:template
+      match="*"
+      mode="ax:inner"
+      rdfs:label="In general no further documentation inside"/>
 
   <xsl:template
       match="xsl:template"
@@ -204,7 +214,10 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="*" mode="ax:main">
+  <xsl:template
+      match="*"
+      mode="ax:main"
+      rdfs:label="Create documentation for an XSLT or embedded data element">
     <xsl:apply-templates select="." mode="a:h3"/>
 
     <!-- insert immediately preceding documentation block if the block
@@ -230,23 +243,20 @@
     </pre>
   </xsl:template>
 
-  <xsl:template match="xsl:import" mode="ax:main"/>
-
-  <xsl:template match="xsd:*" mode="ax:main"/>
-
-  <xsd:annotation>
-    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <p>Copy documentation blocks if they contain headings. If they
-      don't, they are supposed to document the immediately following
-      element and are handled by the template that formats the
-      latter.</p>
-    </xsd:documentation>
-  </xsd:annotation>
+  <xsl:template
+      match="xsl:import"
+      mode="ax:main"
+      rdfs:label="Ignore &lt;xsl:import&gt; elements here since imports are handled separately"/>
 
   <xsl:template
-      match="xsd:annotation[xsd:documentation/xh:h2]|xsd:annotation[xsd:documentation/xh:h2]"
+      match="xsd:annotation"
       mode="ax:main"
-      rdfs:label="Copy documentation">
+      rdfs:label="Ignore &lt;xsd:annotation&gt; elements handled by immediately following xsl or embedded data element"/>
+
+  <xsl:template
+      match="xsd:annotation[xsd:documentation/xh:h2|xsd:documentation/xh:h3 or not(following-sibling::*)]"
+      mode="ax:main"
+      rdfs:label="Copy documentation blocks if they contain headings or are the last top-level element">
     <xsl:apply-templates select="xsd:documentation/xh:*" mode="a:copy"/>
   </xsl:template>
 
@@ -272,18 +282,18 @@
     <li>
       <xsl:apply-templates select="." mode="a:a"/>
 
+      <!-- Get the set of all following top-level non-XSD elements. -->
+
+      <xsl:variable
+          name="topf"
+          select="following::*[parent::xsl:stylesheet][not(self::xsd:*)]"/>
+
       <!-- Get the next <xsd:annotation> element containing an <h2>
            element, if any. -->
 
       <xsl:variable
           name="xsdf"
           select="following::xsd:annotation[xsd:documentation/xh:h2][1]"/>
-
-      <!-- Get the set of all following top-level non-XSD elements. -->
-
-      <xsl:variable
-          name="topf"
-          select="following::*[parent::xsl:stylesheet][namespace-uri(.) != 'http://www.w3.org/2001/XMLSchema']"/>
 
       <xsl:variable name="subToc">
         <xsl:choose>
@@ -310,7 +320,6 @@
   </xsl:template>
 
   <xsl:template name="a:toc" rdfs:label="Create TOC &lt;ul&gt;">
->
     <ul id="toc">
      <xsl:if test="$ax:intro">
         <li><a href="#introduction">Introduction</a></li>

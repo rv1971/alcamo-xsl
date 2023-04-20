@@ -23,7 +23,6 @@ be indented.</span>&lt;/<span class="sh-prefix">xsl</span>:<span class="sh-eleme
 </span>
   &lt;<span class="sh-element">foo</span>
       <span class="sh-attr">bar</span>=<span class="sh-attr-value">"long value which makes the total length exceed 60 characters"</span>/&gt;
-
   &lt;<span class="sh-element">foo</span>&gt;<span class="sh-text">Short inline text.</span>&lt;/<span class="sh-element">foo</span>&gt;
 
   &lt;<span class="sh-element">foo</span>&gt;

@@ -18,7 +18,7 @@
     dc:title="Syntax highlighting for XML code"
     dc:creator="https://github.com/rv1971"
     dc:created="2017-09-11"
-    dc:modified="2023-04-19">
+    dc:modified="2023-04-20">
   <xsd:annotation>
     <xsd:documentation>
       <h2>Introduction</h2>
@@ -298,7 +298,7 @@
            preceding-element-or-comment is not a comment. -->
 
       <xsl:if
-          test="($preceding/*|$preceding/text() or *|text() and name($preceding))">
+          test="($preceding/*|$preceding/text()[string-length(.) &gt;= $sh:maxInlineTextLength] or *|text()[string-length(.) &gt;= $sh:maxInlineTextLength] and name($preceding))">
         <xsl:value-of select="$lf"/>
       </xsl:if>
     </xsl:if>

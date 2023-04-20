@@ -53,15 +53,6 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template
-      name="a:resourceUrl"
-      rdfs:label="Create URL for a resource">
-    <xsl:param name="item" rdfs:label="URL"/>
-    <xsl:param name="type" rdfs:label="css|js|icon"/>
-
-    <xsl:value-of select="$item"/>
-  </xsl:template>
-
   <xsl:template name="a:cssLinks" rdfs:label="Create CSS &lt;link>s">
     <xsl:param
         name="cssList"
@@ -73,14 +64,7 @@
           name="item"
           select="substring-before(concat($cssList, ' '), ' ')"/>
 
-      <link rel="stylesheet" type="text/css">
-        <xsl:attribute name="href">
-          <xsl:call-template name="a:resourceUrl">
-            <xsl:with-param name="item" select="$item"/>
-            <xsl:with-param name="type" select="'css'"/>
-          </xsl:call-template>
-        </xsl:attribute>
-      </link>
+      <link rel="stylesheet" type="text/css" href="{$item}"/>
 
       <xsl:if test="substring-after($cssList, ' ')">
         <xsl:call-template name="a:cssLinks">
@@ -103,13 +87,7 @@
           name="item"
           select="substring-before(concat($jsList, ' '), ' ')"/>
 
-      <script type="text/javascript">
-        <xsl:attribute name="src">
-          <xsl:call-template name="a:resourceUrl">
-            <xsl:with-param name="item" select="$item"/>
-            <xsl:with-param name="type" select="'js'"/>
-          </xsl:call-template>
-        </xsl:attribute>
+      <script type="text/javascript" src="{$item}">
         <xsl:text> </xsl:text>
       </script>
 
