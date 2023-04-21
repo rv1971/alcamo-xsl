@@ -10,16 +10,16 @@
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
-    xmlns:ax="tag:rv1971@web.de,2021:alcamo-xsl:xslt#"
+    xmlns:axsl="tag:rv1971@web.de,2021:alcamo-xsl:xslt#"
     xmlns:sh="tag:rv1971@web.de,2021:alcamo-xsl:syntaxhighlight:xml#"
     version="1.0"
-    exclude-result-prefixes="a ax rdfs sh xsd"
+    exclude-result-prefixes="a axsl rdfs sh xh xsd"
     xml:lang="en"
     dc:identifier="html-output"
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-04-19">
+    dc:modified="2023-04-21">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -85,7 +85,7 @@
   </xsd:annotation>
 
   <xsl:variable
-      name="ax:intro"
+      name="axsl:intro"
       select="/*/xsd:annotation[xsd:documentation/xh:h2[. = 'Introduction']]"
       rdfs:label="Annotation containing introduction heading, if any"/>
 
@@ -172,7 +172,7 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="xsl:param" mode="ax:tr" rdfs:label="Create &lt;tr&gt;">
+  <xsl:template match="xsl:param" mode="axsl:tr" rdfs:label="Create &lt;tr&gt;">
     <tr>
       <td>
         <xsl:value-of select="@name"/>
@@ -190,12 +190,12 @@
 
   <xsl:template
       match="*"
-      mode="ax:inner"
+      mode="axsl:inner"
       rdfs:label="In general no further documentation inside"/>
 
   <xsl:template
       match="xsl:template"
-      mode="ax:inner"
+      mode="axsl:inner"
       rdfs:label="Create &lt;table&gt; of parameters, if any">
     <xsl:if test="xsl:param">
       <table class="param-doc">
@@ -208,7 +208,7 @@
         </thead>
 
         <tbody>
-          <xsl:apply-templates select="xsl:param" mode="ax:tr"/>
+          <xsl:apply-templates select="xsl:param" mode="axsl:tr"/>
         </tbody>
       </table>
     </xsl:if>
@@ -216,7 +216,7 @@
 
   <xsl:template
       match="*"
-      mode="ax:main"
+      mode="axsl:main"
       rdfs:label="Create documentation for an XSLT or embedded data element">
     <xsl:apply-templates select="." mode="a:h3"/>
 
@@ -236,7 +236,7 @@
       </p>
     </xsl:if>
 
-    <xsl:apply-templates select="." mode="ax:inner"/>
+    <xsl:apply-templates select="." mode="axsl:inner"/>
 
     <pre>
       <xsl:apply-templates select="." mode="sh:xml"/>
@@ -245,17 +245,17 @@
 
   <xsl:template
       match="xsl:import"
-      mode="ax:main"
+      mode="axsl:main"
       rdfs:label="Ignore &lt;xsl:import&gt; elements here since imports are handled separately"/>
 
   <xsl:template
       match="xsd:annotation"
-      mode="ax:main"
+      mode="axsl:main"
       rdfs:label="Ignore &lt;xsd:annotation&gt; elements handled by immediately following xsl or embedded data element"/>
 
   <xsl:template
       match="xsd:annotation[xsd:documentation/xh:h2|xsd:documentation/xh:h3 or not(following-sibling::*)]"
-      mode="ax:main"
+      mode="axsl:main"
       rdfs:label="Copy documentation blocks if they contain headings or are the last top-level element">
     <xsl:apply-templates select="xsd:documentation/xh:*" mode="a:copy"/>
   </xsl:template>
@@ -277,7 +277,7 @@
 
   <xsl:template
       match="xh:h2"
-      mode="ax:toc-li"
+      mode="axsl:toc-li"
       rdfs:label="Create &lt;li&gt; for the TOC">
     <li>
       <xsl:apply-templates select="." mode="a:a"/>
@@ -321,7 +321,7 @@
 
   <xsl:template name="a:toc" rdfs:label="Create TOC &lt;ul&gt;">
     <ul id="toc">
-     <xsl:if test="$ax:intro">
+     <xsl:if test="$axsl:intro">
         <li><a href="#introduction">Introduction</a></li>
       </xsl:if>
 
@@ -331,14 +331,14 @@
 
       <xsl:apply-templates
           select="/*/xsd:annotation/xsd:documentation/xh:h2[. != 'Introduction']"
-          mode="ax:toc-li"/>
+          mode="axsl:toc-li"/>
       <li><a href="#xslt-refs">XSLT references</a></li>
     </ul>
   </xsl:template>
 
   <xsl:template
       match="xsl:import"
-      mode="ax:import"
+      mode="axsl:import"
       rdfs:label="Create import &lt;li&gt;">
     <li>
       <a href="{@href}">
@@ -348,17 +348,17 @@
   </xsl:template>
 
   <xsl:template
-      name="ax:imports"
+      name="axsl:imports"
       rdfs:label="Create imports &lt;h2&gt; and  &lt;ul&gt;">
     <h2 id="imports">Imports</h2>
 
     <ul>
-      <xsl:apply-templates select="/*/xsl:import" mode="ax:import"/>
+      <xsl:apply-templates select="/*/xsl:import" mode="axsl:import"/>
     </ul>
   </xsl:template>
 
   <xsl:template
-      name="ax:references"
+      name="axsl:references"
       rdfs:label="Create references &lt;h2&gt; and  &lt;ul&gt;">
     <h2 id="xslt-references">XSLT references</h2>
 
@@ -371,24 +371,24 @@
   </xsl:template>
 
   <xsl:template name="a:page-main">
-    <xsl:if test="$ax:intro">
-      <xsl:apply-templates select="$ax:intro" mode="ax:main"/>
+    <xsl:if test="$axsl:intro">
+      <xsl:apply-templates select="$axsl:intro" mode="axsl:main"/>
     </xsl:if>
 
     <xsl:if test="/*/xsl:import">
-      <xsl:call-template name="ax:imports"/>
+      <xsl:call-template name="axsl:imports"/>
     </xsl:if>
 
     <xsl:choose>
-      <xsl:when test="$ax:intro">
-        <xsl:apply-templates select="/*/*[. != $ax:intro]" mode="ax:main"/>
+      <xsl:when test="$axsl:intro">
+        <xsl:apply-templates select="/*/*[. != $axsl:intro]" mode="axsl:main"/>
       </xsl:when>
 
       <xsl:otherwise>
-        <xsl:apply-templates select="/*/*" mode="ax:main"/>
+        <xsl:apply-templates select="/*/*" mode="axsl:main"/>
       </xsl:otherwise>
     </xsl:choose>
 
-    <xsl:call-template name="ax:references"/>
+    <xsl:call-template name="axsl:references"/>
   </xsl:template>
 </xsl:stylesheet>
