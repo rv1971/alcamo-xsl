@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/terms/">
-  <head xmlns:owl="http://www.w3.org/2002/07/owl#">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/terms/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+  <head>
     <meta charset="utf-8"/>
     <meta property="dc:identifier" content="html-document"/>
     <title property="dc:title">Test for html document</title>
@@ -19,7 +19,7 @@
   <body>
     <header>
       <h1>Test for html document</h1>
-      <p>Alice, <span title="created 2023-04-18T11:57:00+02:00">2023-04-18T11:57:05+02:00</span></p>
+      <p>Version 0.42.0, Alice, <span title="created 2023-04-18T11:57:00+02:00">2023-04-18T11:57:05+02:00</span></p>
     </header>
   </body>
 </html>
