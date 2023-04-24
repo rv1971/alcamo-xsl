@@ -15,7 +15,7 @@
     dc:title="Text generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-04-19">
+    dc:modified="2023-04-24">
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -113,7 +113,7 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="*" mode="a:label" rdfs:label="Create label text">
+  <xsl:template match="*" mode="a:title" rdfs:label="Create title text">
     <xsl:value-of select="."/>
   </xsl:template>
 
@@ -121,7 +121,7 @@
       name="a:to-id"
       rdfs:label="Convert to lowercase ID, replacing spaces by hyphens and removing punctuation">
     <xsl:param name="text" rdfs:label="Text to convert">
-      <xsl:apply-templates select="." mode="a:label"/>
+      <xsl:apply-templates select="." mode="a:title"/>
     </xsl:param>
 
     <xsl:variable name="from">ABCDEFGHIJKLMNOPQRSTUVWXYZ !"#$%&amp;'()*+,./:;&lt;&gt;?@[\]^`{|}~</xsl:variable>

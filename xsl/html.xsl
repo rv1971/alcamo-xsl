@@ -16,7 +16,7 @@
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-04-19">
+    dc:modified="2023-04-24">
   <xsl:import href="text.xsl"/>
 
   <xsd:annotation>
@@ -122,7 +122,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="a:label"/>
+      <xsl:apply-templates select="." mode="a:title"/>
     </h2>
   </xsl:template>
 
@@ -132,7 +132,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="a:label"/>
+      <xsl:apply-templates select="." mode="a:title"/>
     </h3>
   </xsl:template>
 
@@ -142,7 +142,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="a:label"/>
+      <xsl:apply-templates select="." mode="a:title"/>
     </h4>
   </xsl:template>
 
@@ -152,7 +152,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="a:label"/>
+      <xsl:apply-templates select="." mode="a:title"/>
     </h5>
   </xsl:template>
 
@@ -162,7 +162,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="a:label"/>
+      <xsl:apply-templates select="." mode="a:title"/>
     </h6>
   </xsl:template>
 
@@ -179,7 +179,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="a:label"/>
+      <xsl:apply-templates select="." mode="a:title"/>
     </a>
   </xsl:template>
 
