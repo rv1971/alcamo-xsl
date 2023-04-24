@@ -1,4 +1,4 @@
-/* == by element == */
+/* == elements == */
 
 a {
     text-decoration: none;
@@ -9,15 +9,50 @@ pre {
     font-family: monospace;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #005A9C;
+}
+
+pre {
+    padding: 0.5em;
+    background-color: #f6f6f4;
+    border: thin solid #eeeeec;
+}
+
+pre pre {
+    padding: 0;
+    border: 0 none;
+}
+
 small {
     font-size: 90%;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+td,
+th {
+    border: thin solid #dddddd;
+    padding: 0.25em 0.5em;
+}
+
+th {
+    background-color: #e8e8e8;
 }
 
 tbody > tr > th {
     text-align: left;
 }
 
-/* == by attribute == */
+/* == attributes == */
 
 @media screen {
     [title] {
@@ -25,7 +60,7 @@ tbody > tr > th {
     }
 }
 
-/* == generic classes == */
+/* == classes == */
 
 .block {
     display: block;
@@ -100,4 +135,34 @@ tbody > tr > th {
     position: sticky;
     top: 0;
     bottom: 0;
+}
+
+/* == IDs == */
+
+#toc {
+    border-top: thin solid #aaa;
+    border-bottom: thin solid #aaa;
+    padding: 1em;
+    column-count: 3;
+}
+
+#toc li {
+    list-style-type: none;
+}
+
+#toc li ul {
+    padding-left: 1em;
+}
+
+#toc > li:not(:last-child) {
+    margin-bottom: .5em;
+}
+
+#toc li li {
+    margin-bottom: .25em;
+}
+
+#toc p {
+    margin-top: 0;
+    margin-bottom: .25em;
 }
