@@ -10,16 +10,16 @@
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
-    xmlns:axsl="tag:rv1971@web.de,2021:alcamo-xsl:xslt#"
+    xmlns:axsl="tag:rv1971@web.de,2021:alcamo-xsl:xsl#"
     xmlns:sh="tag:rv1971@web.de,2021:alcamo-xsl:syntaxhighlight:xml#"
     version="1.0"
     exclude-result-prefixes="a axsl rdfs sh xh xsd"
     xml:lang="en"
-    dc:identifier="html-output"
+    dc:identifier="xsl"
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-04-21">
+    dc:modified="2023-04-24">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -96,8 +96,8 @@
   </xsd:annotation>
 
   <xsl:template
-      match="*"
-      mode="a:label"
+      match="/*/*"
+      mode="a:title"
       rdfs:label="Create heading text">
     <xsl:value-of select="'Data '"/>
 
@@ -106,11 +106,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="xh:h2" mode="a:label">
-    <xsl:value-of select="."/>
-  </xsl:template>
-
-  <xsl:template match="xsl:key" mode="a:label">
+  <xsl:template match="xsl:key" mode="a:title">
     <xsl:value-of select="'Key '"/>
 
     <code>
@@ -118,7 +114,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="xsl:param" mode="a:label">
+  <xsl:template match="xsl:param" mode="a:title">
     <xsl:value-of select="'Parameter '"/>
 
     <code>
@@ -126,7 +122,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="xsl:template[@name]" mode="a:label">
+  <xsl:template match="xsl:template[@name]" mode="a:title">
     <xsl:value-of select="'Template '"/>
 
     <code>
@@ -134,7 +130,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="xsl:template[@match]" mode="a:label">
+  <xsl:template match="xsl:template[@match]" mode="a:title">
     <xsl:value-of select="'Template '"/>
 
     <code>
@@ -144,7 +140,7 @@
 
   <xsl:template
       match="xsl:template[@match][@mode]"
-      mode="a:label">
+      mode="a:title">
     <xsl:value-of select="'Template '"/>
 
     <code>
@@ -158,7 +154,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="xsl:variable" mode="a:label">
+  <xsl:template match="xsl:variable" mode="a:title">
     <xsl:value-of select="'Variable '"/>
 
     <code>
@@ -174,7 +170,7 @@
 
   <xsl:template match="xsl:param" mode="axsl:tr" rdfs:label="Create &lt;tr&gt;">
     <tr>
-      <td>
+      <td class="code">
         <xsl:value-of select="@name"/>
       </td>
 
@@ -280,7 +276,9 @@
       mode="axsl:toc-li"
       rdfs:label="Create &lt;li&gt; for the TOC">
     <li>
-      <xsl:apply-templates select="." mode="a:a"/>
+      <p>
+        <xsl:apply-templates select="." mode="a:a"/>
+      </p>
 
       <!-- Get the set of all following top-level non-XSD elements. -->
 
@@ -299,12 +297,14 @@
         <xsl:choose>
           <xsl:when test="$xsdf">
             <xsl:apply-templates
-                select="$xsdf/preceding::*[count($topf | .) = count($topf)]"
+                select="$xsdf/preceding::*[count($topf | .) = count($topf)]|following-sibling::xh:h3"
                 mode="a:li-a"/>
           </xsl:when>
 
           <xsl:otherwise>
-            <xsl:apply-templates select="$topf" mode="a:li-a"/>
+            <xsl:apply-templates
+                select="$topf|following-sibling::xh:h3"
+                mode="a:li-a"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
@@ -322,17 +322,27 @@
   <xsl:template name="a:toc" rdfs:label="Create TOC &lt;ul&gt;">
     <ul id="toc">
      <xsl:if test="$axsl:intro">
-        <li><a href="#introduction">Introduction</a></li>
+       <li>
+         <p>
+           <a href="#introduction">Introduction</a>
+         </p>
+       </li>
       </xsl:if>
 
       <xsl:if test="/*/xsl:import">
-        <li><a href="#imports">Imports</a></li>
+         <li>
+           <p><a href="#imports">Imports</a></p>
+         </li>
       </xsl:if>
 
       <xsl:apply-templates
           select="/*/xsd:annotation/xsd:documentation/xh:h2[. != 'Introduction']"
           mode="axsl:toc-li"/>
-      <li><a href="#xslt-refs">XSLT references</a></li>
+      <li>
+        <p>
+          <a href="#xslt-refs">XSLT references</a>
+        </p>
+      </li>
     </ul>
   </xsl:template>
 
