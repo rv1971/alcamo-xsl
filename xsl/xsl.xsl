@@ -106,7 +106,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="xsl:key" mode="a:title">
+  <xsl:template match="/*/xsl:key" mode="a:title">
     <xsl:value-of select="'Key '"/>
 
     <code>
@@ -114,7 +114,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="xsl:param" mode="a:title">
+  <xsl:template match="/*/xsl:param" mode="a:title">
     <xsl:value-of select="'Parameter '"/>
 
     <code>
@@ -122,7 +122,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="xsl:template[@name]" mode="a:title">
+  <xsl:template match="/*/xsl:template[@name]" mode="a:title">
     <xsl:value-of select="'Template '"/>
 
     <code>
@@ -130,7 +130,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="xsl:template[@match]" mode="a:title">
+  <xsl:template match="/*/xsl:template[@match]" mode="a:title">
     <xsl:value-of select="'Template '"/>
 
     <code>
@@ -139,7 +139,7 @@
   </xsl:template>
 
   <xsl:template
-      match="xsl:template[@match][@mode]"
+      match="/*/xsl:template[@match][@mode]"
       mode="a:title">
     <xsl:value-of select="'Template '"/>
 
@@ -154,7 +154,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="xsl:variable" mode="a:title">
+  <xsl:template match="/*/xsl:variable" mode="a:title">
     <xsl:value-of select="'Variable '"/>
 
     <code>
