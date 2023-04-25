@@ -1,0 +1,24 @@
+section section section {
+    margin-left: 1em;
+}
+
+.xsd-heading {
+    color: #005A9C;
+}
+
+section div.xsd-documentation {
+    padding-left: 0.5rem;
+    border-left: medium solid #888a85;
+}
+
+ul.xsd-sequence {
+    list-style-type: disc;
+}
+
+ul.xsd-choice {
+    list-style-type: circle;
+}
+
+ul.xsd-attributes {
+    list-style-type: square;
+}
