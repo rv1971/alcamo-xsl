@@ -21,7 +21,6 @@
     </xsl:template>
 
     <xsl:template match="a:*|dc:*">
-      <xsl:apply-templates select="." mode="a:li"/>
       <xsl:apply-templates select="." mode="a:tr"/>
     </xsl:template>
 

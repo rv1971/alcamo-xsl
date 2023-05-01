@@ -168,22 +168,6 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="xsl:param" mode="axsl:tr" rdfs:label="Create &lt;tr&gt;">
-    <tr>
-      <td class="code">
-        <xsl:value-of select="@name"/>
-      </td>
-
-      <td>
-        <xsl:value-of select="@rdfs:label"/>
-      </td>
-
-      <td>
-        <xsl:value-of select="@select"/>
-      </td>
-    </tr>
-  </xsl:template>
-
   <xsl:template
       match="*"
       mode="axsl:inner"
@@ -204,7 +188,21 @@
         </thead>
 
         <tbody>
-          <xsl:apply-templates select="xsl:param" mode="axsl:tr"/>
+          <xsl:for-each select="xsl:param">
+            <tr>
+              <td class="code">
+                <xsl:value-of select="@name"/>
+              </td>
+
+              <td>
+                <xsl:value-of select="@rdfs:label"/>
+              </td>
+
+              <td class="code">
+                <xsl:value-of select="@select"/>
+              </td>
+            </tr>
+          </xsl:for-each>
         </tbody>
       </table>
     </xsl:if>
@@ -321,15 +319,20 @@
       <xsl:variable name="subToc">
         <xsl:choose>
           <xsl:when test="$xsdf">
-            <xsl:apply-templates
-                select="$xsdf/preceding::*[count($topf | .) = count($topf)]|following-sibling::xh:h3"
-                mode="a:li-a"/>
+            <xsl:for-each
+                select="$xsdf/preceding::*[count($topf | .) = count($topf)]|following-sibling::xh:h3">
+              <li>
+                <xsl:apply-templates select="." mode="a:a"/>
+              </li>
+            </xsl:for-each>
           </xsl:when>
 
           <xsl:otherwise>
-            <xsl:apply-templates
-                select="$topf|following-sibling::xh:h3"
-                mode="a:li-a"/>
+            <xsl:for-each select="$topf|following-sibling::xh:h3">
+              <li>
+                <xsl:apply-templates select="." mode="a:a"/>
+              </li>
+            </xsl:for-each>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
@@ -385,23 +388,18 @@
   </xsl:template>
 
   <xsl:template
-      match="xsl:import"
-      mode="axsl:import"
-      rdfs:label="Create import &lt;li&gt;">
-    <li>
-      <a href="{@href}">
-        <xsl:value-of select="@href"/>
-      </a>
-    </li>
-  </xsl:template>
-
-  <xsl:template
       name="axsl:imports"
       rdfs:label="Create imports &lt;h2&gt; and  &lt;ul&gt;">
     <h2 id="imports">Imports</h2>
 
     <ul>
-      <xsl:apply-templates select="/*/xsl:import" mode="axsl:import"/>
+      <xsl:for-each select="/*/xsl:import">
+        <li>
+          <a href="{@href}">
+            <xsl:value-of select="@href"/>
+          </a>
+        </li>
+      </xsl:for-each>
     </ul>
   </xsl:template>
 

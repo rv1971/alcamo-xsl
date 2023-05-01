@@ -179,15 +179,6 @@
     </a>
   </xsl:template>
 
-  <xsl:template
-      match="*"
-      mode="a:li-a"
-      rdfs:label="Create &lt;li&gt; containing &lt;a&gt;">
-    <li>
-      <xsl:apply-templates select="." mode="a:a"/>
-    </li>
-  </xsl:template>
-
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Token lists</h2>
@@ -260,12 +251,6 @@
       <h2>Element creation</h2>
     </xsd:documentation>
   </xsd:annotation>
-
-  <xsl:template match="*|@*" mode="a:li" rdfs:label="Create &lt;li>">
-    <li>
-      <xsl:apply-templates select="." mode="a:auto"/>
-    </li>
-  </xsl:template>
 
   <xsl:template match="*|@*" mode="a:td" rdfs:label="Create &lt;td>">
     <td>

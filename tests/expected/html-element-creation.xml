@@ -1,22 +1,15 @@
 <?xml version="1.0"?>
 <a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#" xmlns="http://www.w3.org/1999/xhtml">
-  <li>foo</li>
   <tr>
     <th>item</th>
     <td>foo</td>
   </tr>
-  <li>
-    <a href="mailto:alice@example.org">alice</a>
-  </li>
   <tr>
     <th>creator</th>
     <td>
       <a href="mailto:alice@example.org">alice</a>
     </td>
   </tr>
-  <li>
-    <a href="mailto:bob@example.org">bob</a>
-  </li>
   <tr>
     <th>Rights</th>
     <td>

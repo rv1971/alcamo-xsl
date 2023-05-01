@@ -520,36 +520,6 @@
   </xsl:template>
 
   <xsl:template
-      match="xsd:import"
-      mode="axsd:tr"
-      rdfs:label="Create &lt;tr&gt;">
-    <tr>
-      <td>
-        <code>
-          <xsl:value-of select="@namespace"/>
-        </code>
-      </td>
-
-      <td>
-        <a href="{@schemaLocation}">
-          <xsl:value-of select="@schemaLocation"/>
-        </a>
-      </td>
-    </tr>
-  </xsl:template>
-
-  <xsl:template
-      match="xsd:include"
-      mode="axsd:li"
-      rdfs:label="Create &lt;li&gt;">
-    <li>
-        <a href="{@schemaLocation}">
-          <xsl:value-of select="@schemaLocation"/>
-        </a>
-    </li>
-  </xsl:template>
-
-  <xsl:template
       match="xsd:import|xsd:include"
       mode="axsd:main"
       rdfs:label="Ignore imports and includes except the first ones"/>
@@ -567,7 +537,21 @@
         </thead>
 
         <tbody>
-          <xsl:apply-templates select="/*/xsd:import" mode="axsd:tr"/>
+          <xsl:for-each select="/*/xsd:import">
+            <tr>
+              <td>
+                <code>
+                  <xsl:value-of select="@namespace"/>
+                </code>
+              </td>
+
+              <td>
+                <a href="{@schemaLocation}">
+                  <xsl:value-of select="@schemaLocation"/>
+                </a>
+              </td>
+            </tr>
+          </xsl:for-each>
         </tbody>
       </table>
     </section>
@@ -578,7 +562,13 @@
       <h2 id="includes">Includes</h2>
 
       <ul>
-        <xsl:apply-templates select="/*/xsd:include" mode="axsd:li"/>
+        <xsl:for-each select="/*/xsd:include">
+          <li>
+            <a href="{@schemaLocation}">
+              <xsl:value-of select="@schemaLocation"/>
+            </a>
+          </li>
+        </xsl:for-each>
       </ul>
     </section>
   </xsl:template>
@@ -615,15 +605,20 @@
       <xsl:variable name="subToc">
         <xsl:choose>
           <xsl:when test="$xsdf">
-            <xsl:apply-templates
-                select="$xsdf/preceding::*[count($topf | .) = count($topf)]|following-sibling::xh:h3"
-                mode="a:li-a"/>
+            <xsl:for-each
+                select="$xsdf/preceding::*[count($topf | .) = count($topf)]|following-sibling::xh:h3">
+              <li>
+                <xsl:apply-templates select="." mode="a:a"/>
+              </li>
+            </xsl:for-each>
           </xsl:when>
 
           <xsl:otherwise>
-            <xsl:apply-templates
-                select="$topf|following-sibling::xh:h3"
-                mode="a:li-a"/>
+            <xsl:for-each select="$topf|following-sibling::xh:h3">
+              <li>
+                <xsl:apply-templates select="." mode="a:a"/>
+              </li>
+            </xsl:for-each>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
