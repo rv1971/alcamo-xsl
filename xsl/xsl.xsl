@@ -245,6 +245,39 @@
       rdfs:label="Ignore &lt;xsl:import&gt; elements here since imports are handled separately"/>
 
   <xsl:template
+      match="xsl:namespace-alias"
+      mode="axsl:main"
+      rdfs:label="Ignore &lt;xsl:namespace-alias&gt; elements here since imports are handled separately"/>
+
+  <xsl:template
+      match="xsl:namespace-alias[1]"
+      mode="axsl:main"
+      rdfs:label="Create namespace-aliases &lt;table&gt;">
+    <table>
+      <thead>
+        <tr>
+          <th>Stylesheet prefix</th>
+          <th>Result prefix</th>
+        </tr>
+      </thead>
+
+      <tbody class="code">
+        <xsl:for-each select="/*/xsl:namespace-alias">
+          <tr>
+            <td>
+              <xsl:value-of select="@stylesheet-prefix"/>
+            </td>
+
+            <td>
+              <xsl:value-of select="@result-prefix"/>
+            </td>
+          </tr>
+        </xsl:for-each>
+      </tbody>
+    </table>
+  </xsl:template>
+
+  <xsl:template
       match="xsd:annotation"
       mode="axsl:main"
       rdfs:label="Ignore &lt;xsd:annotation&gt; elements handled by immediately following xsl or embedded data element"/>
@@ -255,15 +288,6 @@
       rdfs:label="Copy documentation blocks if they contain headings or are the last top-level element">
     <xsl:apply-templates select="xsd:documentation/xh:*" mode="a:copy"/>
   </xsl:template>
-
-  <xsd:annotation>
-    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <p>Create an automatic heading for the first
-      <code>&lt;xsl:import&gt;</code> element. This is necessary because
-      it is not allowed to include any other elements (including
-      documentation) before <code>&lt;xsl:import&gt;</code> elements.</p>
-    </xsd:documentation>
-  </xsd:annotation>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -280,11 +304,12 @@
         <xsl:apply-templates select="." mode="a:a"/>
       </p>
 
-      <!-- Get the set of all following top-level non-XSD elements. -->
+      <!-- Get the set of all following top-level non-XSD
+           non-namespace-alias elements. -->
 
       <xsl:variable
           name="topf"
-          select="following::*[parent::xsl:stylesheet][not(self::xsd:*)]"/>
+          select="following::*[parent::xsl:stylesheet][not(self::xsd:*)][not(self::xsl:namespace-alias)]"/>
 
       <!-- Get the next <xsd:annotation> element containing an <h2>
            element, if any. -->
@@ -318,6 +343,19 @@
       </xsl:if>
     </li>
   </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>Create an automatic heading for the first
+      <code>&lt;xsl:import&gt;</code> element. This is necessary because
+      it is not allowed to include any other elements (including
+      documentation) before <code>&lt;xsl:import&gt;</code> elements.</p>
+
+      <p>Also create automatic heading for the first
+      <code>&lt;xsl:namespace-alias&gt;</code> element. This is useful
+      because all namespace aliases are summarized in one section.</p>
+    </xsd:documentation>
+  </xsd:annotation>
 
   <xsl:template name="a:toc" rdfs:label="Create TOC &lt;ul&gt;">
     <ul id="toc">
