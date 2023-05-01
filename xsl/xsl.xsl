@@ -13,7 +13,7 @@
     xmlns:axsl="tag:rv1971@web.de,2021:alcamo-xsl:xsl#"
     xmlns:sh="tag:rv1971@web.de,2021:alcamo-xsl:syntaxhighlight:xml#"
     version="1.0"
-    exclude-result-prefixes="a axsl rdfs sh xh xsd"
+    exclude-result-prefixes="a axsl dc rdfs sh xh xsd"
     xml:lang="en"
     dc:identifier="xsl"
     dc:title="Format an XSLT stylesheet for human readers"

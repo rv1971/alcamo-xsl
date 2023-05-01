@@ -5,20 +5,19 @@
 <xsl:stylesheet
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:dc="http://purl.org/dc/terms/"
-    xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:xh="http://www.w3.org/1999/xhtml"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:sh="tag:rv1971@web.de,2021:alcamo-xsl:syntaxhighlight:xml#"
     version="1.0"
-    exclude-result-prefixes="dc owl rdfs xh xsd sh"
+    exclude-result-prefixes="dc rdfs xh xsd sh"
     xml:lang="en"
     dc:identifier="syntaxhighlight-xml"
     dc:title="Syntax highlighting for XML code"
     dc:creator="https://github.com/rv1971"
     dc:created="2017-09-11"
-    dc:modified="2023-04-20">
+    dc:modified="2023-05-01">
   <xsd:annotation>
     <xsd:documentation>
       <h2>Introduction</h2>

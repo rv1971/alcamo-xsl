@@ -13,7 +13,7 @@
     xmlns:axsd="tag:rv1971@web.de,2021:alcamo-xsl:xsd#"
     xmlns:sh="tag:rv1971@web.de,2021:alcamo-xsl:syntaxhighlight:xml#"
     version="1.0"
-    exclude-result-prefixes="a axsd rdfs sh xh xsd"
+    exclude-result-prefixes="a dc axsd rdfs sh xh xsd"
     xml:lang="en"
     dc:identifier="xsd"
     dc:title="Format an XSD for human readers"

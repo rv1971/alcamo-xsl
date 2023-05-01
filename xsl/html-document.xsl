@@ -11,16 +11,32 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
     version="1.0"
-    exclude-result-prefixes="a rdfs xsd"
+    exclude-result-prefixes="a dc owl rdfs xsd"
     xml:lang="en"
     dc:identifier="html-document"
     dc:title="HTML document creation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-04-19">
+    dc:modified="2023-05-01">
   <xsl:import href="html.xsl"/>
   <xsl:import href="metadata.xsl"/>
   <xsl:import href="text.xsl"/>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Namespace aliases</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:namespace-alias
+      xmlns:dc-alias="tag:rv1971@web.de,2021:alcamo-xsl:alias:dc#"
+      stylesheet-prefix="dc-alias"
+      result-prefix="dc"/>
+
+  <xsl:namespace-alias
+      xmlns:owl-alias="tag:rv1971@web.de,2021:alcamo-xsl:alias:owl#"
+      stylesheet-prefix="owl-alias"
+      result-prefix="owl"/>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -107,42 +123,45 @@
       rdfs:label="Create extra content to include in &lt;head&gt; element"/>
 
   <xsl:template
-      xmlns:owl="http://www.w3.org/2002/07/owl#"
+      xmlns:dc="tag:rv1971@web.de,2021:alcamo-xsl:alias:dc#"
+      xmlns:dc_="http://purl.org/dc/terms/"
+      xmlns:owl="tag:rv1971@web.de,2021:alcamo-xsl:alias:owl#"
+      xmlns:owl_="http://www.w3.org/2002/07/owl#"
       name="a:head"
       rdfs:label="Create &lt;head&gt; element">
     <head>
       <meta charset="utf-8"/>
 
-      <xsl:if test="$dc:identifier">
-        <meta property="dc:identifier" content="{$dc:identifier}"/>
+      <xsl:if test="$dc_:identifier">
+        <meta property="dc:identifier" content="{$dc_:identifier}"/>
       </xsl:if>
 
       <title property="dc:title">
-        <xsl:value-of select="$dc:title"/>
+        <xsl:value-of select="$dc_:title"/>
       </title>
 
-      <xsl:if test="$dc:creator">
-        <meta property="dc:creator" name="author" content="{$dc:creator}"/>
+      <xsl:if test="$dc_:creator">
+        <meta property="dc:creator" name="author" content="{$dc_:creator}"/>
       </xsl:if>
 
-      <xsl:if test="$dc:created">
-        <meta property="dc:created" content="{$dc:created}"/>
+      <xsl:if test="$dc_:created">
+        <meta property="dc:created" content="{$dc_:created}"/>
       </xsl:if>
 
-      <xsl:if test="$dc:modified">
-        <meta property="dc:modified" content="{$dc:modified}"/>
+      <xsl:if test="$dc_:modified">
+        <meta property="dc:modified" content="{$dc_:modified}"/>
       </xsl:if>
 
-      <xsl:if test="$dc:accessRights">
-        <meta property="dc:accessRights" content="{$dc:accessRights}"/>
+      <xsl:if test="$dc_:accessRights">
+        <meta property="dc:accessRights" content="{$dc_:accessRights}"/>
       </xsl:if>
 
-      <xsl:if test="$dc:rights">
-        <meta property="dc:rights" content="{$dc:rights}"/>
+      <xsl:if test="$dc_:rights">
+        <meta property="dc:rights" content="{$dc_:rights}"/>
       </xsl:if>
 
-      <xsl:if test="$owl:versionInfo">
-        <meta property="owl:versionInfo" content="{$owl:versionInfo}"/>
+      <xsl:if test="$owl_:versionInfo">
+        <meta property="owl:versionInfo" content="{$owl_:versionInfo}"/>
       </xsl:if>
 
       <xsl:call-template name="a:cssLinks"/>

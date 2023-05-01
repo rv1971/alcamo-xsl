@@ -10,7 +10,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
     version="1.0"
-    exclude-result-prefixes="a rdfs xsd"
+    exclude-result-prefixes="a dc rdfs xsd"
     xml:lang="en"
     dc:identifier="html"
     dc:title="HTML generation"

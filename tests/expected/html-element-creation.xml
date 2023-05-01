@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#" xmlns="http://www.w3.org/1999/xhtml">
-  <li xmlns:dc="http://purl.org/dc/terms/">foo</li>
-  <tr xmlns:dc="http://purl.org/dc/terms/">
+  <li>foo</li>
+  <tr>
     <th>item</th>
     <td>foo</td>
   </tr>
-  <li xmlns:dc="http://purl.org/dc/terms/">
+  <li>
     <a href="mailto:alice@example.org">alice</a>
   </li>
-  <tr xmlns:dc="http://purl.org/dc/terms/">
+  <tr>
     <th>creator</th>
     <td>
       <a href="mailto:alice@example.org">alice</a>
     </td>
   </tr>
-  <li xmlns:dc="http://purl.org/dc/terms/">
+  <li>
     <a href="mailto:bob@example.org">bob</a>
   </li>
-  <tr xmlns:dc="http://purl.org/dc/terms/">
+  <tr>
     <th>Rights</th>
     <td>
       <a href="mailto:bob@example.org">bob</a>
