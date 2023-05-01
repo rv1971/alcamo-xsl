@@ -340,7 +340,7 @@
           mode="axsl:toc-li"/>
       <li>
         <p>
-          <a href="#xslt-refs">XSLT references</a>
+          <a href="#xslt-references">XSLT references</a>
         </p>
       </li>
     </ul>
