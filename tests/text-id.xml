@@ -29,5 +29,6 @@
     <a:item id="foo"/>
     <a:item xml:id="bar"/>
     <a:item>BAZ: Qux!</a:item>
+    <a:item>FOO_BAR! baz"#$%&amp;'()*+,./:;&lt;&gt;?@[\]^`{|}~</a:item>
   </a:data>
 </a:doc>

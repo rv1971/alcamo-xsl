@@ -3,4 +3,5 @@
   <a:item>foo foo</a:item>
   <a:item>bar bar</a:item>
   <a:item>BAZ: Qux! baz-qux</a:item>
+  <a:item>FOO_BAR! baz"#$%&amp;'()*+,./:;&lt;&gt;?@[\]^`{|}~ foo_bar-baz</a:item>
 </a:result>

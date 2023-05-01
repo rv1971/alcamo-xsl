@@ -16,7 +16,7 @@
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-04-24">
+    dc:modified="2023-05-01">
   <xsl:import href="text.xsl"/>
 
   <xsd:annotation>
@@ -45,6 +45,8 @@
 
   <xsl:template
       name="a:mailto"
+      match="*|@*"
+      mode="a:mailto"
       rdfs:label="Create mailto: link if value contains a @">
     <xsl:param name="value" select="." rdfs:label="Value to format"/>
 
@@ -74,12 +76,10 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="*|@*" mode="a:mailto">
-    <xsl:call-template name="a:mailto"/>
-  </xsl:template>
-
   <xsl:template
       name="a:agent"
+      match="*|@*"
+      mode="a:agent"
       rdfs:label="Create link if value is an URL, else mailto: link if value contains a @">
     <xsl:param name="value" select="." rdfs:label="Value to format"/>
 
@@ -104,10 +104,6 @@
         </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="*|@*" mode="a:agent">
-    <xsl:call-template name="a:agent"/>
   </xsl:template>
 
   <xsd:annotation>
@@ -200,6 +196,8 @@
 
   <xsl:template
       name="a:tokens2items"
+      match="*|@*"
+      mode="a:tokens2items"
       rdfs:label="Create &lt;li&gt;s from a whitespace-separated list">
     <xsl:param
         name="tokens"
@@ -223,12 +221,10 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="*|@*" mode="a:tokens2items">
-    <xsl:call-template name="a:tokens2items"/>
-  </xsl:template>
-
   <xsl:template
       name="a:tokens2links"
+      match="*|@*"
+      mode="a:tokens2links"
       rdfs:label="Create &lt;li&gt;s containing &lt;a&gt;s from a whitespace-separated list">
     <xsl:param
         name="tokens"
@@ -257,17 +253,6 @@
         </xsl:call-template>
       </xsl:if>
     </xsl:if>
-  </xsl:template>
-
-  <xsl:template match="*|@*" mode="a:tokens2links">
-    <xsl:param
-        name="urlPrefix"
-        select="'#'"
-        rdfs:label="URL to prepend to link targets"/>
-
-    <xsl:call-template name="a:tokens2links">
-      <xsl:with-param name="urlPrefix" select="$urlPrefix"/>
-    </xsl:call-template>
   </xsl:template>
 
   <xsd:annotation>

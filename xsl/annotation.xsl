@@ -18,7 +18,7 @@
     dc:title="Process &lt;xsd:annotation&gt;"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-04-19">
+    dc:modified="2023-05-01">
   <xsl:import href="html.xsl"/>
 
   <xsd:annotation>
@@ -49,7 +49,7 @@
     <xsl:element name="{name(.)}">
       <xsl:if test="not(@id)">
         <xsl:attribute name="id">
-          <xsl:call-template name="a:to-id"/>
+          <xsl:call-template name="a:id"/>
         </xsl:attribute>
       </xsl:if>
 

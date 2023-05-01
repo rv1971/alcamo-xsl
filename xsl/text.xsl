@@ -15,7 +15,7 @@
     dc:title="Text generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-04-24">
+    dc:modified="2023-05-01">
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -72,39 +72,37 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template name="a:tolower" rdfs:label="Convert to lowercase">
+  <xsl:template
+      name="a:tolower"
+      match="*|@*"
+      mode="a:tolower"
+      rdfs:label="Convert to lowercase">
     <xsl:param name="text" select="." rdfs:label="Text to convert"/>
 
     <xsl:value-of
         select="translate($text, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
   </xsl:template>
 
-  <xsl:template match="*|@*" mode="a:tolower">
-    <xsl:call-template name="a:tolower"/>
-  </xsl:template>
-
-  <xsl:template name="a:toupper" rdfs:label="Convert to uppercase">
+  <xsl:template
+      name="a:toupper"
+      match="*|@*"
+      mode="a:toupper"
+      rdfs:label="Convert to uppercase">
     <xsl:param name="text" select="." rdfs:label="Text to convert"/>
 
     <xsl:value-of
         select="translate($text, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
   </xsl:template>
 
-  <xsl:template match="*|@*" mode="a:toupper">
-    <xsl:call-template name="a:toupper"/>
-  </xsl:template>
-
   <xsl:template
       name="a:ucfirst"
+      match="*|@*"
+      mode="a:ucfirst"
       rdfs:label="Convert first character to uppercase">
     <xsl:param name="text" select="." rdfs:label="Text to convert"/>
 
     <xsl:value-of
         select="concat(translate(substring($text, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring($text, 2))"/>
-  </xsl:template>
-
-  <xsl:template match="*|@*" mode="a:ucfirst">
-    <xsl:call-template name="a:ucfirst"/>
   </xsl:template>
 
   <xsd:annotation>
@@ -118,7 +116,9 @@
   </xsl:template>
 
   <xsl:template
-      name="a:to-id"
+      name="a:id"
+      match="*|@*"
+      mode="a:id"
       rdfs:label="Convert to lowercase ID, replacing spaces by hyphens and removing punctuation">
     <xsl:param name="text" rdfs:label="Text to convert">
       <xsl:apply-templates select="." mode="a:title"/>
@@ -128,10 +128,6 @@
 
     <xsl:value-of
         select="translate($text, $from, 'abcdefghijklmnopqrstuvwxyz-')"/>
-  </xsl:template>
-
-  <xsl:template match="*|@*" mode="a:to-id">
-    <xsl:call-template name="a:to-id"/>
   </xsl:template>
 
   <xsd:annotation>
@@ -149,10 +145,6 @@
     <xsl:value-of select="@id"/>
   </xsl:template>
 
-  <xsl:template match="*" mode="a:id" rdfs:label="Create ID text">
-    <xsl:call-template name="a:to-id"/>
-  </xsl:template>
-
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Numbers</h2>
@@ -168,6 +160,8 @@
 
   <xsl:template
       name="a:number"
+      match="*|@*"
+      mode="a:number"
       rdfs:label="Create spelled-out number if available, otherwise unchanged $value ">
     <xsl:param name="value" select="." rdfs:label="Number to spell out"/>
 
@@ -184,12 +178,10 @@
     </xsl:for-each>
   </xsl:template>
 
-  <xsl:template match="*|@*" mode="a:number">
-    <xsl:call-template name="a:number"/>
-  </xsl:template>
-
   <xsl:template
       name="a:hex"
+      match="*|@*"
+      mode="a:hex"
       rdfs:label="Create hex representation">
     <xsl:param name="value" select="." rdfs:label="Number to convert"/>
 
@@ -202,10 +194,6 @@
     <xsl:for-each select="document('')">
       <xsl:value-of select="string(key('a:hexDigits', $value mod 16))"/>
     </xsl:for-each>
-  </xsl:template>
-
-  <xsl:template match="*|@*" mode="a:hex">
-    <xsl:call-template name="a:hex"/>
   </xsl:template>
 
   <xsd:annotation>
@@ -249,17 +237,12 @@
 
   <xsl:template
       name="a:iso-8601-timestamp"
+      match="*|@*"
+      mode="a:iso-8601-timestamp"
       rdfs:label="Create timestamp text">
     <xsl:param name="value" select="." rdfs:label="Timestamp to format"/>
 
     <xsl:value-of select="translate($value, 'T', ' ')"/>
-  </xsl:template>
-
-  <xsl:template
-      match="*|@*"
-      mode="a:iso-8601-timestamp"
-      rdfs:label="create timestamp text">
-    <xsl:value-of select="translate(., 'T', ' ')"/>
   </xsl:template>
 
   <xsl:template
@@ -375,6 +358,8 @@
 
   <xsl:template
       name="a:iso-8601-duration"
+      match="*|@*"
+      mode="a:iso-8601-duration"
       rdfs:label="create duration text">
     <xsl:param name="value" select="." rdfs:label="Duration to format"/>
 
@@ -403,10 +388,6 @@
         </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="*|@*" mode="a:iso-8601-duration">
-    <xsl:call-template name="a:iso-8601-duration"/>
   </xsl:template>
 
   <xsd:annotation>
