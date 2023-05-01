@@ -19,7 +19,7 @@
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-04-24">
+    dc:modified="2023-05-01">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -99,7 +99,7 @@
       match="/*/*"
       mode="a:title"
       rdfs:label="Create heading text">
-    <xsl:value-of select="'Data '"/>
+    <xsl:text>Data </xsl:text>
 
     <code>
       <xsl:value-of select="name(.)"/>
@@ -107,7 +107,7 @@
   </xsl:template>
 
   <xsl:template match="/*/xsl:key" mode="a:title">
-    <xsl:value-of select="'Key '"/>
+    <xsl:text>Key </xsl:text>
 
     <code>
       <xsl:value-of select="@name"/>
@@ -115,7 +115,7 @@
   </xsl:template>
 
   <xsl:template match="/*/xsl:param" mode="a:title">
-    <xsl:value-of select="'Parameter '"/>
+    <xsl:text>Parameter </xsl:text>
 
     <code>
       <xsl:value-of select="concat('$', @name)"/>
@@ -123,7 +123,7 @@
   </xsl:template>
 
   <xsl:template match="/*/xsl:template[@name]" mode="a:title">
-    <xsl:value-of select="'Template '"/>
+    <xsl:text>Template </xsl:text>
 
     <code>
       <xsl:value-of select="@name"/>
@@ -131,7 +131,7 @@
   </xsl:template>
 
   <xsl:template match="/*/xsl:template[@match]" mode="a:title">
-    <xsl:value-of select="'Template '"/>
+    <xsl:text>Template </xsl:text>
 
     <code>
       <xsl:value-of select="@match"/>
@@ -141,13 +141,13 @@
   <xsl:template
       match="/*/xsl:template[@match][@mode]"
       mode="a:title">
-    <xsl:value-of select="'Template '"/>
+    <xsl:text>Template </xsl:text>
 
     <code>
       <xsl:value-of select="@match"/>
     </code>
 
-    <xsl:value-of select="' mode '"/>
+    <xsl:text> mode </xsl:text>
 
     <code>
       <xsl:value-of select="@mode"/>
@@ -155,7 +155,7 @@
   </xsl:template>
 
   <xsl:template match="/*/xsl:variable" mode="a:title">
-    <xsl:value-of select="'Variable '"/>
+    <xsl:text>Variable </xsl:text>
 
     <code>
       <xsl:value-of select="concat('$', @name)"/>

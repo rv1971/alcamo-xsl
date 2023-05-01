@@ -37,33 +37,28 @@
 
   <xsl:param
       name="sh:indent"
-      rdfs:label="Indentation string to add on each level of recursion">
-    <xsl:value-of select="'  '"/>
-  </xsl:param>
+      select="'  '"
+      rdfs:label="Indentation string to add on each level of recursion"/>
 
   <xsl:param
       name="sh:attrIndent"
-      rdfs:label="Indentation string to add for attributes">
-    <xsl:value-of select="'    '"/>
-  </xsl:param>
+      select="'    '"
+      rdfs:label="Indentation string to add for attributes"/>
 
   <xsl:param
       name="sh:maxInlineAttrs"
-      rdfs:label="Maximum number of inline attributes">
-    <xsl:value-of select="1"/>
-  </xsl:param>
+      select="1"
+      rdfs:label="Maximum number of inline attributes"/>
 
   <xsl:param
       name="sh:maxInlineAttrLength"
-      rdfs:label="Maximum length of inline attributes">
-    <xsl:value-of select="60"/>
-  </xsl:param>
+      select="60"
+      rdfs:label="Maximum length of inline attributes"/>
 
   <xsl:param
       name="sh:maxInlineTextLength"
-      rdfs:label="Maximum length of inline text">
-    <xsl:value-of select="40"/>
-  </xsl:param>
+      select="40"
+      rdfs:label="Maximum length of inline text"/>
 
   <xsd:annotation>
     <xsd:documentation>
@@ -83,7 +78,7 @@
       <xsl:value-of select="substring-before(name(), ':')"/>
     </span>
 
-    <xsl:value-of select="':'"/>
+    <xsl:text>:</xsl:text>
   </xsl:template>
 
   <xsl:template
@@ -237,7 +232,7 @@
   </xsd:annotation>
 
   <xsl:template match="@*" mode="sh:sep" rdfs:label="Create '='">
-    <xsl:value-of select="'='"/>
+    <xsl:text>=</xsl:text>
   </xsl:template>
 
   <xsl:template
@@ -325,11 +320,10 @@
           <xsl:value-of select="concat('&#x0a;', $prepend)"/>
         </xsl:if>
 
-        <xsl:value-of select="'&lt;/'"/>
-
+        <xsl:text>&lt;/</xsl:text>
         <xsl:apply-templates select="." mode="sh:name"/>
 
-        <xsl:value-of select="'>'"/>
+        <xsl:text>&gt;</xsl:text>
       </xsl:when>
 
       <!-- elements without child nodes -->
@@ -343,7 +337,7 @@
           <xsl:with-param name="prepend" select="$prepend"/>
         </xsl:apply-templates>
 
-        <xsl:value-of select="'/>'"/>
+        <xsl:text>/&gt;</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

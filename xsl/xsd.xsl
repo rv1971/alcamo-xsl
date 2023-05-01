@@ -19,7 +19,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-04-25">
+    dc:modified="2023-05-01">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -306,7 +306,8 @@
   </xsl:template>
 
   <xsl:template match="@*" mode="axsd:title-suffix">
-    <xsl:value-of select="' '"/>
+    <xsl:text> </xsl:text>
+    <xsl:text> </xsl:text>
 
     <code>
       <xsl:value-of select="."/>
@@ -314,7 +315,7 @@
   </xsl:template>
 
   <xsl:template match="@base" mode="axsd:title-suffix">
-    <xsl:value-of select="' of '"/>
+    <xsl:text> of </xsl:text>
 
     <xsl:apply-templates select="." mode="axsd:linkto"/>
   </xsl:template>
@@ -328,7 +329,7 @@
   </xsl:template>
 
   <xsl:template match="@itemType|@type" mode="axsd:title-suffix">
-    <xsl:value-of select="' of type '"/>
+    <xsl:text> of type </xsl:text>
 
     <xsl:apply-templates select="." mode="axsd:linkto"/>
   </xsl:template>
@@ -361,7 +362,7 @@
           select="key('axsd:elements', $localName)/@rdfs:label"/>
     </xsl:for-each>
 
-    <xsl:value-of select="' '"/>
+    <xsl:text> </xsl:text>
 
     <xsl:apply-templates select="@base|@name|@ref" mode="axsd:title-suffix"/>
 
@@ -417,7 +418,7 @@
         </xsl:otherwise>
     </xsl:choose>
 
-    <xsl:value-of select="' '"/>
+    <xsl:text> </xsl:text>
 
     <code>
       <xsl:value-of select="@name|@ref"/>

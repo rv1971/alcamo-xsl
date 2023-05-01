@@ -171,7 +171,7 @@
   <xsl:template match="*" mode="a:a" rdfs:label="Create &lt;a&gt;">
     <a>
       <xsl:attribute name="href">
-        <xsl:value-of select="'#'"/>
+        <xsl:text>#</xsl:text>
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
@@ -316,7 +316,7 @@
           <xsl:when test="$created">
             <span>
               <xsl:attribute name="title">
-                <xsl:value-of select="'created '"/>
+                <xsl:text>created </xsl:text>
                 <xsl:apply-templates
                     select="$created"
                     mode="a:iso-8583-timestamp"/>

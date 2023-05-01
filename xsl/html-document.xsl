@@ -192,13 +192,13 @@
 
       <p>
         <xsl:if test="$owl:versionInfo">
-          <xsl:value-of select="'Version '"/>
+          <xsl:text>Version </xsl:text>
           <xsl:apply-templates select="$owl:versionInfo" mode="a:auto"/>
-          <xsl:value-of select="', '"/>
+          <xsl:text>, </xsl:text>
         </xsl:if>
 
         <xsl:apply-templates select="$dc:creator" mode="a:agent"/>
-        <xsl:value-of select="', '"/>
+        <xsl:text>, </xsl:text>
 
         <xsl:call-template name="a:created-modified"/>
       </p>
