@@ -157,6 +157,11 @@
       match="/*/axsd:elements/axsd:element"
       use="@id"/>
 
+  <xsl:variable
+      name="a:xsdXslDoc"
+      select="document('')"
+      rdfs:label="This document"/>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Parameters</h2>
@@ -286,7 +291,7 @@
       rdfs:label="Create text">
     <xsl:variable name="element" select="."/>
 
-    <xsl:for-each select="document('')">
+    <xsl:for-each select="$a:xsdXslDoc">
       <xsl:variable
           name="elementData"
           select="key('axsd:elements', local-name($element))"/>
@@ -357,7 +362,7 @@
   <xsl:template match="xsd:*" mode="a:title">
     <xsl:variable name="localName" select="local-name(.)"/>
 
-    <xsl:for-each select="document('')">
+    <xsl:for-each select="$a:xsdXslDoc">
       <xsl:value-of
           select="key('axsd:elements', $localName)/@rdfs:label"/>
     </xsl:for-each>
@@ -402,7 +407,7 @@
   <xsl:template match="/*/xsd:*" mode="a:title">
     <xsl:choose>
       <xsl:when test="@abstract = 'true'">
-        <xsl:for-each select="document('')">
+        <xsl:for-each select="$a:xsdXslDoc">
           <xsl:value-of
               select="key('axsd:elements', 'abstractComplexType')/@rdfs:label"/>
         </xsl:for-each>
@@ -411,7 +416,7 @@
       <xsl:otherwise>
         <xsl:variable name="localName" select="local-name(.)"/>
 
-        <xsl:for-each select="document('')">
+        <xsl:for-each select="$a:xsdXslDoc">
           <xsl:value-of
               select="key('axsd:elements', $localName)/@rdfs:label"/>
         </xsl:for-each>

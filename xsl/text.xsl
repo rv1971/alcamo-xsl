@@ -66,6 +66,11 @@
       match="/*/a:hexDigits/a:hexDigit"
       use="@id"/>
 
+  <xsl:variable
+      name="a:textXslDoc"
+      select="document('')"
+      rdfs:label="This document"/>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Case folding</h2>
@@ -165,7 +170,7 @@
       rdfs:label="Create spelled-out number if available, otherwise unchanged $value ">
     <xsl:param name="value" select="." rdfs:label="Number to spell out"/>
 
-    <xsl:for-each select="document('')">
+    <xsl:for-each select="$a:textXslDoc">
       <xsl:choose>
         <xsl:when test="key('a:numbers',$value)">
           <xsl:value-of select="string(key('a:numbers', $value))"/>
@@ -191,7 +196,7 @@
       </xsl:call-template>
     </xsl:if>
 
-    <xsl:for-each select="document('')">
+    <xsl:for-each select="$a:textXslDoc">
       <xsl:value-of select="string(key('a:hexDigits', $value mod 16))"/>
     </xsl:for-each>
   </xsl:template>
