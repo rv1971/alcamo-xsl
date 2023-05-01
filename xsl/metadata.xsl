@@ -123,6 +123,8 @@
 
   <xsl:template
       name="a:basename"
+      match="*|@*"
+      mode="a:basename"
       rdfs:label="Get string after last directory separator, complete $path if it does not contain any">
     <xsl:param name="path" select="." rdfs:label="Path to reduce to base name"/>
     <xsl:param name="sep" select="'/'" rdfs:label="Directory separator"/>
@@ -141,16 +143,10 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="*|@*" mode="a:basename">
-    <xsl:param name="sep" select="'/'" rdfs:label="Directory separator"/>
-
-    <xsl:call-template name="a:basename">
-      <xsl:with-param name="sep" select="$sep"/>
-    </xsl:call-template>
-  </xsl:template>
-
   <xsl:template
       name="a:dirname"
+      match="*|@*"
+      mode="a:dirname"
       rdfs:label="Get string up to and including last directory separator, empty string if $path does not contain any">
     <xsl:param name="path" select="." rdfs:label="Path to reduce to base name"/>
     <xsl:param name="sep" select="'/'" rdfs:label="Directory separator"/>
@@ -166,13 +162,5 @@
       <xsl:value-of
           select="substring($path, 1, string-length($path) - string-length($basename))"/>
     </xsl:if>
-  </xsl:template>
-
-  <xsl:template match="*|@*" mode="a:dirname">
-    <xsl:param name="sep" select="'/'" rdfs:label="Directory separator"/>
-
-    <xsl:call-template name="a:dirname">
-      <xsl:with-param name="sep" select="$sep"/>
-    </xsl:call-template>
   </xsl:template>
 </xsl:stylesheet>
