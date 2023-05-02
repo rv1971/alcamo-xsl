@@ -19,7 +19,7 @@
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-05-01">
+    dc:modified="2023-05-02">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -218,7 +218,7 @@
          does not contain heading elements. -->
     <xsl:variable
         name="documentation"
-        select="preceding::xsd:annotation[1][xsd:documentation/xh:*]"/>
+        select="preceding-sibling::*[1][self::xsd:annotation/xsd:documentation/xh:*]"/>
 
     <xsl:if test="$documentation[not(xsd:documentation/xh:h2)][not(xsd:documentation/xh:h3)]">
       <xsl:apply-templates select="$documentation" mode="a:copy"/>
