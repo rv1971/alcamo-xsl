@@ -19,7 +19,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-05-01">
+    dc:modified="2023-05-02">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -32,12 +32,7 @@
 
   <xsd:annotation>
     <xsd:documentation>
-      <p>Maps element IDs to labels and optionally to uid prefixes
-      used to generate <code>id</code> attributes in the result
-      tree. If no uid prefix is given, the <code>id</code> is used. In
-      most cases, the <code>id</code> is identical to the local name
-      of the XSD element, but there are exceptions such as
-      <code>abstractComplexType</code>.</p>
+      <p>Map element IDs to labels.</p>
 
       <p>The list is divided into those IDs that may appear at top
       level and those which cannot. Each of the two sublists is
@@ -48,108 +43,41 @@
   <axsd:elements rdfs:label="XSD elements">
     <!-- elements that may appear at top level -->
 
-    <axsd:element
-        id="abstractComplexType"
-        uidPrefix="type"
-        rdfs:label="Abstract complex type"/>
-    <axsd:element
-        id="attribute"
-        rdfs:label="Attribute"/>
-    <axsd:element
-        id="attributeGroup"
-        rdfs:label="Attribute group"/>
-    <axsd:element
-        id="complexType"
-        uidPrefix="type"
-        rdfs:label="Complex type"/>
-    <axsd:element
-        id="element"
-        rdfs:label="Element"/>
-    <axsd:element
-        id="group"
-        rdfs:label="Group"/>
-    <axsd:element
-        id="import"
-        rdfs:label="Import"/>
-    <axsd:element
-        id="include"
-        rdfs:label="Include"/>
-    <axsd:element
-        id="simpleType"
-        uidPrefix="type"
-        rdfs:label="Simple type"/>
+    <axsd:element id="abstractComplexType">Abstract complex type</axsd:element>
+    <axsd:element id="attribute">Attribute</axsd:element>
+    <axsd:element id="attributeGroup">Attribute group</axsd:element>
+    <axsd:element id="complexType">Complex type</axsd:element>
+    <axsd:element id="element">Element</axsd:element>
+    <axsd:element id="group">Group</axsd:element>
+    <axsd:element id="import">Import</axsd:element>
+    <axsd:element id="include">Include</axsd:element>
+    <axsd:element id="simpleType">Simple type</axsd:element>
 
     <!-- elements that cannot appear at top level -->
 
-    <axsd:element
-        id="all"
-        rdfs:label="All"/>
-    <axsd:element
-        id="anyAttribute"
-        rdfs:label="Any attribute"/>
-    <axsd:element
-        id="choice"
-        rdfs:label="Choice"/>
-    <axsd:element
-        id="complexContent"
-        rdfs:label="Complex content"/>
-    <axsd:element
-        id="extension"
-        rdfs:label="Extension"/>
-    <axsd:element
-        id="enumeration"
-        rdfs:label="Enumeration"/>
-    <axsd:element
-        id="field"
-        rdfs:label="Field"/>
-    <axsd:element
-        id="keyref"
-        rdfs:label="Keyref"/>
-    <axsd:element
-        id="key"
-        rdfs:label="Key"/>
-    <axsd:element
-        id="length"
-        rdfs:label="length"/>
-    <axsd:element
-        id="list"
-        rdfs:label="List"/>
-    <axsd:element
-        id="localAttribute"
-        rdfs:label=""/>
-    <axsd:element
-        id="maxInclusive"
-        rdfs:label="Max inclusive"/>
-    <axsd:element
-        id="maxLength"
-        rdfs:label="Max length"/>
-    <axsd:element
-        id="minInclusive"
-        rdfs:label="Min inclusive"/>
-    <axsd:element
-        id="minLength"
-        rdfs:label="Min length"/>
-    <axsd:element
-        id="pattern"
-        rdfs:label="Pattern"/>
-    <axsd:element
-        id="restriction"
-        rdfs:label="Restriction"/>
-    <axsd:element
-        id="selector"
-        rdfs:label="Selector"/>
-    <axsd:element
-        id="sequence"
-        rdfs:label="Sequence"/>
-    <axsd:element
-        id="simpleContent"
-        rdfs:label="Simple content"/>
-    <axsd:element
-        id="union"
-        rdfs:label="Union"/>
-    <axsd:element
-        id="unique"
-        rdfs:label="Unique"/>
+    <axsd:element id="all">All</axsd:element>
+    <axsd:element id="anyAttribute">Any attribute</axsd:element>
+    <axsd:element id="choice">Choice</axsd:element>
+    <axsd:element id="complexContent">Complex content</axsd:element>
+    <axsd:element id="extension">Extension</axsd:element>
+    <axsd:element id="enumeration">Enumeration</axsd:element>
+    <axsd:element id="field">Field</axsd:element>
+    <axsd:element id="keyref">Keyref</axsd:element>
+    <axsd:element id="key">Key</axsd:element>
+    <axsd:element id="length">length</axsd:element>
+    <axsd:element id="list">List</axsd:element>
+    <axsd:element id="localAttribute"></axsd:element>
+    <axsd:element id="maxInclusive">Max inclusive</axsd:element>
+    <axsd:element id="maxLength">Max length</axsd:element>
+    <axsd:element id="minInclusive">Min inclusive</axsd:element>
+    <axsd:element id="minLength">Min length</axsd:element>
+    <axsd:element id="pattern">Pattern</axsd:element>
+    <axsd:element id="restriction">Restriction</axsd:element>
+    <axsd:element id="selector">Selector</axsd:element>
+    <axsd:element id="sequence">Sequence</axsd:element>
+    <axsd:element id="simpleContent">Simple content</axsd:element>
+    <axsd:element id="union">Union</axsd:element>
+    <axsd:element id="unique">Unique</axsd:element>
   </axsd:elements>
 
   <xsl:key
@@ -289,23 +217,16 @@
       match="/*/xsd:*[@name]"
       mode="a:id"
       rdfs:label="Create text">
-    <xsl:variable name="element" select="."/>
+    <xsl:choose>
+      <xsl:when
+          test="local-name(.) = 'simpleType' or local-name(.) = 'complexType'">
+        <xsl:value-of select="'type'"/>
+      </xsl:when>
 
-    <xsl:for-each select="$a:xsdXslDoc">
-      <xsl:variable
-          name="elementData"
-          select="key('axsd:elements', local-name($element))"/>
-
-      <xsl:choose>
-        <xsl:when test="$elementData/@uidPrefix">
-          <xsl:value-of select="$elementData/@uidPrefix"/>
-        </xsl:when>
-
-        <xsl:otherwise>
-          <xsl:value-of select="local-name($element)"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:for-each>
+      <xsl:otherwise>
+        <xsl:value-of select="local-name(.)"/>
+      </xsl:otherwise>
+    </xsl:choose>
 
     <xsl:value-of select="concat('-', @name)"/>
   </xsl:template>
@@ -363,8 +284,7 @@
     <xsl:variable name="localName" select="local-name(.)"/>
 
     <xsl:for-each select="$a:xsdXslDoc">
-      <xsl:value-of
-          select="key('axsd:elements', $localName)/@rdfs:label"/>
+      <xsl:value-of select="key('axsd:elements', $localName)"/>
     </xsl:for-each>
 
     <xsl:text> </xsl:text>
@@ -408,8 +328,7 @@
     <xsl:choose>
       <xsl:when test="@abstract = 'true'">
         <xsl:for-each select="$a:xsdXslDoc">
-          <xsl:value-of
-              select="key('axsd:elements', 'abstractComplexType')/@rdfs:label"/>
+          <xsl:value-of select="key('axsd:elements', 'abstractComplexType')"/>
         </xsl:for-each>
       </xsl:when>
 
@@ -417,8 +336,7 @@
         <xsl:variable name="localName" select="local-name(.)"/>
 
         <xsl:for-each select="$a:xsdXslDoc">
-          <xsl:value-of
-              select="key('axsd:elements', $localName)/@rdfs:label"/>
+          <xsl:value-of select="key('axsd:elements', $localName)"/>
         </xsl:for-each>
         </xsl:otherwise>
     </xsl:choose>
