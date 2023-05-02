@@ -30,7 +30,7 @@
     <a:item minOccurs="0" maxOccurs="2"/>
     <a:item minOccurs="0" maxOccurs="3"/>
     <a:item minOccurs="1"/>
-    <a:item minOccurs="1" maxOccurs="1"/>
+    <a:item minOccurs="001" maxOccurs=" 01"/>
     <a:item minOccurs="1" maxOccurs="2"/>
     <a:item minOccurs="1" maxOccurs="3"/>
     <a:item minOccurs="1" maxOccurs="10"/>
