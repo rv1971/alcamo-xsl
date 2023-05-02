@@ -192,12 +192,12 @@
       rdfs:label="Create text">
     <xsl:choose>
       <xsl:when
-          test="local-name(.) = 'simpleType' or local-name(.) = 'complexType'">
+          test="local-name() = 'simpleType' or local-name() = 'complexType'">
         <xsl:value-of select="'type'"/>
       </xsl:when>
 
       <xsl:otherwise>
-        <xsl:value-of select="local-name(.)"/>
+        <xsl:value-of select="local-name()"/>
       </xsl:otherwise>
     </xsl:choose>
 
@@ -220,7 +220,7 @@
   </xsl:template>
 
   <xsl:template match="@default|@fixed" mode="axsd:title-suffix">
-    <xsl:value-of select="concat(', ', name(.), ' ')"/>
+    <xsl:value-of select="concat(', ', name(), ' ')"/>
 
     <code>
       <xsl:value-of select="."/>
@@ -254,7 +254,7 @@
   </xsl:template>
 
   <xsl:template match="xsd:*" mode="a:title">
-    <xsl:variable name="localName" select="local-name(.)"/>
+    <xsl:variable name="localName" select="local-name()"/>
 
     <xsl:for-each select="$a:xsdXslDoc">
       <xsl:value-of select="key('axsd:elements', $localName)"/>
@@ -306,7 +306,7 @@
       </xsl:when>
 
       <xsl:otherwise>
-        <xsl:variable name="localName" select="local-name(.)"/>
+        <xsl:variable name="localName" select="local-name()"/>
 
         <xsl:for-each select="$a:xsdXslDoc">
           <xsl:value-of select="key('axsd:elements', $localName)"/>
@@ -397,7 +397,7 @@
     <section>
       <xsl:apply-templates select="." mode="axsd:heading"/>
 
-      <ul class="xsd-{local-name(.)}">
+      <ul class="xsd-{local-name()}">
         <xsl:apply-templates mode="axsd:main"/>
       </ul>
     </section>
@@ -409,7 +409,7 @@
     <li>
       <xsl:apply-templates select="." mode="axsd:heading"/>
 
-      <ul class="xsd-{local-name(.)}">
+      <ul class="xsd-{local-name()}">
         <xsl:apply-templates mode="axsd:main"/>
       </ul>
     </li>
@@ -489,7 +489,7 @@
 
       <xsl:variable
           name="topf"
-          select="following::*[parent::xsd:schema][local-name(.) != 'import'][local-name(.) != 'include']"/>
+          select="following::*[parent::xsd:schema][local-name() != 'import'][local-name() != 'include']"/>
 
       <!-- Get the next <xsd:annotation> element containing an <h2>
            element, if any. -->

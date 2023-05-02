@@ -105,7 +105,7 @@
     <xsl:text>Data </xsl:text>
 
     <code>
-      <xsl:value-of select="name(.)"/>
+      <xsl:value-of select="name()"/>
     </code>
   </xsl:template>
 

@@ -57,7 +57,7 @@
       match="xh:h2|xh:h3|xh:h4|xh:h5|xh:h6"
       mode="a:copy"
       rdfs:label="create heading element with ID">
-    <xsl:element name="{name(.)}">
+    <xsl:element name="{name()}">
       <xsl:if test="not(@id)">
         <xsl:attribute name="id">
           <xsl:call-template name="a:id"/>

@@ -15,7 +15,7 @@
     dc:title="Extract metadata from a document"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-04-19">
+    dc:modified="2023-05-02">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -37,7 +37,7 @@
       rdfs:label="URL of XSLT as found in processing instruction">
     <xsl:variable
         name="stylesheet"
-        select="/processing-instruction()[local-name(.) = 'xml-stylesheet'][1]"/>
+        select="/processing-instruction()[local-name() = 'xml-stylesheet'][1]"/>
 
     <xsl:choose>
       <xsl:when test="contains($stylesheet, 'href=&quot;')">

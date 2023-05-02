@@ -196,7 +196,7 @@
       rdfs:label="Create &lt;li&gt;s from a whitespace-separated list">
     <xsl:param
         name="tokens"
-        select="normalize-space(.)"
+        select="normalize-space()"
         rdfs:label="space-separated list of remaining tokens"/>
 
     <xsl:if test="$tokens">
@@ -223,7 +223,7 @@
       rdfs:label="Create &lt;li&gt;s containing &lt;a&gt;s from a whitespace-separated list">
     <xsl:param
         name="tokens"
-        select="normalize-space(.)"
+        select="normalize-space()"
         rdfs:label="Space-separated list of remaining tokens"/>
     <xsl:param
         name="urlPrefix"
@@ -267,7 +267,7 @@
       mode="a:th"
       rdfs:label="Create &lt;th> containing local node name">
     <th>
-      <xsl:value-of select="local-name(.)"/>
+      <xsl:value-of select="local-name()"/>
     </th>
   </xsl:template>
 
@@ -358,7 +358,7 @@
       mode="a:auto"
       rdfs:label="Create title attribute">
     <xsl:attribute name="title">
-      <xsl:value-of select="normalize-space(.)"/>
+      <xsl:value-of select="normalize-space()"/>
     </xsl:attribute>
   </xsl:template>
 </xsl:stylesheet>

@@ -175,7 +175,7 @@
   <xsl:template match="text()" mode="sh:xml" rdfs:label="Create text &lt;span>">
     <xsl:param name="prepend" rdfs:label="String to prepend to each line"/>
 
-    <xsl:variable name="normalizedText" select="normalize-space(.)"/>
+    <xsl:variable name="normalizedText" select="normalize-space()"/>
 
     <xsl:if test="$normalizedText">
       <xsl:choose>
@@ -292,7 +292,7 @@
            preceding-element-or-comment is not a comment. -->
 
       <xsl:if
-          test="($preceding/*|$preceding/text()[string-length(.) &gt;= $sh:maxInlineTextLength] or *|text()[string-length(.) &gt;= $sh:maxInlineTextLength] and name($preceding))">
+          test="($preceding/*|$preceding/text()[string-length() &gt;= $sh:maxInlineTextLength] or *|text()[string-length() &gt;= $sh:maxInlineTextLength] and name($preceding))">
         <xsl:value-of select="$lf"/>
       </xsl:if>
     </xsl:if>
@@ -316,7 +316,7 @@
           <xsl:with-param name="prepend" select="concat($prepend, $sh:indent)"/>
         </xsl:apply-templates>
 
-        <xsl:if test="*|text()[string-length(normalize-space(.)) &gt; $sh:maxInlineTextLength]|comment()">
+        <xsl:if test="*|text()[string-length(normalize-space()) &gt; $sh:maxInlineTextLength]|comment()">
           <xsl:value-of select="concat('&#x0a;', $prepend)"/>
         </xsl:if>
 
