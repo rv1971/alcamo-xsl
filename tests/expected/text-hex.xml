@@ -2,7 +2,7 @@
 <a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
   <a:item>0 0</a:item>
   <a:item>1 1</a:item>
-  <a:item>9 9</a:item>
+  <a:item>09 9</a:item>
   <a:item>10 A</a:item>
   <a:item>11 B</a:item>
   <a:item>12 C</a:item>
@@ -15,7 +15,7 @@
   <a:item>31 1F</a:item>
   <a:item>32 20</a:item>
   <a:item>33 21</a:item>
-  <a:item>255 FF</a:item>
+  <a:item>000255 FF</a:item>
   <a:item>256 100</a:item>
   <a:item>257 101</a:item>
   <a:item>65535 FFFF</a:item>

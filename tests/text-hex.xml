@@ -27,7 +27,7 @@
   <a:data>
     <a:item>0</a:item>
     <a:item>1</a:item>
-    <a:item>9</a:item>
+    <a:item>09</a:item>
     <a:item>10</a:item>
     <a:item>11</a:item>
     <a:item>12</a:item>
@@ -40,7 +40,7 @@
     <a:item>31</a:item>
     <a:item>32</a:item>
     <a:item>33</a:item>
-    <a:item>255</a:item>
+    <a:item>000255</a:item>
     <a:item>256</a:item>
     <a:item>257</a:item>
     <a:item>65535</a:item>
