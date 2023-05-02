@@ -61,7 +61,7 @@ tbody > tr > th {
     }
 }
 
-/* == classes == */
+/* == generic classes == */
 
 .block {
     display: block;
@@ -136,6 +136,13 @@ tbody > tr > th {
     position: sticky;
     top: 0;
     bottom: 0;
+}
+
+/* == classes wiht a specific purpose == */
+
+.error {
+    font-weight: bold;
+    color: #cc0000;
 }
 
 /* == IDs == */

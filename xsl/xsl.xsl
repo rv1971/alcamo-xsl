@@ -38,13 +38,16 @@
       heading at the beginning of the source document because the
       table of contents relies on this.</p>
 
+      <p>All HTML dcoumentation is expected to be placed inside such
+      blocks. Top-level HTML elements are ignored.</p>
+
       <p>Each top-level element other than documentation gets a level
       3 heading. The stylesheet generates a table of contents from all
       level 2 and 3 headings. If there are imports and there is a
       level 2 heading containing exactly the word
       <code>Introduction</code>, the whole documentation block is
-      copied to the output before the imports, even though in the
-      source document the imports necessarily precede the
+      copied to the output <i>before</i> the imports, even though in
+      the source document the imports necessarily precede the
       documentation.</p>
 
       <p>A documentation block that contains no headings and is
@@ -160,6 +163,32 @@
     <code>
       <xsl:value-of select="concat('$', @name)"/>
     </code>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Syntax highlight</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      match="*[name() != local-name()][namespace-uri() = 'http://www.w3.org/1999/XSL/Transform']|@*[name() != local-name()][namespace-uri() = 'http://www.w3.org/1999/XSL/Transform']"
+      mode="sh:prefix"
+      rdfs:label="Format prefix">
+    <span class="sh-prefix bold">
+      <xsl:value-of select="substring-before(name(), ':')"/>
+    </span>
+
+    <xsl:text>:</xsl:text>
+  </xsl:template>
+
+  <xsl:template
+      match="text()[parent::xsl:message]"
+      mode="sh:xml"
+      rdfs:label="Highlight xsl:message content">
+    <span class="error">
+      <xsl:apply-imports/>
+    </span>
   </xsl:template>
 
   <xsd:annotation>
@@ -361,6 +390,14 @@
   </xsd:annotation>
 
   <xsl:template name="a:toc" rdfs:label="Create TOC &lt;ul&gt;">
+    <xsl:if test="/*/*[not(xsl:import)][1][not(self::xsd:annotation/xsd:documentation/xh:h2)]">
+      <xsl:message>
+There is top-level content other than &lt;xsl:import&gt; without a
+preceding &lt;h2&gt; in a documentation block. Not TOC entries are
+generated for this content.
+      </xsl:message>
+    </xsl:if>
+
     <ul id="toc">
      <xsl:if test="$axsl:intro">
        <li>
@@ -417,6 +454,20 @@
   </xsl:template>
 
   <xsl:template name="a:page-main">
+    <xsl:if test="/*/xh:*">
+      <xsl:message>
+There is top-level HTML content. It is not considered as
+documentation.
+      </xsl:message>
+    </xsl:if>
+
+    <xsl:if test="/*/xsd:documentation">
+      <xsl:message>
+There are top-level &lt;xsd:documentation&gt; elements. They are not
+considered as documentation.
+      </xsl:message>
+    </xsl:if>
+
     <xsl:if test="$axsl:intro">
       <xsl:apply-templates select="$axsl:intro" mode="axsl:main"/>
     </xsl:if>
