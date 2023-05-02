@@ -146,7 +146,10 @@
     <xsl:value-of select="@xml:id"/>
   </xsl:template>
 
-  <xsl:template match="*[@id]" mode="a:id" rdfs:label="Create ID text">
+  <xsl:template
+      match="*[not(@xml:id)][@id]"
+      mode="a:id"
+      rdfs:label="Create ID text">
     <xsl:value-of select="@id"/>
   </xsl:template>
 
