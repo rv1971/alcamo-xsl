@@ -175,12 +175,12 @@
 
     <xsl:for-each select="$a:textXslDoc">
       <xsl:choose>
-        <xsl:when test="key('a:numbers',$value)">
-          <xsl:value-of select="string(key('a:numbers', $value))"/>
+        <xsl:when test="key('a:numbers', number($value))">
+          <xsl:value-of select="string(key('a:numbers', number($value)))"/>
         </xsl:when>
 
         <xsl:otherwise>
-          <xsl:value-of select="string($value)"/>
+          <xsl:value-of select="number($value)"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
