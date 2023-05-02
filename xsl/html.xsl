@@ -40,6 +40,10 @@
       <code>mailto:</code> URLs and with values of the form <code>Bob
       &lt;bob@example.org&gt;</code>. If the value contains an
       <code>@</code>, display the part before it.</p>
+
+      <p>This template rule does not check whether the input is a
+      valid literal in one of the supported syntaxes, and gives
+      undefined results if this is not the case.</p>
     </xsd:documentation>
   </xsd:annotation>
 

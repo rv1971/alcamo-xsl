@@ -24,6 +24,16 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Introduction</h2>
+
+      <p>Templates to generate an HTML document with a
+      <code>&lt;head&gt;</code> element and some structure in the
+      <code>&lt;body&gt;</code> element.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Namespace aliases</h2>
     </xsd:documentation>
   </xsd:annotation>
@@ -179,7 +189,9 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template name="a:toc" rdfs:label="Create table of contents"/>
+  <xsl:template
+      name="a:toc"
+      rdfs:label="Create table of contents, to be defined in importing stylesheets"/>
 
   <xsl:template
       name="a:page-header"
@@ -196,8 +208,10 @@
           <xsl:text>, </xsl:text>
         </xsl:if>
 
-        <xsl:apply-templates select="$dc:creator" mode="a:agent"/>
-        <xsl:text>, </xsl:text>
+        <xsl:if test="$dc:creator">
+          <xsl:apply-templates select="$dc:creator" mode="a:agent"/>
+          <xsl:text>, </xsl:text>
+        </xsl:if>
 
         <xsl:call-template name="a:created-modified"/>
       </p>
@@ -208,11 +222,11 @@
 
   <xsl:template
       name="a:page-main"
-      rdfs:label="Create main part of page page"/>
+      rdfs:label="Create main part of page, to be defined in importing stylesheets"/>
 
   <xsl:template
       name="a:page-footer"
-      rdfs:label="Create &lt;footer&gt; element for page"/>
+      rdfs:label="Create &lt;footer&gt; element for page, to be defined in importing stylesheets"/>
 
   <xsl:template match="/" rdfs:label="Create the document">
     <html>
