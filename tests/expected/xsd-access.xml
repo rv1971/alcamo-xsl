@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <a:item>axsd:attributes foo Foo</a:item>
+  <a:item>axsd:attributeGroups bar Bar</a:item>
+  <a:item>axsd:elements foo Foo element</a:item>
+  <a:item>axsd:groups qux Qux</a:item>
+  <a:item>axsd:types quux Quux</a:item>
+  <a:item>axsd:types baz Baz</a:item>
+  <a:item>axsd:types corge </a:item>
+  <a:item>axsd:elements-with-id corge Bar</a:item>
+  <a:item>axsd:elements-with-id CORGE Corge annotation</a:item>
+</a:result>

@@ -23,6 +23,15 @@
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
+  <xsl:import href="xsd-access.xsl"/>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Introduction</h2>
+
+      <p>This stylesheet is used to format XSDs for human readers.</p>
+    </xsd:documentation>
+  </xsd:annotation>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -101,42 +110,6 @@
       select="concat($a:xslDirUrl, 'css/alcamo.css', ' ', $a:xslDirUrl, 'css/syntaxhighlight.css', ' ', $a:xslDirUrl, 'css/xsd.css')"/>
 
   <xsl:param name="sh:maxInlineAttrs" select="3"/>
-
-  <xsd:annotation>
-    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Keys</h2>
-    </xsd:documentation>
-  </xsd:annotation>
-
-  <xsl:key
-      name="axsd:attributes"
-      match="/*/xsd:attribute"
-      use="@name"
-      rdfs:label="Attributes declared in the current document"/>
-
-  <xsl:key
-      name="axsd:attributeGroups"
-      match="/*/xsd:attributeGroup"
-      use="@name"
-      rdfs:label="Attribute groups declared in the current document"/>
-
-  <xsl:key
-      name="axsd:elements"
-      match="/*/xsd:element"
-      use="@name"
-      rdfs:label="Elements declared in the current document"/>
-
-  <xsl:key
-      name="axsd:groups"
-      match="/*/xsd:group"
-      use="@name"
-      rdfs:label="Groups declared in the current document"/>
-
-  <xsl:key
-      name="axsd:types"
-      match="/*/xsd:simpleType|/*/xsd:complexType"
-      use="@name"
-      rdfs:label="Named types defined in the current document"/>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -586,7 +559,7 @@
 
       <li>
         <p>
-          <a href="#xsd-refs">XSD references</a>
+          <a href="#xsd-references">XSD references</a>
         </p>
       </li>
     </ul>
@@ -595,7 +568,7 @@
   <xsl:template
       name="axsd:references"
       rdfs:label="Create references &lt;h2&gt; and  &lt;ul&gt;">
-    <h2 id="xslt-references">XSD references</h2>
+    <h2 id="xsd-references">XSD references</h2>
 
     <ul>
       <li><a href="https://www.w3.org/TR/xmlschema-0/">XML Schema Part 0: Primer</a></li>
