@@ -17,7 +17,7 @@
     dc:title="HTML document creation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-01">
+    dc:modified="2023-05-02">
   <xsl:import href="html.xsl"/>
   <xsl:import href="metadata.xsl"/>
   <xsl:import href="text.xsl"/>
@@ -47,7 +47,6 @@
   <xsl:output
       method="xml"
       encoding="UTF-8"
-      indent="yes"
       media-type="application/xhtml+xml"/>
 
   <xsd:annotation>
