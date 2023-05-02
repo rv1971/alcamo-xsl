@@ -364,11 +364,19 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>This template rule does not check whether the input is a
+      valid ISO 8601 duration and gives undefined results if this is
+      not the case.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
   <xsl:template
       name="a:iso-8601-duration"
       match="*|@*"
       mode="a:iso-8601-duration"
-      rdfs:label="create duration text">
+      rdfs:label="Create duration text">
     <xsl:param name="value" select="." rdfs:label="Duration to format"/>
 
     <xsl:choose>
