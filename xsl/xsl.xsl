@@ -283,8 +283,8 @@
     <table>
       <thead>
         <tr>
-          <th>Stylesheet prefix</th>
-          <th>Result prefix</th>
+          <th colspan="2">Stylesheet</th>
+          <th colspan="2">Result</th>
         </tr>
       </thead>
 
@@ -296,7 +296,17 @@
             </td>
 
             <td>
+              <xsl:value-of
+                  select="namespace::*[name() = current()/@stylesheet-prefix]"/>
+            </td>
+
+            <td>
               <xsl:value-of select="@result-prefix"/>
+            </td>
+
+            <td>
+              <xsl:value-of
+                  select="namespace::*[name() = current()/@result-prefix]"/>
             </td>
           </tr>
         </xsl:for-each>
