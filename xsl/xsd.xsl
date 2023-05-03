@@ -235,11 +235,21 @@
   </xsl:template>
 
   <xsl:template match="xsd:*" mode="a:title">
-    <xsl:variable name="localName" select="local-name()"/>
+    <xsl:choose>
+      <xsl:when test="@abstract = 'true'">
+        <xsl:for-each select="$a:xsdXslDoc">
+          <xsl:value-of select="key('axsd:elements', 'abstractComplexType')"/>
+        </xsl:for-each>
+      </xsl:when>
 
-    <xsl:for-each select="$a:xsdXslDoc">
-      <xsl:value-of select="key('axsd:elements', $localName)"/>
-    </xsl:for-each>
+      <xsl:otherwise>
+        <xsl:variable name="localName" select="local-name()"/>
+
+        <xsl:for-each select="$a:xsdXslDoc">
+          <xsl:value-of select="key('axsd:elements', $localName)"/>
+        </xsl:for-each>
+        </xsl:otherwise>
+    </xsl:choose>
 
     <xsl:text> </xsl:text>
 
@@ -260,7 +270,7 @@
     <xsl:call-template name="a:occurrence"/>
   </xsl:template>
 
-  <xsl:template match="xsd:attribute" mode="a:title">
+  <xsl:template match="xsd:attribute[not(parent::xsd:schema)]" mode="a:title">
     <xsl:apply-templates select="@name|@ref" mode="axsd:title-suffix"/>
 
     <xsl:apply-templates select="@type" mode="axsd:title-suffix"/>
@@ -270,38 +280,12 @@
     <xsl:apply-templates select="@default|@fixed" mode="axsd:title-suffix"/>
   </xsl:template>
 
-  <xsl:template match="xsd:element" mode="a:title">
+  <xsl:template match="xsd:element[not(parent::xsd:schema)]" mode="a:title">
     <xsl:apply-templates select="@name|@ref" mode="axsd:title-suffix"/>
 
     <xsl:apply-templates select="@type" mode="axsd:title-suffix"/>
 
     <xsl:call-template name="a:occurrence"/>
-  </xsl:template>
-
-  <xsl:template match="/*/xsd:*" mode="a:title">
-    <xsl:choose>
-      <xsl:when test="@abstract = 'true'">
-        <xsl:for-each select="$a:xsdXslDoc">
-          <xsl:value-of select="key('axsd:elements', 'abstractComplexType')"/>
-        </xsl:for-each>
-      </xsl:when>
-
-      <xsl:otherwise>
-        <xsl:variable name="localName" select="local-name()"/>
-
-        <xsl:for-each select="$a:xsdXslDoc">
-          <xsl:value-of select="key('axsd:elements', $localName)"/>
-        </xsl:for-each>
-        </xsl:otherwise>
-    </xsl:choose>
-
-    <xsl:text> </xsl:text>
-
-    <code>
-      <xsl:value-of select="@name|@ref"/>
-    </code>
-
-    <xsl:apply-templates select="@type" mode="axsd:title-suffix"/>
   </xsl:template>
 
   <xsl:template match="*" mode="axsd:heading">
@@ -310,12 +294,26 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
+      <xsl:if test="@id">
+        <a id="{@id}"/>
+      </xsl:if>
+
       <xsl:apply-templates select="." mode="a:title"/>
     </p>
   </xsl:template>
 
   <xsl:template match="/*/*" mode="axsd:heading">
-    <xsl:apply-templates select="." mode="a:h3"/>
+    <h3>
+      <xsl:attribute name="id">
+        <xsl:apply-templates select="." mode="a:id"/>
+      </xsl:attribute>
+
+      <xsl:if test="@id">
+        <a id="{@id}"/>
+      </xsl:if>
+
+      <xsl:apply-templates select="." mode="a:title"/>
+    </h3>
   </xsl:template>
 
   <xsd:annotation>
@@ -351,12 +349,12 @@
   </xsl:template>
 
   <xsl:template
-      match="xsd:annotation|xsd:documentation|xsd:simpleType[not(@*)]"
+      match="xsd:annotation|xsd:simpleType[not(@*)]"
       mode="axsd:main">
     <xsl:apply-templates mode="axsd:main"/>
   </xsl:template>
 
-  <xsl:template match="xsd:documentation[xh:*]" mode="axsd:main">
+  <xsl:template match="xsd:documentation" mode="axsd:main">
     <div class="xsd-documentation">
       <xsl:apply-templates mode="a:copy"/>
     </div>
