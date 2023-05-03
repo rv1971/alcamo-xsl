@@ -106,6 +106,11 @@
   </xsd:annotation>
 
   <xsl:param
+      name="axsd:minAttrOverviewSize"
+      select="3"
+      rdfs:label="Minimum number of attributes to create an attribute overview table"/>
+
+  <xsl:param
       name="a:cssList"
       select="concat($a:xslDirUrl, 'css/alcamo.css', ' ', $a:xslDirUrl, 'css/syntaxhighlight.css', ' ', $a:xslDirUrl, 'css/xsd.css')"/>
 
@@ -226,6 +231,14 @@
     </code>
   </xsl:template>
 
+  <xsl:template match="@namespace" mode="axsd:title-suffix">
+    <xsl:text> of namespace </xsl:text>
+
+    <code>
+      <xsl:value-of select="."/>
+    </code>
+  </xsl:template>
+
   <xsl:template match="@ref" mode="axsd:title-suffix">
     <xsl:apply-templates select="." mode="axsd:linkto"/>
   </xsl:template>
@@ -256,7 +269,7 @@
     <xsl:apply-templates select="@base|@name|@ref" mode="axsd:title-suffix"/>
 
     <xsl:apply-templates
-        select="@itemType|@memberTypes|@type"
+        select="@itemType|@memberTypes|@namespace|@type"
         mode="axsd:title-suffix"/>
 
     <xsl:apply-templates select="@use" mode="axsd:title-suffix"/>
@@ -354,6 +367,98 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Overview tables</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template match="xsd:*" mode="axsd:attr-overview">
+    <table class="xsd-attr-overview">
+      <thead>
+        <tr>
+          <th>Name</th>
+
+          <xsl:choose>
+            <xsl:when test="xsd:anyAttribute">
+              <th>Type&#xa0;/ namespace</th>
+              <th>Use&#xa0;/ process</th>
+            </xsl:when>
+
+            <xsl:otherwise>
+              <th>Type</th>
+              <th>Use</th>
+            </xsl:otherwise>
+          </xsl:choose>
+
+          <th>Label</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <xsl:for-each select="xsd:attribute">
+          <tr>
+            <td>
+              <a class="code">
+                <xsl:attribute name="href">
+                  <xsl:text>#</xsl:text>
+                  <xsl:apply-templates select="." mode="a:id"/>
+                </xsl:attribute>
+
+                <xsl:value-of select="@name|@ref"/>
+              </a>
+            </td>
+
+            <td>
+              <xsl:apply-templates select="@type" mode="axsd:linkto"/>
+            </td>
+
+            <td>
+              <xsl:choose>
+                <xsl:when test="@use">
+                  <xsl:value-of select="@use"/>
+                </xsl:when>
+
+                <xsl:otherwise>optional</xsl:otherwise>
+              </xsl:choose>
+            </td>
+
+            <td>
+              <xsl:value-of select="@rdfs:label"/>
+            </td>
+          </tr>
+        </xsl:for-each>
+
+        <xsl:for-each select="xsd:anyAttribute">
+          <tr>
+            <td>Any</td>
+            <td>
+              <xsl:if test="@namespace">
+                <code>
+                  <xsl:value-of select="@namespace"/>
+                </code>
+              </xsl:if>
+            </td>
+
+            <td>
+              <xsl:choose>
+                <xsl:when test="@processContents">
+                  <xsl:value-of select="@processContents"/>
+                </xsl:when>
+
+                <xsl:otherwise>strict</xsl:otherwise>
+              </xsl:choose>
+            </td>
+
+            <td>
+              <xsl:value-of select="@rdfs:label"/>
+            </td>
+          </tr>
+        </xsl:for-each>
+      </tbody>
+    </table>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Document body</h2>
     </xsd:documentation>
   </xsd:annotation>
@@ -372,16 +477,20 @@
             <p>Attributes</p>
           </xsl:if>
 
+          <xsl:if test="count(xsd:attribute) &gt;= $axsd:minAttrOverviewSize">
+            <xsl:apply-templates select="." mode="axsd:attr-overview"/>
+          </xsl:if>
+
           <ul class="xsd-attributes">
             <xsl:apply-templates
-                select="xsd:attribute|xsd:attributeGroup"
+                select="xsd:attribute|xsd:attributeGroup|xsd:anyAttribute"
                 mode="axsd:main"/>
           </ul>
         </section>
       </xsl:if>
 
       <xsl:apply-templates
-          select="*[not(self::xsd:annotation)][not(self::xsd:attribute)][not(self::xsd:attributeGroup)]"
+          select="*[not(self::xsd:annotation)][not(self::xsd:attribute)][not(self::xsd:attributeGroup)][not(self::xsd:anyAttribute)]"
           mode="axsd:main"/>
     </section>
   </xsl:template>
@@ -407,7 +516,11 @@
   </xsl:template>
 
   <xsl:template
-      match="xsd:attribute[not(parent::xsd:schema)]|xsd:attributeGroup[not(parent::xsd:schema)]|xsd:element[not(parent::xsd:schema)]|xsd:group[not(parent::xsd:schema)]"
+      match="xsd:attribute[not(parent::xsd:schema)]
+             |xsd:attributeGroup[not(parent::xsd:schema)]
+             |xsd:anyAttribute[not(parent::xsd:schema)]
+             |xsd:element[not(parent::xsd:schema)]
+             |xsd:group[not(parent::xsd:schema)]"
       mode="axsd:main">
     <li>
       <xsl:apply-templates select="." mode="axsd:heading"/>
@@ -431,7 +544,10 @@
   </xsl:template>
 
   <xsl:template
-      match="xsd:choice/xsd:choice|xsd:choice/xsd:sequence|xsd:sequence/xsd:choice|xsd:sequence/xsd:sequence"
+      match="xsd:choice/xsd:choice
+             |xsd:choice/xsd:sequence
+             |xsd:sequence/xsd:choice
+             |xsd:sequence/xsd:sequence"
       mode="axsd:main">
     <li>
       <xsl:apply-templates select="." mode="axsd:heading"/>
