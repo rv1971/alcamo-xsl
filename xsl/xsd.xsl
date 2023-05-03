@@ -542,16 +542,63 @@
 
       <li>
         <p>
-          <a href="#xsd-references">XSD references</a>
+          <a href="#appendix">Appendix</a>
         </p>
+        <ul>
+          <li>
+            <p>
+              <a href="#elements-with-id">Elements with ID</a>
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <a href="#xsd-references">XSD references</a>
+            </p>
+          </li>
+        </ul>
       </li>
     </ul>
   </xsl:template>
 
   <xsl:template
+      name="axsd:elements-with-id"
+      rdfs:label="Create &lt;h3&gt; and &lt;table&gt; for elements with ID">
+    <h3 id="elements-with-id">Elements with ID</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tag name</th>
+          <th>Label</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <xsl:for-each select="//xsd:*[@id]">
+          <tr>
+            <td class="code">
+              <xsl:value-of select="@id"/>
+            </td>
+
+            <td class="code">
+              <xsl:value-of select="local-name()"/>
+            </td>
+
+            <td>
+              <xsl:value-of select="@rdfs:label"/>
+            </td>
+          </tr>
+        </xsl:for-each>
+      </tbody>
+    </table>
+  </xsl:template>
+
+  <xsl:template
       name="axsd:references"
-      rdfs:label="Create references &lt;h2&gt; and  &lt;ul&gt;">
-    <h2 id="xsd-references">XSD references</h2>
+      rdfs:label="Create references &lt;h3&gt; and  &lt;ul&gt;">
+    <h3 id="xsd-references">XSD references</h3>
 
     <ul>
       <li><a href="https://www.w3.org/TR/xmlschema-0/">XML Schema Part 0: Primer</a></li>
@@ -560,9 +607,19 @@
     </ul>
   </xsl:template>
 
+  <xsl:template
+      name="axsd:appendix"
+      rdfs:label="Create appendix &lt;h2&gt; and call further templates">
+    <h2 id="appendix">Appendix</h2>
+
+    <xsl:call-template name="axsd:elements-with-id"/>
+
+    <xsl:call-template name="axsd:references"/>
+  </xsl:template>
+
   <xsl:template name="a:page-main">
     <xsl:apply-templates select="/*/*" mode="axsd:main"/>
 
-    <xsl:call-template name="axsd:references"/>
+    <xsl:call-template name="axsd:appendix"/>
   </xsl:template>
 </xsl:stylesheet>
