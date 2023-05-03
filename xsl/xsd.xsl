@@ -5,6 +5,7 @@
 <xsl:stylesheet
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:dc="http://purl.org/dc/terms/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:xh="http://www.w3.org/1999/xhtml"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -19,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-05-02">
+    dc:modified="2023-05-03">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -108,7 +109,12 @@
   <xsl:param
       name="axsd:minAttrOverviewSize"
       select="3"
-      rdfs:label="Minimum number of attributes to create an attribute overview table"/>
+      rdfs:label="Minimum number of attributes for an overview table"/>
+
+  <xsl:param
+      name="axsd:minEnumOverviewSize"
+      select="3"
+      rdfs:label="Minimum number of enumerators for an overview table"/>
 
   <xsl:param
       name="a:cssList"
@@ -345,6 +351,18 @@
     </tr>
   </xsl:template>
 
+  <xsl:template match="@owl:sameAs" mode="axsd:generic-attrs">
+    <tr>
+      <th>owl:sameAs</th>
+
+      <td>
+        <a href="{.}">
+          <xsl:value-of select="."/>
+        </a>
+      </td>
+    </tr>
+  </xsl:template>
+
   <xsl:template match="@rdfs:label" mode="axsd:generic-attrs">
     <tr>
       <th>rdfs:label</th>
@@ -367,7 +385,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Overview tables</h2>
+      <h2>Overviews</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -457,6 +475,52 @@
     </table>
   </xsl:template>
 
+  <xsl:template match="xsd:*" mode="axsd:enum-overview">
+    <table class="xsd-enum-overview">
+      <thead>
+        <tr>
+          <th>Value</th>
+          <th>Label</th>
+
+          <xsl:if test="xsd:enumeration[@owl:sameAs]">
+            <th>Same as</th>
+          </xsl:if>
+        </tr>
+      </thead>
+
+      <tbody>
+        <xsl:for-each select="xsd:enumeration">
+          <tr>
+            <td>
+              <a class="code">
+                <xsl:attribute name="href">
+                  <xsl:text>#</xsl:text>
+                  <xsl:apply-templates select="." mode="a:id"/>
+                </xsl:attribute>
+
+                <xsl:value-of select="@value"/>
+              </a>
+            </td>
+
+            <td>
+              <xsl:value-of select="@rdfs:label"/>
+            </td>
+
+            <xsl:if test="../xsd:enumeration[@owl:sameAs]">
+              <td>
+                <xsl:if test="@owl:sameAs">
+                  <a href="{@owl:sameAs}">
+                    <xsl:value-of select="@owl:sameAs"/>
+                  </a>
+                </xsl:if>
+              </td>
+            </xsl:if>
+          </tr>
+        </xsl:for-each>
+      </tbody>
+    </table>
+  </xsl:template>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Document body</h2>
@@ -464,6 +528,20 @@
   </xsd:annotation>
 
   <xsl:template match="*" mode="axsd:main">
+    <section>
+      <xsl:apply-templates select="." mode="axsd:heading"/>
+
+      <xsl:apply-templates select="." mode="axsd:generic-attrs"/>
+
+      <xsl:apply-templates select="xsd:annotation" mode="axsd:main"/>
+
+      <xsl:apply-templates mode="axsd:main"/>
+    </section>
+  </xsl:template>
+
+  <xsl:template
+      match="xsd:attributeGroup|xsd:complexType|xsd:extension|xsd:restriction"
+      mode="axsd:main">
     <section>
       <xsl:apply-templates select="." mode="axsd:heading"/>
 
@@ -492,6 +570,24 @@
       <xsl:apply-templates
           select="*[not(self::xsd:annotation)][not(self::xsd:attribute)][not(self::xsd:attributeGroup)][not(self::xsd:anyAttribute)]"
           mode="axsd:main"/>
+    </section>
+  </xsl:template>
+
+  <xsl:template
+      match="xsd:simpleContent/xsd:restriction|xsd:simpleType/xsd:restriction"
+      mode="axsd:main">
+    <section>
+      <xsl:apply-templates select="." mode="axsd:heading"/>
+
+      <xsl:apply-templates select="." mode="axsd:generic-attrs"/>
+
+      <xsl:apply-templates select="xsd:annotation" mode="axsd:main"/>
+
+      <xsl:if test="count(xsd:enumeration) &gt;= $axsd:minEnumOverviewSize">
+        <xsl:apply-templates select="." mode="axsd:enum-overview"/>
+      </xsl:if>
+
+      <xsl:apply-templates mode="axsd:main"/>
     </section>
   </xsl:template>
 
