@@ -182,7 +182,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Headings</h2>
+      <h2>Heading text</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -288,15 +288,17 @@
     <xsl:call-template name="a:occurrence"/>
   </xsl:template>
 
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Headings</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
   <xsl:template match="*" mode="axsd:heading">
     <p>
       <xsl:attribute name="id">
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
-
-      <xsl:if test="@id">
-        <a id="{@id}"/>
-      </xsl:if>
 
       <xsl:apply-templates select="." mode="a:title"/>
     </p>
@@ -308,12 +310,46 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:if test="@id">
-        <a id="{@id}"/>
-      </xsl:if>
-
       <xsl:apply-templates select="." mode="a:title"/>
     </h3>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Generic XSD attributes</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template match="@*" mode="axsd:generic-attrs"/>
+
+  <xsl:template match="@id" mode="axsd:generic-attrs">
+    <tr id="{.}">
+      <th>id</th>
+
+      <td>
+        <xsl:value-of select="."/>
+      </td>
+    </tr>
+  </xsl:template>
+
+  <xsl:template match="@rdfs:label" mode="axsd:generic-attrs">
+    <tr>
+      <th>rdfs:label</th>
+
+      <td>
+        <xsl:value-of select="."/>
+      </td>
+    </tr>
+  </xsl:template>
+
+  <xsl:template match="xsd:*" mode="axsd:generic-attrs">
+    <xsl:if test="@id|@rdfs:label">
+      <table class="xsd-generic-attrs">
+        <tbody>
+          <xsl:apply-templates select="@*" mode="axsd:generic-attrs"/>
+        </tbody>
+      </table>
+    </xsl:if>
   </xsl:template>
 
   <xsd:annotation>
@@ -325,6 +361,8 @@
   <xsl:template match="*" mode="axsd:main">
     <section>
       <xsl:apply-templates select="." mode="axsd:heading"/>
+
+      <xsl:apply-templates select="." mode="axsd:generic-attrs"/>
 
       <xsl:apply-templates select="xsd:annotation" mode="axsd:main"/>
 
@@ -374,6 +412,8 @@
     <li>
       <xsl:apply-templates select="." mode="axsd:heading"/>
 
+      <xsl:apply-templates select="." mode="axsd:generic-attrs"/>
+
       <xsl:apply-templates mode="axsd:main"/>
     </li>
   </xsl:template>
@@ -381,6 +421,8 @@
   <xsl:template match="xsd:choice|xsd:sequence" mode="axsd:main">
     <section>
       <xsl:apply-templates select="." mode="axsd:heading"/>
+
+      <xsl:apply-templates select="." mode="axsd:generic-attrs"/>
 
       <ul class="xsd-{local-name()}">
         <xsl:apply-templates mode="axsd:main"/>
@@ -393,6 +435,8 @@
       mode="axsd:main">
     <li>
       <xsl:apply-templates select="." mode="axsd:heading"/>
+
+      <xsl:apply-templates select="." mode="axsd:generic-attrs"/>
 
       <ul class="xsd-{local-name()}">
         <xsl:apply-templates mode="axsd:main"/>
@@ -579,7 +623,9 @@
         <xsl:for-each select="//xsd:*[@id]">
           <tr>
             <td class="code">
-              <xsl:value-of select="@id"/>
+              <a href="#{@id}">
+                <xsl:value-of select="@id"/>
+              </a>
             </td>
 
             <td class="code">

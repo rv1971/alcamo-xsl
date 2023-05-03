@@ -6,6 +6,14 @@ section section section {
     color: #005A9C;
 }
 
+table.xsd-generic-attrs {
+    font-size: 90%;
+}
+
+table.xsd-generic-attrs th {
+    font-weight: normal;
+}
+
 section div.xsd-documentation {
     padding-left: 0.5rem;
     border-left: medium solid #888a85;
