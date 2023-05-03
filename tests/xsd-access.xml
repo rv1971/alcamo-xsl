@@ -22,12 +22,16 @@
     </xsl:template>
 
     <xsl:template match="a:item">
+      <xsl:variable name="xsdElem" select="key(@key, @value)"/>
+
       <a:item>
         <xsl:value-of select="@key"/>
         <xsl:text> </xsl:text>
         <xsl:value-of select="@value"/>
         <xsl:text> </xsl:text>
-        <xsl:value-of select="key(@key, @value)/@a:title"/>
+        <xsl:value-of select="$xsdElem/@a:title"/>
+        <xsl:text> </xsl:text>
+        <xsl:apply-templates select="$xsdElem" mode="a:id"/>
       </a:item>
     </xsl:template>
   </xsl:stylesheet>
@@ -37,9 +41,32 @@
   <xsd:attributeGroup name="bar" a:title="Bar" id="corge"/>
 
   <xsd:element name="foo" a:title="Foo element">
-    <xsd:annotation id="CORGE" a:title="Corge annotation">
+    <xsd:annotation id="inner-annotation" a:title="Corge annotation">
       <xsd:documentation>Lorem ipsum</xsd:documentation>
+      <xsd:documentation id="inner-doc">Lorem ipsum</xsd:documentation>
     </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element ref="foo-bar"/>
+      <xsd:element ref="foo-baz" id="inner1"/>
+
+      <xsd:choice>
+        <xsd:element ref="foo-bar"/>
+        <xsd:element name="baz"/>
+      </xsd:choice>
+
+      <xsd:choice>
+        <xsd:element ref="foo-foo"/>
+        <xsd:element name="inner-foo" id="inner2">
+          <xsd:type>
+            <xsd:restriction base="xsd:string">
+              <xsd:enumeration value="FOO"/>
+              <xsd:enumeration value="BAR" id="BAR"/>
+            </xsd:restriction>
+          </xsd:type>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:sequence>
   </xsd:element>
 
   <xsd:group name="qux" a:title="Qux"/>
@@ -57,6 +84,10 @@
     <a:item key="axsd:types" value="baz"/>
     <a:item key="axsd:types" value="corge"/>
     <a:item key="axsd:elements-with-id" value="corge"/>
-    <a:item key="axsd:elements-with-id" value="CORGE"/>
+    <a:item key="axsd:elements-with-id" value="inner-annotation"/>
+    <a:item key="axsd:elements-with-id" value="inner-doc"/>
+    <a:item key="axsd:elements-with-id" value="inner1"/>
+    <a:item key="axsd:elements-with-id" value="inner2"/>
+    <a:item key="axsd:elements-with-id" value="BAR"/>
   </a:data>
 </a:doc>

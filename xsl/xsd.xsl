@@ -117,7 +117,7 @@
 
       <p>The templates with mode <code>axsd:linkto</code> create
       internal links if the target does not have a namespace prefix
-      and is present in the current document. They may be replaced by
+      and is present in the current document. They may be overridden by
       more sophisticated mechanisms linking to other documents.</p>
     </xsd:documentation>
   </xsd:annotation>
@@ -186,26 +186,7 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template
-      match="/*/xsd:*[@name]"
-      mode="a:id"
-      rdfs:label="Create text">
-    <xsl:choose>
-      <xsl:when
-          test="local-name() = 'simpleType' or local-name() = 'complexType'">
-        <xsl:value-of select="'type'"/>
-      </xsl:when>
-
-      <xsl:otherwise>
-        <xsl:value-of select="local-name()"/>
-      </xsl:otherwise>
-    </xsl:choose>
-
-    <xsl:value-of select="concat('-', @name)"/>
-  </xsl:template>
-
   <xsl:template match="@*" mode="axsd:title-suffix">
-    <xsl:text> </xsl:text>
     <xsl:text> </xsl:text>
 
     <code>
@@ -319,10 +300,16 @@
     <code>
       <xsl:value-of select="@name|@ref"/>
     </code>
+
+    <xsl:apply-templates select="@type" mode="axsd:title-suffix"/>
   </xsl:template>
 
   <xsl:template match="*" mode="axsd:heading">
     <p>
+      <xsl:attribute name="id">
+        <xsl:apply-templates select="." mode="a:id"/>
+      </xsl:attribute>
+
       <xsl:apply-templates select="." mode="a:title"/>
     </p>
   </xsl:template>
@@ -363,16 +350,16 @@
     </section>
   </xsl:template>
 
-  <xsl:template match="xsd:documentation[xh:*]" mode="axsd:main">
-    <div class="xsd-documentation">
-      <xsl:apply-templates mode="a:copy"/>
-    </div>
-  </xsl:template>
-
   <xsl:template
       match="xsd:annotation|xsd:documentation|xsd:simpleType[not(@*)]"
       mode="axsd:main">
     <xsl:apply-templates mode="axsd:main"/>
+  </xsl:template>
+
+  <xsl:template match="xsd:documentation[xh:*]" mode="axsd:main">
+    <div class="xsd-documentation">
+      <xsl:apply-templates mode="a:copy"/>
+    </div>
   </xsl:template>
 
   <xsl:template match="xsd:appinfo" mode="axsd:main">
@@ -435,10 +422,8 @@
         <tbody>
           <xsl:for-each select="/*/xsd:import">
             <tr>
-              <td>
-                <code>
-                  <xsl:value-of select="@namespace"/>
-                </code>
+              <td class="code">
+                <xsl:value-of select="@namespace"/>
               </td>
 
               <td>
@@ -530,7 +515,7 @@
   </xsl:template>
 
   <xsl:template
-      match="xsd:import"
+      match="xsd:import[1]"
       mode="axsd:toc-li"
       rdfs:label="Create &lt;li&gt; for the TOC">
     <li>
@@ -541,7 +526,7 @@
   </xsl:template>
 
   <xsl:template
-      match="xsd:include"
+      match="xsd:include[1]"
       mode="axsd:toc-li"
       rdfs:label="Create &lt;li&gt; for the TOC">
     <li>
