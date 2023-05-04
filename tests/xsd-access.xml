@@ -36,6 +36,10 @@
     </xsl:template>
   </xsl:stylesheet>
 
+  <xsd:import namespace="http://foo.example.info"/>
+
+  <xsd:import namespace="http://bar.example.info"/>
+
   <xsd:attribute name="foo" a:title="Foo"/>
 
   <xsd:attributeGroup name="bar" a:title="Bar" id="corge"/>
@@ -83,6 +87,7 @@
     <a:item key="axsd:types" value="quux"/>
     <a:item key="axsd:types" value="baz"/>
     <a:item key="axsd:types" value="corge"/>
+    <a:item key="axsd:imports" value="http://foo.example.info"/>
     <a:item key="axsd:elements-with-id" value="corge"/>
     <a:item key="axsd:elements-with-id" value="inner-annotation"/>
     <a:item key="axsd:elements-with-id" value="inner-doc"/>

@@ -54,6 +54,12 @@
       rdfs:label="Named types defined in the current document"/>
 
   <xsl:key
+      name="axsd:imports"
+      match="/*/xsd:import"
+      use="@namespace"
+      rdfs:label="Imports present in the current document"/>
+
+  <xsl:key
       name="axsd:namedRestrictions"
       match="/*/xsd:simpleType|/*/xsd:complexType"
       use="xsd:restriction/@base"
