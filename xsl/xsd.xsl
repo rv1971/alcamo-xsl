@@ -124,6 +124,14 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Variables</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:variable name="axsd:elementsWithId" select="//xsd:*[@id]"/>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Links</h2>
 
       <p>The templates with mode <code>axsd:linkto</code> create
@@ -832,7 +840,7 @@
       </thead>
 
       <tbody>
-        <xsl:for-each select="//xsd:*[@id]">
+        <xsl:for-each select="$axsd:elementsWithId">
           <tr>
             <td class="code">
               <a href="#{@id}">
@@ -870,7 +878,9 @@
       rdfs:label="Create appendix &lt;h2&gt; and call further templates">
     <h2 id="appendix">Appendix</h2>
 
-    <xsl:call-template name="axsd:elements-with-id"/>
+    <xsl:if test="$axsd:elementsWithId">
+      <xsl:call-template name="axsd:elements-with-id"/>
+    </xsl:if>
 
     <xsl:call-template name="axsd:references"/>
   </xsl:template>
