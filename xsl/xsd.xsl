@@ -199,6 +199,25 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template name="axsd:link-list">
+    <xsl:param name="elements"/>
+
+    <ul class="code">
+      <xsl:for-each select="$elements">
+        <li>
+          <a>
+            <xsl:attribute name="href">
+              <xsl:text>#</xsl:text>
+              <xsl:apply-templates select="." mode="a:id"/>
+            </xsl:attribute>
+
+            <xsl:value-of select="@name"/>
+          </a>
+        </li>
+      </xsl:for-each>
+    </ul>
+  </xsl:template>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Heading text</h2>
@@ -515,6 +534,36 @@
     </table>
   </xsl:template>
 
+  <xsl:template match="/*/xsd:*" mode="axsd:restrictions-extensions">
+    <xsl:variable
+        name="restrictions"
+        select="key('axsd:namedRestrictions', @name)"/>
+
+    <xsl:if test="$restrictions">
+      <section>
+        <p>Restrictions</p>
+
+        <xsl:call-template name="axsd:link-list">
+          <xsl:with-param name="elements" select="$restrictions"/>
+        </xsl:call-template>
+      </section>
+    </xsl:if>
+
+    <xsl:variable
+        name="extensions"
+        select="key('axsd:namedExtensions', @name)"/>
+
+    <xsl:if test="$extensions">
+      <section>
+        <p>Extensions</p>
+
+        <xsl:call-template name="axsd:link-list">
+          <xsl:with-param name="elements" select="$extensions"/>
+        </xsl:call-template>
+      </section>
+    </xsl:if>
+  </xsl:template>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Document body</h2>
@@ -534,7 +583,7 @@
   </xsl:template>
 
   <xsl:template
-      match="xsd:attributeGroup|xsd:complexType|xsd:extension|xsd:restriction"
+      match="xsd:attributeGroup|xsd:extension|xsd:restriction"
       mode="axsd:main">
     <section>
       <xsl:apply-templates select="." mode="axsd:heading"/>
@@ -564,6 +613,56 @@
       <xsl:apply-templates
           select="*[not(self::xsd:annotation)][not(self::xsd:attribute)][not(self::xsd:attributeGroup)][not(self::xsd:anyAttribute)]"
           mode="axsd:main"/>
+    </section>
+  </xsl:template>
+
+  <xsl:template
+      match="xsd:complexType"
+      mode="axsd:main">
+    <section>
+      <xsl:apply-templates select="." mode="axsd:heading"/>
+
+      <xsl:apply-templates select="." mode="axsd:generic-attrs"/>
+
+      <xsl:apply-templates select="xsd:annotation" mode="axsd:main"/>
+
+      <xsl:if test="xsd:attribute|xsd:attributeGroup">
+        <section>
+          <xsl:if test="not(self::xsd:attributeGroup)">
+            <p>Attributes</p>
+          </xsl:if>
+
+          <xsl:if test="count(xsd:attribute) &gt;= $axsd:minAttrOverviewSize">
+            <xsl:apply-templates select="." mode="axsd:attr-overview"/>
+          </xsl:if>
+
+          <ul class="xsd-attributes">
+            <xsl:apply-templates
+                select="xsd:attribute|xsd:attributeGroup|xsd:anyAttribute"
+                mode="axsd:main"/>
+          </ul>
+        </section>
+      </xsl:if>
+
+      <xsl:apply-templates
+          select="*[not(self::xsd:annotation)][not(self::xsd:attribute)][not(self::xsd:attributeGroup)][not(self::xsd:anyAttribute)]"
+          mode="axsd:main"/>
+
+      <xsl:apply-templates select="." mode="axsd:restrictions-extensions"/>
+    </section>
+  </xsl:template>
+
+  <xsl:template match="/*/xsd:simpleType" mode="axsd:main">
+    <section>
+      <xsl:apply-templates select="." mode="axsd:heading"/>
+
+      <xsl:apply-templates select="." mode="axsd:generic-attrs"/>
+
+      <xsl:apply-templates select="xsd:annotation" mode="axsd:main"/>
+
+      <xsl:apply-templates mode="axsd:main"/>
+
+      <xsl:apply-templates select="." mode="axsd:restrictions-extensions"/>
     </section>
   </xsl:template>
 

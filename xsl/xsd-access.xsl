@@ -54,6 +54,18 @@
       rdfs:label="Named types defined in the current document"/>
 
   <xsl:key
+      name="axsd:namedRestrictions"
+      match="/*/xsd:simpleType|/*/xsd:complexType"
+      use="xsd:restriction/@base"
+      rdfs:label="Top-level restriction types defined in the current document"/>
+
+  <xsl:key
+      name="axsd:namedExtensions"
+      match="/*/xsd:complexType"
+      use="xsd:complexContent/xsd:extension/@base|xsd:simpleContent/xsd:extension/@base"
+      rdfs:label="Top-level extension types defined in the current document"/>
+
+  <xsl:key
       name="axsd:elements-with-id"
       match="//xsd:*[@id]"
       use="@id"

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="#xslt" type="text/xml"?>
+
+<a:doc
+    xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
+    xmlns:axsd="tag:rv1971@web.de,2021:alcamo-xsl:xsd#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsl:stylesheet
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xmlns:axsd="tag:rv1971@web.de,2021:alcamo-xsl:xsd#"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xml:id="xslt"
+      version="1.0"
+      exclude-result-prefixes="axsd xsd">
+    <xsl:import href="../xsl/xsd-access.xsl"/>
+
+    <xsl:template match="/">
+      <a:result>
+        <xsl:apply-templates select="/a:doc/a:data"/>
+     </a:result>
+    </xsl:template>
+
+    <xsl:template match="a:item">
+      <xsl:variable name="xsdElems" select="key(@key, @value)"/>
+
+      <a:item>
+        <xsl:value-of select="@key"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="@value"/>
+
+        <xsl:for-each select="$xsdElems">
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="@name"/>
+        </xsl:for-each>
+      </a:item>
+    </xsl:template>
+  </xsl:stylesheet>
+
+  <xsd:simpleType name="foo"/>
+
+  <xsd:simpleType name="foo2">
+    <xsd:restriction base="foo"/>
+  </xsd:simpleType>
+
+  <xsd:complexType name="foo3">
+    <xsd:restriction base="foo"/>
+  </xsd:complexType>
+
+  <xsd:simpleType name="bar"/>
+
+  <xsd:complexType name="bar2">
+    <xsd:complexContent>
+      <xsd:extension base="bar"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="bar3">
+    <xsd:simpleContent>
+      <xsd:extension base="bar"/>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <a:data>
+    <a:item key="axsd:namedRestrictions" value="foo"/>
+    <a:item key="axsd:namedExtensions" value="bar"/>
+  </a:data>
+</a:doc>
