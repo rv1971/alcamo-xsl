@@ -31,6 +31,12 @@
       <h2>Introduction</h2>
 
       <p>This stylesheet is used to format XSDs for human readers.</p>
+
+      <p>Each top-level element other than documentation gets a level
+      3 heading. Level 2 and level 3 headings in top-level
+      <code>&lt;xsd:annotation></code> elements containing
+      <code>&lt;xsd:documentation></code>, together with the generated
+      level 3 headings, are used to create a table of contents.</p>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -74,9 +80,8 @@
     <axsd:element id="field">Field</axsd:element>
     <axsd:element id="keyref">Keyref</axsd:element>
     <axsd:element id="key">Key</axsd:element>
-    <axsd:element id="length">length</axsd:element>
+    <axsd:element id="length">Length</axsd:element>
     <axsd:element id="list">List</axsd:element>
-    <axsd:element id="localAttribute"></axsd:element>
     <axsd:element id="maxInclusive">Max inclusive</axsd:element>
     <axsd:element id="maxLength">Max length</axsd:element>
     <axsd:element id="minInclusive">Min inclusive</axsd:element>
@@ -134,10 +139,14 @@
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Links</h2>
 
-      <p>The templates with mode <code>a:linkto</code> create
-      internal links if the target does not have a namespace prefix
-      and is present in the current document. They may be overridden by
-      more sophisticated mechanisms linking to other documents.</p>
+      <p>The templates with mode <code>a:linkto</code> create internal
+      links if the target does not have a namespace prefix and is
+      present in the current document. If the target does not have a
+      namespace prefix and is not present in the current document,
+      they attempt to link to an immediately included document.</p>
+
+      <p>These templates may be overridden by mechanisms linking to
+      other documents in a more sophisticated way.</p>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -145,17 +154,51 @@
       match="@base|@itemType|@type"
       mode="a:linkto"
       rdfs:label="Create &lt;code&gt; or &lt;a&gt;">
+    <xsl:variable name="link">
+      <xsl:choose>
+        <xsl:when test="contains(., ':')">
+          <code>
+            <xsl:value-of select="."/>
+          </code>
+        </xsl:when>
+
+        <xsl:when test="key('axsd:types', .)">
+          <a href="#type-{.}" class="code">
+            <xsl:value-of select="."/>
+          </a>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:variable name="name" select="."/>
+
+          <xsl:for-each select="/*/xsd:include/@schemaLocation">
+            <xsl:variable name="schemaLocation" select="."/>
+
+            <xsl:for-each select="document(.)">
+              <xsl:variable
+                  name="definition"
+                  select="key('axsd:types', $name)"/>
+
+              <xsl:if test="$definition">
+                <a href="{$schemaLocation}#type-{$name}" class="code">
+                  <xsl:value-of select="$name"/>
+                </a>
+              </xsl:if>
+            </xsl:for-each>
+          </xsl:for-each>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <xsl:choose>
-      <xsl:when test="contains(., ':') or not(key('axsd:types', .))">
-        <code>
-          <xsl:value-of select="."/>
-        </code>
+      <xsl:when test="$link != ''">
+        <xsl:copy-of select="$link"/>
       </xsl:when>
 
       <xsl:otherwise>
-        <a href="#type-{.}" class="code">
+        <code>
           <xsl:value-of select="."/>
-        </a>
+        </code>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -164,18 +207,55 @@
       match="@ref"
       mode="a:linkto"
       rdfs:label="Create &lt;code&gt; or &lt;a&gt;">
+    <xsl:variable name="keyName" select="concat('axsd:', local-name(..), 's')"/>
+
+    <xsl:variable name="link">
+      <xsl:choose>
+        <xsl:when test="contains(., ':')">
+          <code>
+            <xsl:value-of select="."/>
+          </code>
+        </xsl:when>
+
+        <xsl:when test="key($keyName, .)">
+          <a href="#{local-name(..)}-{.}" class="code">
+            <xsl:value-of select="."/>
+          </a>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:variable name="ref" select="."/>
+
+          <xsl:for-each select="/*/xsd:include/@schemaLocation">
+            <xsl:variable name="schemaLocation" select="."/>
+
+            <xsl:for-each select="document(.)">
+              <xsl:variable
+                  name="definition"
+                  select="key($keyName, $ref)"/>
+
+              <xsl:if test="$definition">
+                <a
+                    href="{$schemaLocation}#{local-name($ref/..)}-{$ref}"
+                    class="code">
+                  <xsl:value-of select="$ref"/>
+                </a>
+              </xsl:if>
+            </xsl:for-each>
+          </xsl:for-each>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <xsl:choose>
-      <xsl:when
-          test="contains(., ':') or not(key(concat('axsd:', local-name(..), 's'), .))">
-        <code>
-          <xsl:value-of select="."/>
-        </code>
+      <xsl:when test="$link != ''">
+        <xsl:copy-of select="$link"/>
       </xsl:when>
 
       <xsl:otherwise>
-        <a href="#{local-name(..)}-{.}" class="code">
+        <code>
           <xsl:value-of select="."/>
-        </a>
+        </code>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -184,38 +264,53 @@
       match="xsd:element/@ref"
       mode="a:linkto"
       rdfs:label="Create &lt;code&gt; or &lt;a&gt;">
+    <xsl:variable name="link">
+      <xsl:choose>
+        <xsl:when test="contains(., ':')">
+          <code>
+            <xsl:value-of select="concat('&lt;', ., '&gt;')"/>
+          </code>
+        </xsl:when>
+
+        <xsl:when test="key('axsd:elements', .)">
+          <a href="#element-{.}" class="code">
+            <xsl:value-of select="concat('&lt;', ., '&gt;')"/>
+          </a>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:variable name="ref" select="."/>
+
+          <xsl:for-each select="/*/xsd:include/@schemaLocation">
+            <xsl:variable name="schemaLocation" select="."/>
+
+            <xsl:for-each select="document(.)">
+              <xsl:variable
+                  name="definition"
+                  select="key('axsd:elements', $ref)"/>
+
+              <xsl:if test="$definition">
+                <a href="{$schemaLocation}#element-{$ref}" class="code">
+                  <xsl:value-of select="$ref"/>
+                </a>
+              </xsl:if>
+            </xsl:for-each>
+          </xsl:for-each>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <xsl:choose>
-      <xsl:when test="contains(., ':') or not(key('axsd:elements', .))">
-        <code>
-          <xsl:value-of select="concat('&lt;', ., '&gt;')"/>
-        </code>
+      <xsl:when test="$link != ''">
+        <xsl:copy-of select="$link"/>
       </xsl:when>
 
       <xsl:otherwise>
-        <a href="#element-{.}" class="code">
+        <code>
           <xsl:value-of select="concat('&lt;', ., '&gt;')"/>
-        </a>
+        </code>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template name="axsd:link-list">
-    <xsl:param name="elements"/>
-
-    <ul class="code">
-      <xsl:for-each select="$elements">
-        <li>
-          <a>
-            <xsl:attribute name="href">
-              <xsl:text>#</xsl:text>
-              <xsl:apply-templates select="." mode="a:id"/>
-            </xsl:attribute>
-
-            <xsl:value-of select="@name"/>
-          </a>
-        </li>
-      </xsl:for-each>
-    </ul>
   </xsl:template>
 
   <xsd:annotation>
@@ -316,7 +411,7 @@
     <xsl:call-template name="a:occurrence"/>
   </xsl:template>
 
-  <xsl:template match="xsd:attribute[not(parent::xsd:schema)]" mode="a:title">
+  <xsl:template match="xsd:attribute[.. != /*]" mode="a:title">
     <xsl:apply-templates select="@name|@ref" mode="axsd:title-suffix"/>
 
     <xsl:apply-templates select="@type" mode="axsd:title-suffix"/>
@@ -326,7 +421,7 @@
     <xsl:apply-templates select="@default|@fixed" mode="axsd:title-suffix"/>
   </xsl:template>
 
-  <xsl:template match="xsd:element[not(parent::xsd:schema)]" mode="a:title">
+  <xsl:template match="xsd:element[.. != /*]" mode="a:title">
     <xsl:apply-templates select="@name|@ref" mode="axsd:title-suffix"/>
 
     <xsl:apply-templates select="@type" mode="axsd:title-suffix"/>
@@ -387,7 +482,7 @@
       <xsl:apply-templates select="@*" mode="axsd:generic-attrs"/>
     </xsl:variable>
 
-    <xsl:if test="$content">
+    <xsl:if test="$content != ''">
       <table class="xsd-generic-attrs">
         <tbody>
           <xsl:copy-of select="$content"/>
@@ -543,9 +638,13 @@
       <section>
         <p>Restrictions</p>
 
-        <xsl:call-template name="axsd:link-list">
-          <xsl:with-param name="elements" select="$restrictions"/>
-        </xsl:call-template>
+        <ul class="code">
+          <xsl:for-each select="$restrictions">
+            <li>
+              <xsl:apply-templates select="." mode="a:a"/>
+            </li>
+          </xsl:for-each>
+        </ul>
       </section>
     </xsl:if>
 
@@ -557,9 +656,13 @@
       <section>
         <p>Extensions</p>
 
-        <xsl:call-template name="axsd:link-list">
-          <xsl:with-param name="elements" select="$extensions"/>
-        </xsl:call-template>
+        <ul class="code">
+          <xsl:for-each select="$extensions">
+            <li>
+              <xsl:apply-templates select="." mode="a:a"/>
+            </li>
+          </xsl:for-each>
+        </ul>
       </section>
     </xsl:if>
   </xsl:template>
@@ -705,11 +808,11 @@
   </xsl:template>
 
   <xsl:template
-      match="xsd:attribute[not(parent::xsd:schema)]
-             |xsd:attributeGroup[not(parent::xsd:schema)]
-             |xsd:anyAttribute[not(parent::xsd:schema)]
-             |xsd:element[not(parent::xsd:schema)]
-             |xsd:group[not(parent::xsd:schema)]"
+      match="xsd:attribute[.. != /*]
+             |xsd:attributeGroup[.. != /*]
+             |xsd:anyAttribute[.. != /*]
+             |xsd:element[.. != /*]
+             |xsd:group[.. != /*]"
       mode="axsd:main">
     <li>
       <xsl:apply-templates select="." mode="axsd:heading"/>
@@ -853,7 +956,7 @@
 
       <!-- If the sub-toc is nonempty, wrap it into a <ul> element. -->
 
-      <xsl:if test="$subToc">
+      <xsl:if test="$subToc != ''">
         <ul>
           <xsl:copy-of select="$subToc"/>
         </ul>
