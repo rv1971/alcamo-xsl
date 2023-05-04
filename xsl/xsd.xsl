@@ -349,6 +349,10 @@
 
   <xsl:template match="@*" mode="axsd:generic-attrs"/>
 
+  <xsl:template match="@*[namespace-uri()]" mode="axsd:generic-attrs">
+    <xsl:apply-templates select="." mode="a:tr"/>
+  </xsl:template>
+
   <xsl:template match="@id" mode="axsd:generic-attrs">
     <tr id="{.}">
       <th>id</th>
@@ -359,33 +363,15 @@
     </tr>
   </xsl:template>
 
-  <xsl:template match="@owl:sameAs" mode="axsd:generic-attrs">
-    <tr>
-      <th>owl:sameAs</th>
-
-      <td>
-        <a href="{.}">
-          <xsl:value-of select="."/>
-        </a>
-      </td>
-    </tr>
-  </xsl:template>
-
-  <xsl:template match="@rdfs:label" mode="axsd:generic-attrs">
-    <tr>
-      <th>rdfs:label</th>
-
-      <td>
-        <xsl:value-of select="."/>
-      </td>
-    </tr>
-  </xsl:template>
-
   <xsl:template match="xsd:*" mode="axsd:generic-attrs">
-    <xsl:if test="@id|@rdfs:label">
+    <xsl:variable name="content">
+      <xsl:apply-templates select="@*" mode="axsd:generic-attrs"/>
+    </xsl:variable>
+
+    <xsl:if test="$content">
       <table class="xsd-generic-attrs">
         <tbody>
-          <xsl:apply-templates select="@*" mode="axsd:generic-attrs"/>
+          <xsl:copy-of select="$content"/>
         </tbody>
       </table>
     </xsl:if>
