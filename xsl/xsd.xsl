@@ -134,7 +134,7 @@
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Links</h2>
 
-      <p>The templates with mode <code>axsd:linkto</code> create
+      <p>The templates with mode <code>a:linkto</code> create
       internal links if the target does not have a namespace prefix
       and is present in the current document. They may be overridden by
       more sophisticated mechanisms linking to other documents.</p>
@@ -143,7 +143,7 @@
 
   <xsl:template
       match="@base|@itemType|@type"
-      mode="axsd:linkto"
+      mode="a:linkto"
       rdfs:label="Create &lt;code&gt; or &lt;a&gt;">
     <xsl:choose>
       <xsl:when test="contains(., ':') or not(key('axsd:types', .))">
@@ -162,7 +162,7 @@
 
   <xsl:template
       match="@ref"
-      mode="axsd:linkto"
+      mode="a:linkto"
       rdfs:label="Create &lt;code&gt; or &lt;a&gt;">
     <xsl:choose>
       <xsl:when
@@ -182,7 +182,7 @@
 
   <xsl:template
       match="xsd:element/@ref"
-      mode="axsd:linkto"
+      mode="a:linkto"
       rdfs:label="Create &lt;code&gt; or &lt;a&gt;">
     <xsl:choose>
       <xsl:when test="contains(., ':') or not(key('axsd:elements', .))">
@@ -216,7 +216,7 @@
   <xsl:template match="@base" mode="axsd:title-suffix">
     <xsl:text> of </xsl:text>
 
-    <xsl:apply-templates select="." mode="axsd:linkto"/>
+    <xsl:apply-templates select="." mode="a:linkto"/>
   </xsl:template>
 
   <xsl:template match="@default|@fixed" mode="axsd:title-suffix">
@@ -230,7 +230,7 @@
   <xsl:template match="@itemType|@type" mode="axsd:title-suffix">
     <xsl:text> of type </xsl:text>
 
-    <xsl:apply-templates select="." mode="axsd:linkto"/>
+    <xsl:apply-templates select="." mode="a:linkto"/>
   </xsl:template>
 
   <xsl:template match="@name" mode="axsd:title-suffix">
@@ -254,7 +254,7 @@
   </xsl:template>
 
   <xsl:template match="@ref" mode="axsd:title-suffix">
-    <xsl:apply-templates select="." mode="axsd:linkto"/>
+    <xsl:apply-templates select="." mode="a:linkto"/>
   </xsl:template>
 
   <xsl:template match="@use" mode="axsd:title-suffix">
@@ -420,7 +420,7 @@
             </td>
 
             <td>
-              <xsl:apply-templates select="@type" mode="axsd:linkto"/>
+              <xsl:apply-templates select="@type" mode="a:linkto"/>
             </td>
 
             <td>
