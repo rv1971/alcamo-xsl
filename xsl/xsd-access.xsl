@@ -115,7 +115,7 @@
   <xsl:template match="xsd:*" mode="a:id" rdfs:label="Create ID text">
     <xsl:param name="intermediate"/>
 
-    <xsl:if test=".. != /*">
+    <xsl:if test="count(..|/*) = 2">
       <xsl:apply-templates select=".." mode="a:id">
         <xsl:with-param name="intermediate" select="1"/>
       </xsl:apply-templates>
@@ -123,7 +123,7 @@
 
     <xsl:if
         test="not($intermediate) or not(self::xsd:complexContent|self::xsd:extension|self::xsd:restriction|self::xsd:simpleContent)">
-      <xsl:if test=".. != /*">
+      <xsl:if test="count(..|/*) = 2">
         <xsl:text>.</xsl:text>
       </xsl:if>
 

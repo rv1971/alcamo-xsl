@@ -478,23 +478,15 @@ considered as documentation.
       </xsl:message>
     </xsl:if>
 
-    <xsl:if test="$axsl:intro">
-      <xsl:apply-templates select="$axsl:intro" mode="axsl:main"/>
-    </xsl:if>
+    <xsl:apply-templates select="$axsl:intro" mode="axsl:main"/>
 
     <xsl:if test="/*/xsl:import">
       <xsl:call-template name="axsl:imports"/>
     </xsl:if>
 
-    <xsl:choose>
-      <xsl:when test="$axsl:intro">
-        <xsl:apply-templates select="/*/*[. != $axsl:intro]" mode="axsl:main"/>
-      </xsl:when>
-
-      <xsl:otherwise>
-        <xsl:apply-templates select="/*/*" mode="axsl:main"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:apply-templates
+        select="/*/*[count(.|$axsl:intro) = count($axsl:intro) + 1]"
+        mode="axsl:main"/>
 
     <xsl:call-template name="axsl:references"/>
   </xsl:template>

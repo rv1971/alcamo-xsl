@@ -411,7 +411,7 @@
     <xsl:call-template name="a:occurrence"/>
   </xsl:template>
 
-  <xsl:template match="xsd:attribute[.. != /*]" mode="a:title">
+  <xsl:template match="xsd:attribute[count(..|/*) = 2]" mode="a:title">
     <xsl:apply-templates select="@name|@ref" mode="axsd:title-suffix"/>
 
     <xsl:apply-templates select="@type" mode="axsd:title-suffix"/>
@@ -421,7 +421,7 @@
     <xsl:apply-templates select="@default|@fixed" mode="axsd:title-suffix"/>
   </xsl:template>
 
-  <xsl:template match="xsd:element[.. != /*]" mode="a:title">
+  <xsl:template match="xsd:element[count(..|/*) = 2]" mode="a:title">
     <xsl:apply-templates select="@name|@ref" mode="axsd:title-suffix"/>
 
     <xsl:apply-templates select="@type" mode="axsd:title-suffix"/>
@@ -808,11 +808,11 @@
   </xsl:template>
 
   <xsl:template
-      match="xsd:attribute[.. != /*]
-             |xsd:attributeGroup[.. != /*]
-             |xsd:anyAttribute[.. != /*]
-             |xsd:element[.. != /*]
-             |xsd:group[.. != /*]"
+      match="xsd:attribute[count(..|/*) = 2]
+             |xsd:attributeGroup[count(..|/*) = 2]
+             |xsd:anyAttribute[count(..|/*) = 2]
+             |xsd:element[count(..|/*) = 2]
+             |xsd:group[count(..|/*) = 2]"
       mode="axsd:main">
     <li>
       <xsl:apply-templates select="." mode="axsd:heading"/>
