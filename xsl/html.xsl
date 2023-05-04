@@ -5,18 +5,19 @@
 <xsl:stylesheet
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:dc="http://purl.org/dc/terms/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
     version="1.0"
-    exclude-result-prefixes="a dc rdfs xsd"
+    exclude-result-prefixes="a dc owl rdfs xsd"
     xml:lang="en"
     dc:identifier="html"
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-01">
+    dc:modified="2023-05-04">
   <xsl:import href="text.xsl"/>
 
   <xsd:annotation>
@@ -29,7 +30,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Links to agents</h2>
+      <h2>Links</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -71,6 +72,34 @@
       <xsl:when test="contains($value, '@')">
         <a href="mailto:{$value}">
           <xsl:value-of select="substring-before($value, '@')"/>
+        </a>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:value-of select="$value"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template
+      name="a:linkto"
+      match="*|@*"
+      mode="a:linkto"
+      rdfs:label="Create link if value is an URL">
+    <xsl:param name="value" select="." rdfs:label="Value to format"/>
+
+    <xsl:choose>
+      <xsl:when test="starts-with($value, 'https://')">
+        <a href="{$value}">
+          <xsl:value-of
+              select="substring-after($value, 'https://')"/>
+        </a>
+      </xsl:when>
+
+      <xsl:when test="starts-with($value, 'http://')">
+        <a href="{$value}">
+          <xsl:value-of
+              select="substring-after($value, 'http://')"/>
         </a>
       </xsl:when>
 
@@ -351,6 +380,13 @@
       mode="a:auto"
       rdfs:label="Call a:agent">
     <xsl:call-template name="a:agent"/>
+  </xsl:template>
+
+  <xsl:template
+      match="@dc:rights|dc:rights|@owl:sameAs|owl:sameAs"
+      mode="a:auto"
+      rdfs:label="Call a:linkto">
+    <xsl:call-template name="a:linkto"/>
   </xsl:template>
 
   <xsl:template

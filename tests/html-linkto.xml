@@ -4,14 +4,16 @@
 
 <a:doc
     xmlns:dc="http://purl.org/dc/terms/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
   <xsl:stylesheet
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:dc="http://purl.org/dc/terms/"
+      xmlns:owl="http://www.w3.org/2002/07/owl#"
       xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
       xml:id="xslt"
       version="1.0"
-      exclude-result-prefixes="dc">
+      exclude-result-prefixes="dc owl">
     <xsl:import href="../xsl/html.xsl"/>
 
     <xsl:template match="/">
@@ -28,7 +30,7 @@
       </a:item>
     </xsl:template>
 
-    <xsl:template match="dc:*">
+    <xsl:template match="dc:*|owl:*">
       <a:item>
         <xsl:value-of select="."/>
         <xsl:value-of select="' '"/>
@@ -38,11 +40,11 @@
   </xsl:stylesheet>
 
   <a:data>
-    <dc:creator>no-mail</dc:creator>
-    <dc:publisher>alice@example.org</dc:publisher>
-    <dc:rightsHolder>mailto:bob@example.org</dc:rightsHolder>
-    <a:item dc:creator="Ken &lt;ken@example.org&gt;"/>
-    <a:item dc:publisher="http://www.example.com"/>
-    <a:item dc:rightsHolder="https://www.example.info/mary"/>
+    <dc:rights>http://example.com/rights</dc:rights>
+    <dc:rights>© Alice</dc:rights>
+    <owl:sameAs>tag:bob@example.com,2023:foo</owl:sameAs>
+    <a:item dc:rights="https://example.com/rights"/>
+    <a:item dc:rights="© Bob 1971"/>
+    <a:item owl:sameAs="https://example.com/testcase1"/>
   </a:data>
 </a:doc>
