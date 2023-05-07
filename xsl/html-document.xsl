@@ -306,6 +306,8 @@
       <body>
         <xsl:call-template name="a:page-header"/>
 
+        <xsl:call-template name="a:report-errors"/>
+
         <xsl:call-template name="a:page-main"/>
 
         <xsl:call-template name="a:page-footer"/>

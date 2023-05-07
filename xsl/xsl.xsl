@@ -482,8 +482,6 @@ generated for this content.
   </xsl:template>
 
   <xsl:template name="a:page-main">
-    <xsl:call-template name="a:report-errors"/>
-
     <xsl:apply-templates select="$axsl:intro" mode="axsl:main"/>
 
     <xsl:if test="/*/xsl:import">
