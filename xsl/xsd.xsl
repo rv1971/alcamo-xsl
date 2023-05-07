@@ -759,8 +759,6 @@
 
       <xsl:apply-templates select="." mode="axsd:generic-attrs"/>
 
-      <xsl:apply-templates select="xsd:annotation" mode="axsd:main"/>
-
       <xsl:apply-templates mode="axsd:main"/>
 
       <xsl:apply-templates select="." mode="axsd:restrictions-extensions"/>
@@ -781,7 +779,9 @@
         <xsl:apply-templates select="." mode="axsd:enum-overview"/>
       </xsl:if>
 
-      <xsl:apply-templates mode="axsd:main"/>
+      <xsl:apply-templates
+          select="*[not(self::xsd:annotation)]"
+          mode="axsd:main"/>
     </section>
   </xsl:template>
 
