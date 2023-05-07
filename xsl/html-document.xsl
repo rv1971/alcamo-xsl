@@ -118,7 +118,7 @@
         select="normalize-space($a:cssList)"
         rdfs:label="Whitespace-separated list of CSS files to link to"/>
 
-    <xsl:if test="$cssList != ''">
+    <xsl:if test="$cssList">
       <xsl:variable
           name="item"
           select="substring-before(concat($cssList, ' '), ' ')"/>
@@ -141,7 +141,7 @@
         select="normalize-space($a:jsList)"
         rdfs:label="Whitespace-separated list of JS files to link to"/>
 
-    <xsl:if test="$jsList != ''">
+    <xsl:if test="$jsList">
       <xsl:variable
           name="item"
           select="substring-before(concat($jsList, ' '), ' ')"/>

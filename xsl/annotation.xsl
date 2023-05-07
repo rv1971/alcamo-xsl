@@ -18,7 +18,7 @@
     dc:title="Process &lt;xsd:annotation&gt;"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-04">
+    dc:modified="2023-05-07">
   <xsl:import href="html.xsl"/>
 
   <xsd:annotation>
@@ -129,7 +129,7 @@
 
         <xsl:variable name="subToc">
           <xsl:choose>
-            <xsl:when test="$h2f != ''">
+            <xsl:when test="$h2f">
               <xsl:apply-templates
                   select="$h2f/preceding::xh:h3[count($h3f | .) = count($h3f)]"
                   mode="a:toc-li"/>
@@ -143,7 +143,7 @@
 
         <!-- If the sub-toc is nonempty, wrap it into a <ul> element. -->
 
-        <xsl:if test="$subToc">
+        <xsl:if test="$subToc != ''">
           <ul>
             <xsl:copy-of select="$subToc"/>
           </ul>

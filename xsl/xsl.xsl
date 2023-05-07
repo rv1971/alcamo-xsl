@@ -378,7 +378,7 @@
 
       <!-- If the sub-toc is nonempty, wrap it into a <ul> element. -->
 
-      <xsl:if test="$subToc">
+      <xsl:if test="$subToc != ''">
         <ul>
           <xsl:copy-of select="$subToc"/>
         </ul>
