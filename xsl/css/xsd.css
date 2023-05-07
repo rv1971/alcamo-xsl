@@ -2,7 +2,7 @@ section section section {
     margin-left: 1em;
 }
 
-.xsd-heading {
+section > p:first-child {
     color: #005A9C;
 }
 
@@ -27,6 +27,7 @@ ul.xsd-choice {
     list-style-type: circle;
 }
 
-ul.xsd-attributes {
+ul.xsd-attributes,
+ul.xsd-enumerators {
     list-style-type: square;
 }

@@ -429,6 +429,10 @@
     <xsl:call-template name="a:occurrence"/>
   </xsl:template>
 
+  <xsl:template match="xsd:enumeration" mode="a:title">
+    <xsl:apply-templates select="@value" mode="axsd:title-suffix"/>
+  </xsl:template>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Headings</h2>
@@ -787,12 +791,24 @@
 
       <xsl:apply-templates select="xsd:annotation" mode="axsd:main"/>
 
-      <xsl:if test="count(xsd:enumeration) &gt;= $axsd:minEnumOverviewSize">
-        <xsl:apply-templates select="." mode="axsd:enum-overview"/>
+      <xsl:if test="xsd:enumeration">
+        <section>
+          <xsl:if test="not(self::xsd:attributeGroup)">
+            <p>Enumeration</p>
+          </xsl:if>
+
+          <xsl:if test="count(xsd:enumeration) &gt;= $axsd:minEnumOverviewSize">
+            <xsl:apply-templates select="." mode="axsd:enum-overview"/>
+          </xsl:if>
+
+          <ul class="xsd-enumerators">
+            <xsl:apply-templates select="xsd:enumeration" mode="axsd:main"/>
+          </ul>
+        </section>
       </xsl:if>
 
       <xsl:apply-templates
-          select="*[not(self::xsd:annotation)]"
+          select="*[not(self::xsd:annotation)][not(self::xsd:enumeration)]"
           mode="axsd:main"/>
     </section>
   </xsl:template>
@@ -826,7 +842,8 @@
              |xsd:attributeGroup[count(..|/*) = 2]
              |xsd:anyAttribute[count(..|/*) = 2]
              |xsd:element[count(..|/*) = 2]
-             |xsd:group[count(..|/*) = 2]"
+             |xsd:group[count(..|/*) = 2]
+             |xsd:enumeration"
       mode="axsd:main">
     <li>
       <xsl:apply-templates select="." mode="axsd:heading"/>
