@@ -679,8 +679,6 @@
 
       <xsl:apply-templates select="." mode="axsd:generic-attrs"/>
 
-      <xsl:apply-templates select="xsd:annotation" mode="axsd:main"/>
-
       <xsl:apply-templates mode="axsd:main"/>
     </section>
   </xsl:template>
