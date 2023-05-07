@@ -418,6 +418,7 @@
       <xsl:apply-templates
           select="/*/xsd:annotation/xsd:documentation/xh:h2[. != 'Introduction']"
           mode="axsl:toc-li"/>
+
       <li>
         <p>
           <a href="#xslt-references">XSLT references</a>
