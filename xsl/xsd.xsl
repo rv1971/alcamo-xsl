@@ -442,6 +442,11 @@
       </xsl:attribute>
 
       <xsl:apply-templates select="." mode="a:title"/>
+
+      <xsl:if test="@rdfs:label">
+        <xsl:text>&#xa0;– </xsl:text>
+        <xsl:value-of select="@rdfs:label"/>
+      </xsl:if>
     </p>
   </xsl:template>
 
@@ -452,6 +457,11 @@
       </xsl:attribute>
 
       <xsl:apply-templates select="." mode="a:title"/>
+
+      <xsl:if test="@rdfs:label">
+        <xsl:text>&#xa0;– </xsl:text>
+        <xsl:value-of select="@rdfs:label"/>
+      </xsl:if>
     </h3>
   </xsl:template>
 
@@ -466,6 +476,8 @@
   <xsl:template match="@*[namespace-uri()]" mode="axsd:generic-attrs">
     <xsl:apply-templates select="." mode="a:tr"/>
   </xsl:template>
+
+  <xsl:template match="@rdfs:label" mode="axsd:generic-attrs" priority="1.0"/>
 
   <xsl:template match="@id" mode="axsd:generic-attrs">
     <tr id="{.}">
