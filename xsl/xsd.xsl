@@ -127,6 +127,21 @@
 
   <xsl:param name="sh:maxInlineAttrs" select="3"/>
 
+  <xsl:param
+      name="axsd:attrOverviewClasses"
+      select="'xsd-attr-overview'"
+      rdfs:label="CSS classes for attribute overview table"/>
+
+  <xsl:param
+      name="axsd:enumOverviewClasses"
+      select="'xsd-enum-overview'"
+      rdfs:label="CSS classes for enumerator overview table"/>
+
+  <xsl:param
+      name="axsd:genericAttrClasses"
+      select="'xsd-generic-attrs'"
+      rdfs:label="CSS classes for generic attributes table"/>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Variables</h2>
@@ -499,7 +514,7 @@
     </xsl:variable>
 
     <xsl:if test="$content != ''">
-      <table class="xsd-generic-attrs">
+      <table class="{$axsd:genericAttrClasses}">
         <tbody>
           <xsl:copy-of select="$content"/>
         </tbody>
@@ -514,7 +529,7 @@
   </xsd:annotation>
 
   <xsl:template match="xsd:*" mode="axsd:attr-overview">
-    <table class="xsd-attr-overview">
+    <table class="{$axsd:attrOverviewClasses}">
       <thead>
         <tr>
           <th>Name</th>
@@ -600,7 +615,7 @@
   </xsl:template>
 
   <xsl:template match="xsd:*" mode="axsd:enum-overview">
-    <table class="xsd-enum-overview">
+    <table class="{$axsd:enumOverviewClasses}">
       <thead>
         <tr>
           <th>Value</th>
@@ -830,7 +845,7 @@
   </xsl:template>
 
   <xsl:template match="xsd:appinfo" mode="axsd:main">
-    <section class="xsd-appinfo">
+    <section>
       <pre>
         <xsl:apply-templates mode="sh:xml"/>
       </pre>
