@@ -19,7 +19,7 @@
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-05-02">
+    dc:modified="2023-05-07">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -400,14 +400,6 @@
   </xsd:annotation>
 
   <xsl:template name="a:toc" rdfs:label="Create TOC &lt;ul&gt;">
-    <xsl:if test="/*/*[not(xsl:import)][1][not(self::xsd:annotation/xsd:documentation/xh:h2)]">
-      <xsl:message>
-There is top-level content other than &lt;xsl:import&gt; without a
-preceding &lt;h2&gt; in a documentation block. Not TOC entries are
-generated for this content.
-      </xsl:message>
-    </xsl:if>
-
     <ul id="toc">
      <xsl:if test="$axsl:intro">
        <li>
@@ -463,20 +455,34 @@ generated for this content.
     </ul>
   </xsl:template>
 
-  <xsl:template name="a:page-main">
+  <xsl:template name="a:collect-errors">
     <xsl:if test="/*/xh:*">
-      <xsl:message>
-There is top-level HTML content. It is not considered as
-documentation.
-      </xsl:message>
+      <p>
+There is top-level HTML content in this document. It is not
+processed as documentation.
+      </p>
     </xsl:if>
 
     <xsl:if test="/*/xsd:documentation">
-      <xsl:message>
-There are top-level &lt;xsd:documentation&gt; elements. They are not
-considered as documentation.
-      </xsl:message>
+      <p>
+There are top-level &lt;xsd:documentation&gt; elements. They
+are not processed as documentation.
+      </p>
     </xsl:if>
+
+    <xsl:if
+        test="/*/xsl:*[not(self::xsl:import)][1][not(preceding-sibling::xsd:annotation/xsd:documentation/xh:h2)]">
+      <p>
+There is top-level content other than &lt;xsl:import&gt; without a
+preceding &lt;h2&gt; in a documentation block. Not TOC entries are
+generated for this content.
+      </p>
+    </xsl:if>
+
+  </xsl:template>
+
+  <xsl:template name="a:page-main">
+    <xsl:call-template name="a:report-errors"/>
 
     <xsl:apply-templates select="$axsl:intro" mode="axsl:main"/>
 

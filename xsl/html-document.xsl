@@ -17,7 +17,7 @@
     dc:title="HTML document creation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-02">
+    dc:modified="2023-05-07">
   <xsl:import href="html.xsl"/>
   <xsl:import href="metadata.xsl"/>
   <xsl:import href="text.xsl"/>
@@ -64,6 +64,39 @@
       <h2>Parameters</h2>
     </xsd:documentation>
   </xsd:annotation>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <table>
+        <tbody>
+          <tr>
+            <th class="code">output</th>
+            <td>Report errors as HTML code in the result tree.</td>
+          </tr>
+
+          <tr>
+            <th class="code">message</th>
+            <td>Report errors via <code>&lt;xsl:message&gt;</code>.</td>
+          </tr>
+
+          <tr>
+            <th class="code">both</th>
+            <td>Report errors in both channels.</td>
+          </tr>
+
+          <tr>
+            <th>any other value</th>
+            <td>Do not report errors.</td>
+          </tr>
+        </tbody>
+      </table>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:param
+      name="a:errorReportingChannels"
+      select="'both'"
+      rdfs:label="How to report errors"/>
 
   <xsl:param
       name="a:cssList"
@@ -185,7 +218,41 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Page header</h2>
+      <h2>Error reporting</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      name="a:collect-errors"
+      rdfs:label="To be overriden in importing stylesheets"/>
+
+  <xsl:template
+      name="a:report-errors"
+      rdfs:label="If instantiation of a:collect-errors is nonempty, add it to the result tree and/or output it as a message">
+    <xsl:variable name="errors">
+      <xsl:call-template name="a:collect-errors"/>
+    </xsl:variable>
+
+    <xsl:if test="$errors != ''">
+      <xsl:if
+          test="$a:errorReportingChannels = 'output' or $a:errorReportingChannels = 'both'">
+        <div class="error">
+          <xsl:copy-of select="$errors"/>
+        </div>
+      </xsl:if>
+
+      <xsl:if
+          test="$a:errorReportingChannels = 'message' or $a:errorReportingChannels = 'both'">
+        <xsl:message>
+          <xsl:copy-of select="$errors"/>
+        </xsl:message>
+      </xsl:if>
+    </xsl:if>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Page skeleton</h2>
     </xsd:documentation>
   </xsd:annotation>
 
