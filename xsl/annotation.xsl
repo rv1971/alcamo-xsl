@@ -18,7 +18,7 @@
     dc:title="Process &lt;xsd:annotation&gt;"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-07">
+    dc:modified="2023-05-08">
   <xsl:import href="html.xsl"/>
 
   <xsd:annotation>
@@ -26,7 +26,7 @@
       <h2>Introduction</h2>
 
       <p>Templates to collect HTML documentation contained in
-      <code>&lt;xsd:annotation&gt;&lt;xsd:documentation&gt;....&lt;/xsd:annotation&gt;&lt;/xsd:documentation&gt;</code>
+      <code>&lt;xsd:annotation&gt;&lt;xsd:documentation&gt;...&lt;/xsd:annotation&gt;&lt;/xsd:documentation&gt;</code>
       blocks, creating TOC entries based on <code>&lt;h2&gt;</code>
       and <code>&lt;h3&gt;</code> elements in these blocks.</p>
     </xsd:documentation>
@@ -34,7 +34,23 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>General</h2>
+      <h2>Variables</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:variable
+      name="a:htmlDoc"
+      select="//xsd:annotation/xsd:documentation//xh:*"
+      rdfs:label="All HTML content in documentation blocks"/>
+
+  <xsl:variable
+      name="a:about"
+      select="/*/*[1][self::xsd:annotation]/xsd:documentation[xh:*][1]"
+      rdfs:label="The first documentation block with HTML content, if it is the first child of the document element"/>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Mode <code>a:copy</code></h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -47,11 +63,9 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsd:annotation>
-    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>HTML</h2>
-    </xsd:documentation>
-  </xsd:annotation>
+  <xsl:template match="xsd:annotation|xsd:documentation" mode="a:copy">
+    <xsl:apply-templates select="@*|node()" mode="a:copy"/>
+  </xsl:template>
 
   <xsl:template
       match="xh:h2|xh:h3|xh:h4|xh:h5|xh:h6"
@@ -67,11 +81,6 @@
       <xsl:apply-templates select="@*|node()" mode="a:copy"/>
     </xsl:element>
   </xsl:template>
-
-  <xsl:variable
-      name="a:htmlDoc"
-      select="//xsd:annotation/xsd:documentation//xh:*"
-      rdfs:label="All HTML elements in documentation blocks"/>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -151,4 +160,29 @@
       </xsl:if>
     </li>
   </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Page content</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>Prepend an <code>&lt;h2&gt;</code> heading "About" to
+      <code>$a:about</code> if the latter contains no
+      <code>&lt;h2&gt;</code>.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template name="a:about" rdfs:label="Create about-block from $a:about">
+    <xsl:if test="$a:about">
+      <xsl:if test="not($a:about//xh:h2)">
+        <h2 id="about">About</h2>
+      </xsl:if>
+
+      <xsl:apply-templates select="$a:about" mode="a:copy"/>
+    </xsl:if>
+  </xsl:template>
+
 </xsl:stylesheet>

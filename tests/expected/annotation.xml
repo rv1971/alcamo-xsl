@@ -24,6 +24,9 @@
       </ul>
     </li>
   </ul>
+  <h2 id="about">About</h2>
+  <p>This is the "about" block". A heading is generated
+      automatically by <code>a:about</code>, if not provided.</p>
   <div>
     <h2 id="foo">Foo</h2>
     <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed

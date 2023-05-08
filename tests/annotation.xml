@@ -6,6 +6,13 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>This is the "about" block". A heading is generated
+      automatically by <code>a:about</code>, if not provided.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
   <xsl:stylesheet
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:xh="http://www.w3.org/1999/xhtml"
@@ -24,7 +31,10 @@
               mode="a:toc-li"/>
         </ul>
 
-        <xsl:apply-templates select="/a:doc/xsd:annotation/xsd:documentation"/>
+        <xsl:call-template name="a:about"/>
+
+        <xsl:apply-templates
+            select="/a:doc/xsd:annotation/xsd:documentation[count(.|$a:about) = 2]"/>
      </a:result>
     </xsl:template>
 
