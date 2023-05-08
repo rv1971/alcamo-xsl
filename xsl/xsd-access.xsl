@@ -201,7 +201,57 @@
       </ul>
 
       <p><b>NOTE:</b> This works only if the default namespace in the
-      XSD is the target namepsace.</p>
+      XSD is the target namespace.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      name="axsd:label-aux"
+      match="xsd:element"
+      mode="axsd:label-aux"
+      rdfs:label="Lookup the label of an element">
+    <xsl:param
+        name="declaration"
+        select="."
+        rdfs:label="Element declaration"/>
+
+    <xsl:choose>
+      <xsl:when test="$declaration/@rdfs:label">
+        <xsl:value-of select="$declaration/@rdfs:label"/>
+      </xsl:when>
+
+      <xsl:when test="$declaration/@type">
+        <xsl:variable
+            name="type"
+            select="key('axsd:types', $declaration/@type)"/>
+
+        <xsl:choose>
+          <xsl:when test="$type/@rdfs:label">
+            <xsl:value-of select="$type/@rdfs:label"/>
+          </xsl:when>
+
+          <xsl:otherwise>
+            <xsl:value-of select="$declaration/@type"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:value-of select="@name"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>If a global element declaration is found, call
+      <code>axsd:label-aux</code> for it. Otherwise, call
+      <code>axsd:label-aux</code> for the first machting local
+      declaration.</p>
+
+      <p>The latter leads to correct results if the schema uses the
+      same labels for all local declarations of a given tag name. In
+      particular, if there is only one such declaration.</p>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -219,34 +269,20 @@
         select="$a:firstSchema"
         rdfs:label="XSD to search in"/>
 
-    <xsl:for-each select="$a:firstSchema">
+    <xsl:for-each select="$schema">
       <xsl:variable
           name="declaration"
           select="key('axsd:elements', $localName)"/>
 
       <xsl:choose>
-        <xsl:when test="$declaration/@rdfs:label">
-          <xsl:value-of select="$declaration/@rdfs:label"/>
-        </xsl:when>
-
-        <xsl:when test="$declaration/@type">
-          <xsl:variable
-              name="type"
-              select="key('axsd:types', $declaration/@type)"/>
-
-          <xsl:choose>
-            <xsl:when test="$type/@rdfs:label">
-              <xsl:value-of select="$type/@rdfs:label"/>
-            </xsl:when>
-
-            <xsl:otherwise>
-              <xsl:value-of select="$declaration/@type"/>
-            </xsl:otherwise>
-          </xsl:choose>
+        <xsl:when test="$declaration">
+          <xsl:apply-templates select="$declaration" mode="axsd:label-aux"/>
         </xsl:when>
 
         <xsl:otherwise>
-          <xsl:value-of select="$localName"/>
+          <xsl:apply-templates
+              select="key('axsd:localElements', $localName)[1]"
+              mode="axsd:label-aux"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>

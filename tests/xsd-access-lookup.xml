@@ -39,5 +39,6 @@
     <a:bar/>
     <a:baz/>
     <a:qux/>
+    <a:quux/>
   </a:data>
 </a:doc>

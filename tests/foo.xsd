@@ -14,5 +14,10 @@
 
   <xsd:element name="qux"/>
 
-  <xsd:complexType name="Bar" rdfs:label="Bar object"/>
+  <xsd:complexType name="Bar" rdfs:label="Bar object">
+    <xsd:sequence>
+      <xsd:element name="foo" rdfs:label="local Foo"/>
+      <xsd:element name="quux" rdfs:label="local Quux"/>
+    </xsd:sequence>
+  </xsd:complexType>
 </xsd:schema>

@@ -4,4 +4,5 @@
   <a:item>bar Bar object</a:item>
   <a:item>baz Baz</a:item>
   <a:item>qux qux</a:item>
+  <a:item>quux local Quux</a:item>
 </a:result>
