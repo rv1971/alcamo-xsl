@@ -50,7 +50,7 @@
       name="axsd:attributes"
       match="/*/xsd:attribute"
       use="@name"
-      rdfs:label="Attributes declared in the current document"/>
+      rdfs:label="Top-level attributes declared in the current document"/>
 
   <xsl:key
       name="axsd:attributeGroups"
@@ -62,7 +62,7 @@
       name="axsd:elements"
       match="/*/xsd:element"
       use="@name"
-      rdfs:label="Elements declared in the current document"/>
+      rdfs:label="Top-level elements declared in the current document"/>
 
   <xsl:key
       name="axsd:groups"
@@ -93,6 +93,12 @@
       match="/*/xsd:complexType"
       use="xsd:complexContent/xsd:extension/@base|xsd:simpleContent/xsd:extension/@base"
       rdfs:label="Top-level extension types defined in the current document"/>
+
+  <xsl:key
+      name="axsd:localElements"
+      match="/*/xsd:*//xsd:element"
+      use="@name"
+      rdfs:label="Elements declared locally in the current document"/>
 
   <xsl:key
       name="axsd:elements-with-id"

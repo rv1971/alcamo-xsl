@@ -8,6 +8,8 @@
   <a:item>axsd:types baz Baz type-baz</a:item>
   <a:item>axsd:types corge  </a:item>
   <a:item>axsd:imports http://foo.example.info  import.1</a:item>
+  <a:item>axsd:localElements foo  </a:item>
+  <a:item>axsd:localElements baz  element-foo.sequence.choice.1.element-baz</a:item>
   <a:item>axsd:elements-with-id corge Bar attributeGroup-bar</a:item>
   <a:item>axsd:elements-with-id inner-annotation Corge annotation element-foo.annotation</a:item>
   <a:item>axsd:elements-with-id inner-doc  element-foo.annotation.documentation.2</a:item>
