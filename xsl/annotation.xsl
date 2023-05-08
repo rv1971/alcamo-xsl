@@ -184,5 +184,4 @@
       <xsl:apply-templates select="$a:about" mode="a:copy"/>
     </xsl:if>
   </xsl:template>
-
 </xsl:stylesheet>

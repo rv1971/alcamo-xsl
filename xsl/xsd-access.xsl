@@ -7,6 +7,7 @@
     xmlns:dc="http://purl.org/dc/terms/"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
     xmlns:axsd="tag:rv1971@web.de,2021:alcamo-xsl:xsd#"
@@ -16,7 +17,29 @@
     dc:title="Access to XSD content"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-05-02"
-    dc:modified="2023-05-03">
+    dc:modified="2023-05-08">
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Variables</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:variable
+      name="a:firstSchemaLocation"
+      select="substring-before(
+          concat(
+              substring-after(normalize-space(/*/@xsi:schemaLocation), ' '),
+              ' '
+          ),
+          ' '
+      )"
+      rdfs:label="Url of first schema in xsi:schemaLocation"/>
+
+  <xsl:variable
+      name="a:firstSchema"
+      select="document($a:firstSchemaLocation, /*)"
+      rdfs:label="XSD loaded from $a:firstSchemaLocation"/>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Keys</h2>
@@ -151,5 +174,75 @@
         </xsl:if>
       </xsl:if>
     </xsl:if>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Lookup of data in the schema</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>Return the first non-empty of:</p>
+
+      <ul>
+        <li>The <code>rdfs:label</code> attribute of the element
+        declaration.</li>
+        <li>The <code>rdfs:label</code> attribute of the type
+        definition referenced by the element declaration, if available.</li>
+        <li>The element's local name.</li>
+      </ul>
+
+      <p><b>NOTE:</b> This works only if the default namespace in the
+      XSD is the target namepsace.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      name="axsd:label"
+      match="*"
+      mode="axsd:label"
+      rdfs:label="Lookup the label of an element">
+    <xsl:param
+        name="localName"
+        select="local-name(.)"
+        rdfs:label="Local name of element to look up label for"/>
+    <xsl:param
+        name="schema"
+        select="$a:firstSchema"
+        rdfs:label="XSD to search in"/>
+
+    <xsl:for-each select="$a:firstSchema">
+      <xsl:variable
+          name="declaration"
+          select="key('axsd:elements', $localName)"/>
+
+      <xsl:choose>
+        <xsl:when test="$declaration/@rdfs:label">
+          <xsl:value-of select="$declaration/@rdfs:label"/>
+        </xsl:when>
+
+        <xsl:when test="$declaration/@type">
+          <xsl:variable
+              name="type"
+              select="key('axsd:types', $declaration/@type)"/>
+
+          <xsl:choose>
+            <xsl:when test="$type/@rdfs:label">
+              <xsl:value-of select="$type/@rdfs:label"/>
+            </xsl:when>
+
+            <xsl:otherwise>
+              <xsl:value-of select="$declaration/@type"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:value-of select="$localName"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
   </xsl:template>
 </xsl:stylesheet>

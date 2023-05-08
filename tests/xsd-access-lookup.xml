@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="#xslt" type="text/xml"?>
+
+<a:doc
+    xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
+    xmlns:axsd="tag:rv1971@web.de,2021:alcamo-xsl:xsd#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="tag:rv1971@web.de,2021:alcamo-xsl# foo.xsd">
+  <xsl:stylesheet
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xmlns:axsd="tag:rv1971@web.de,2021:alcamo-xsl:xsd#"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xml:id="xslt"
+      version="1.0"
+      exclude-result-prefixes="axsd xsd xsi">
+    <xsl:import href="../xsl/xsd-access.xsl"/>
+
+    <xsl:template match="/">
+      <a:result>
+        <xsl:apply-templates select="/a:doc/a:data/a:*"/>
+     </a:result>
+    </xsl:template>
+
+    <xsl:template match="a:data/a:*">
+      <a:item>
+        <xsl:value-of select="local-name()"/>
+        <xsl:text> </xsl:text>
+
+        <xsl:apply-templates select="." mode="axsd:label"/>
+      </a:item>
+    </xsl:template>
+  </xsl:stylesheet>
+
+  <a:data>
+    <a:foo/>
+    <a:bar/>
+    <a:baz/>
+    <a:qux/>
+  </a:data>
+</a:doc>
