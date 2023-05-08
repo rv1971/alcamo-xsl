@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-05-07">
+    dc:modified="2023-05-08">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -1117,6 +1117,22 @@
     </xsl:if>
 
     <xsl:call-template name="axsd:references"/>
+  </xsl:template>
+
+  <xsl:template name="a:collect-errors">
+    <xsl:variable name="wrongId" select="/*/xsd:*[@name != @id]"/>
+
+    <xsl:if test="$wrongId">
+      <p>There are objects whose ID differs from their name:</p>
+
+      <ul class="code">
+        <xsl:for-each select="$wrongId">
+          <li>
+            <xsl:value-of select="concat(name(), ' ', @name, ': ', @id)"/>
+          </li>
+        </xsl:for-each>
+      </ul>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="a:page-main">

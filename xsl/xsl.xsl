@@ -479,7 +479,6 @@ preceding &lt;h2&gt; in a documentation block. Not TOC entries are
 generated for this content.
       </p>
     </xsl:if>
-
   </xsl:template>
 
   <xsl:template name="a:page-main">
