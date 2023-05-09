@@ -19,7 +19,7 @@
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-05-07">
+    dc:modified="2023-05-09">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -456,7 +456,7 @@
     </ul>
   </xsl:template>
 
-  <xsl:template name="a:collect-errors">
+  <xsl:template match="/" mode="a:collect-errors">
     <xsl:if test="/*/xh:*">
       <p>
 There is top-level HTML content in this document. It is not

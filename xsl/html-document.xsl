@@ -17,7 +17,7 @@
     dc:title="HTML document creation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-07">
+    dc:modified="2023-05-09">
   <xsl:import href="html.xsl"/>
   <xsl:import href="metadata.xsl"/>
   <xsl:import href="text.xsl"/>
@@ -219,18 +219,25 @@
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Error reporting</h2>
+
+      <p>The template with mode <code>a:collect-errors</code> applied
+      to the document root is expected to create either an empty
+      result or an HTML tree fragment to be inserted into the
+      output. Implementation as a mode rather than a named template
+      allows to apply an imported version of it.</p>
     </xsd:documentation>
   </xsd:annotation>
 
   <xsl:template
-      name="a:collect-errors"
+      match="*"
+      mode="a:collect-errors"
       rdfs:label="To be overriden in importing stylesheets"/>
 
   <xsl:template
       name="a:report-errors"
       rdfs:label="If instantiation of a:collect-errors is nonempty, add it to the result tree and/or output it as a message">
     <xsl:variable name="errors">
-      <xsl:call-template name="a:collect-errors"/>
+      <xsl:apply-templates select="/" mode="a:collect-errors"/>
     </xsl:variable>
 
     <xsl:if test="$errors != ''">

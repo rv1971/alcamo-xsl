@@ -18,7 +18,7 @@
       <xsl:call-template name="a:report-errors"/>
     </xsl:template>
 
-    <xsl:template name="a:collect-errors">
+    <xsl:template match="/" mode="a:collect-errors">
       <p>Lorem ipsum.</p>
     </xsl:template>
 

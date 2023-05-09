@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-05-08">
+    dc:modified="2023-05-09">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -1119,7 +1119,7 @@
     <xsl:call-template name="axsd:references"/>
   </xsl:template>
 
-  <xsl:template name="a:collect-errors">
+  <xsl:template match="/" mode="a:collect-errors">
     <xsl:variable name="wrongId" select="/*/xsd:*[@name != @id]"/>
 
     <xsl:if test="$wrongId">
