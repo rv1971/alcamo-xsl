@@ -3,7 +3,6 @@
 <?xml-stylesheet href="xsl.xsl" type="text/xsl"?>
 
 <xsl:stylesheet
-    version="1.0"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:dc="http://purl.org/dc/terms/"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -12,6 +11,7 @@
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
+    version="1.0"
     exclude-result-prefixes="a dc owl rdfs xh xsd"
     xml:lang="en"
     dc:identifier="annotation"
