@@ -660,7 +660,7 @@
     </table>
   </xsl:template>
 
-  <xsl:template match="/*/xsd:*" mode="axsd:restrictions-extensions">
+  <xsl:template match="xsd:*[@name]" mode="axsd:restrictions-extensions">
     <xsl:variable
         name="restrictions"
         select="key('axsd:namedRestrictions', @name)"/>
@@ -780,7 +780,9 @@
           select="*[not(self::xsd:annotation)][not(self::xsd:attribute)][not(self::xsd:attributeGroup)][not(self::xsd:anyAttribute)]"
           mode="axsd:main"/>
 
-      <xsl:apply-templates select="." mode="axsd:restrictions-extensions"/>
+      <xsl:apply-templates
+          select=".[@name]"
+          mode="axsd:restrictions-extensions"/>
     </section>
   </xsl:template>
 
