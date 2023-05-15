@@ -17,7 +17,7 @@
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-04">
+    dc:modified="2023-05-15">
   <xsl:import href="text.xsl"/>
 
   <xsd:annotation>
@@ -296,8 +296,31 @@
       mode="a:th"
       rdfs:label="Create &lt;th> containing local node name">
     <th>
-      <xsl:value-of select="local-name()"/>
+      <xsl:call-template name="a:ucfirst">
+        <xsl:with-param name="text" select="local-name()"/>
+      </xsl:call-template>
     </th>
+  </xsl:template>
+
+  <xsl:template
+      match="dc:accessRights|@dc:accessRights"
+      mode="a:th"
+      rdfs:label="Create &lt;th> with fixed text">
+    <th>Access rights</th>
+  </xsl:template>
+
+  <xsl:template
+      match="dc:rightsHolder|@dc:rightsHolder"
+      mode="a:th"
+      rdfs:label="Create &lt;th> with fixed text">
+    <th>Rights holder</th>
+  </xsl:template>
+
+  <xsl:template
+      match="owl:versionInfo|@owl:versionInfo"
+      mode="a:th"
+      rdfs:label="Create &lt;th> with fixed text">
+    <th>Version</th>
   </xsl:template>
 
   <xsl:template

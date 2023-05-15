@@ -4,14 +4,16 @@
 
 <a:doc
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
-    xmlns:dc="http://purl.org/dc/terms/">
+    xmlns:dc="http://purl.org/dc/terms/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#">
   <xsl:stylesheet
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:dc="http://purl.org/dc/terms/"
+      xmlns:owl="http://www.w3.org/2002/07/owl#"
       xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
       xml:id="xslt"
       version="1.0"
-      exclude-result-prefixes="dc">
+      exclude-result-prefixes="dc owl">
     <xsl:import href="../xsl/html.xsl"/>
 
     <xsl:template match="/">
@@ -20,7 +22,7 @@
      </a:result>
     </xsl:template>
 
-    <xsl:template match="a:*|dc:*">
+    <xsl:template match="a:*|dc:*|owl:*">
       <xsl:apply-templates select="." mode="a:tr"/>
     </xsl:template>
 
@@ -33,5 +35,6 @@
     <a:item>foo</a:item>
     <dc:creator>alice@example.org</dc:creator>
     <dc:rightsHolder>mailto:bob@example.org</dc:rightsHolder>
+    <owl:versionInfo>0.42.1</owl:versionInfo>
   </a:data>
 </a:doc>
