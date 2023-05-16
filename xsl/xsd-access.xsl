@@ -17,7 +17,7 @@
     dc:title="Access to XSD content"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-05-02"
-    dc:modified="2023-05-08">
+    dc:modified="2023-05-16">
   <xsl:import href="text.xsl"/>
 
   <xsd:annotation>
@@ -208,9 +208,9 @@
   </xsd:annotation>
 
   <xsl:template
-      name="axsd:label-aux"
+      name="axsd:element-label-aux"
       match="xsd:element"
-      mode="axsd:label-aux"
+      mode="axsd:element-label-aux"
       rdfs:label="Lookup the label of an element">
     <xsl:param
         name="declaration"
@@ -247,8 +247,8 @@
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <p>If a global element declaration is found, call
-      <code>axsd:label-aux</code> for it. Otherwise, call
-      <code>axsd:label-aux</code> for the first matching local
+      <code>axsd:element-label-aux</code> for it. Otherwise, call
+      <code>axsd:element-label-aux</code> for the first matching local
       declaration, if any. Otherwise return the local name with the
       first letter capitalized.</p>
 
@@ -279,7 +279,9 @@
 
       <xsl:choose>
         <xsl:when test="$declaration">
-          <xsl:apply-templates select="$declaration" mode="axsd:label-aux"/>
+          <xsl:apply-templates
+              select="$declaration"
+              mode="axsd:element-label-aux"/>
         </xsl:when>
 
         <xsl:otherwise>
@@ -291,7 +293,7 @@
             <xsl:when test="$localDeclaration">
               <xsl:apply-templates
                   select="$localDeclaration"
-                  mode="axsd:label-aux"/>
+                  mode="axsd:element-label-aux"/>
             </xsl:when>
 
             <xsl:otherwise>
@@ -330,15 +332,7 @@
     <xsl:choose>
       <xsl:when test="@xsi:type">
         <xsl:variable name="localTypeName">
-          <xsl:choose>
-            <xsl:when test="contains(@xsi:type, ':')">
-              <xsl:value-of select="substring-after(@xsi:type, ':')"/>
-            </xsl:when>
-
-            <xsl:otherwise>
-              <xsl:value-of select="@xsi:type"/>
-            </xsl:otherwise>
-          </xsl:choose>
+          <xsl:apply-templates select="@xsi:type" mode="a:local-name"/>
         </xsl:variable>
 
         <xsl:for-each select="$schema">
@@ -366,5 +360,56 @@
         </xsl:apply-templates>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template
+      name="axsd:link-to-type"
+      match="*|@*"
+      mode="axsd:link-to-type"
+      rdfs:label="Link to a type in a schema, or text if type not found">
+    <xsl:param
+        name="localName"
+        rdfs:label="Local name of type to link to">
+      <xsl:apply-templates select="." mode="a:local-name"/>
+    </xsl:param>
+
+    <xsl:param
+        name="schema"
+        select="$a:firstSchema"
+        rdfs:label="XSD to search in"/>
+    <xsl:param
+        name="schemaLocation"
+        select="$a:firstSchemaLocation"
+        rdfs:label="XSD to link to"/>
+
+    <xsl:for-each select="$schema">
+      <xsl:variable
+          name="definition"
+          select="key('axsd:types', $localName)"/>
+
+      <xsl:choose>
+        <xsl:when test="$definition">
+          <a href="{$schemaLocation}#type-{$localName}">
+            <xsl:choose>
+              <xsl:when test="$definition/@rdfs:label">
+                <xsl:value-of select="$definition/@rdfs:label"/>
+              </xsl:when>
+
+              <xsl:otherwise>
+                <xsl:call-template name="a:ucfirst">
+                  <xsl:with-param name="text" select="$localName"/>
+                </xsl:call-template>
+              </xsl:otherwise>
+            </xsl:choose>
+          </a>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:call-template name="a:ucfirst">
+            <xsl:with-param name="text" select="$localName"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
   </xsl:template>
 </xsl:stylesheet>

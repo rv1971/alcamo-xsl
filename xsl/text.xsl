@@ -15,7 +15,7 @@
     dc:title="Text generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-01">
+    dc:modified="2023-05-16">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -115,6 +115,29 @@
 
     <xsl:value-of
         select="concat(translate(substring($text, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring($text, 2))"/>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>QName handling</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      name="a:local-name"
+      match="*|@*"
+      mode="a:local-name">
+    <xsl:param name="qname" select="." rdfs:label="Text to extract from"/>
+
+    <xsl:choose>
+      <xsl:when test="contains($qname, ':')">
+        <xsl:value-of select="substring-after($qname, ':')"/>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:value-of select="$qname"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsd:annotation>
