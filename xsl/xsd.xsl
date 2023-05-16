@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-05-15">
+    dc:modified="2023-05-16">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -1136,6 +1136,34 @@
           </li>
         </xsl:for-each>
       </ul>
+    </xsl:if>
+
+    <xsl:variable
+        name="definitionWithoutH2"
+        select="/*/xsd:*[not(local-name() = 'annotation')][not(local-name() = 'import')][not(local-name() = 'include')][1][not(preceding-sibling::xsd:*[1][xsd:documentation/xh:h2])]"/>
+
+    <xsl:if test="$definitionWithoutH2">
+      <p>There is a top-level
+      <code>&lt;<xsl:value-of select="name($definitionWithoutH2)"/>&gt;</code>
+      without a preceding
+      <code>&lt;h2&gt;</code> in a documentation block. Not TOC
+      entry is generated for it.
+    </p>
+    </xsl:if>
+
+    <xsl:variable
+        name="h3WithoutH2"
+        select="/*/xsd:annotation/xsd:documentation/xh:h3[not(
+            preceding-sibling::xh:h2
+            |../preceding-sibling::xsd:documentation/xh:h2
+            |../../preceding-sibling::xsd:annotation/xsd:documentation/xh:h2
+        )]"/>
+
+    <xsl:if test="$h3WithoutH2">
+      <p>There is an <code>&lt;h3&gt;<xsl:value-of
+      select="$h3WithoutH2[1]"/>&lt;/h3&gt;</code> without a preceding
+      <code>&lt;h2&gt;</code> in a documentation block. Not TOC entry
+      is generated for it.</p>
     </xsl:if>
   </xsl:template>
 
