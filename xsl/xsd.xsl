@@ -514,7 +514,7 @@
     </xsl:variable>
 
     <xsl:if test="$content != ''">
-      <table class="{$axsd:genericAttrClasses}">
+      <table class="{$axsd:genericAttrClasses} alcamo">
         <tbody>
           <xsl:copy-of select="$content"/>
         </tbody>
@@ -529,7 +529,7 @@
   </xsd:annotation>
 
   <xsl:template match="xsd:*" mode="axsd:attr-overview">
-    <table class="{$axsd:attrOverviewClasses}">
+    <table class="{$axsd:attrOverviewClasses} alcamo">
       <thead>
         <tr>
           <th>Name</th>
@@ -615,7 +615,7 @@
   </xsl:template>
 
   <xsl:template match="xsd:*" mode="axsd:enum-overview">
-    <table class="{$axsd:enumOverviewClasses}">
+    <table class="{$axsd:enumOverviewClasses} alcamo">
       <thead>
         <tr>
           <th>Value</th>
@@ -909,7 +909,7 @@
     <section>
       <h2 id="imports">Imports</h2>
 
-      <table>
+      <table class="alcamo">
         <thead>
           <tr>
             <th>Namespace</th>
@@ -1068,7 +1068,7 @@
       rdfs:label="Create &lt;h3&gt; and &lt;table&gt; for elements with ID">
     <h3 id="elements-with-id">Elements with ID</h3>
 
-    <table>
+    <table class="alcamo">
       <thead>
         <tr>
           <th>ID</th>

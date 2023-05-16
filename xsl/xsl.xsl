@@ -19,7 +19,7 @@
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-05-09">
+    dc:modified="2023-05-16">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -207,7 +207,7 @@
       mode="axsl:inner"
       rdfs:label="Create &lt;table&gt; of parameters, if any">
     <xsl:if test="xsl:param">
-      <table class="param-doc">
+      <table class="alcamo">
         <thead>
           <tr>
             <th>Parameter</th>
@@ -280,7 +280,7 @@
       match="xsl:namespace-alias[1]"
       mode="axsl:main"
       rdfs:label="Create namespace-aliases &lt;table&gt;">
-    <table>
+    <table class="alcamo">
       <thead>
         <tr>
           <th colspan="2">Stylesheet</th>

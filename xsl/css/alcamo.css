@@ -34,22 +34,22 @@ small {
     font-size: 90%;
 }
 
-table {
+table.alcamo {
     border-collapse: separate;
     border-spacing: 0;
 }
 
-td,
-th {
+table.alcamo td,
+table.alcamo th {
     border: thin solid #dddddd;
     padding: 0.25em 0.5em;
 }
 
-th {
+table.alcamo th {
     background-color: #e8e8e8;
 }
 
-tbody > tr > th {
+table.alcamo tbody > tr > th {
     text-align: left;
 }
 
