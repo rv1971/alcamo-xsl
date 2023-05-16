@@ -18,6 +18,8 @@
     dc:creator="https://github.com/rv1971"
     dc:created="2023-05-02"
     dc:modified="2023-05-08">
+  <xsl:import href="text.xsl"/>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Variables</h2>
@@ -246,8 +248,9 @@
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <p>If a global element declaration is found, call
       <code>axsd:label-aux</code> for it. Otherwise, call
-      <code>axsd:label-aux</code> for the first machting local
-      declaration.</p>
+      <code>axsd:label-aux</code> for the first matching local
+      declaration, if any. Otherwise return the local name with the
+      first letter capitalized.</p>
 
       <p>The latter leads to correct results if the schema uses the
       same labels for all local declarations of a given tag name. In
@@ -280,9 +283,23 @@
         </xsl:when>
 
         <xsl:otherwise>
-          <xsl:apply-templates
-              select="key('axsd:localElements', $localName)[1]"
-              mode="axsd:label-aux"/>
+          <xsl:variable
+              name="localDeclaration"
+              select="key('axsd:localElements', $localName)[1]"/>
+
+          <xsl:choose>
+            <xsl:when test="$localDeclaration">
+              <xsl:apply-templates
+                  select="$localDeclaration"
+                  mode="axsd:label-aux"/>
+            </xsl:when>
+
+            <xsl:otherwise>
+              <xsl:call-template name="a:ucfirst">
+                <xsl:with-param name="text" select="$localName"/>
+              </xsl:call-template>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
