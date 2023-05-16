@@ -261,7 +261,7 @@
   <xsl:template
       name="axsd:label"
       match="*"
-      mode="axsd:label"
+      mode="axsd:element-label"
       rdfs:label="Lookup the label of an element">
     <xsl:param
         name="localName"
@@ -303,5 +303,68 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>If the element has an <code>xsi:type</code> attribute, look
+      it up in the schema. In that case, if the type is found in the
+      schema and the type definition has a label, return the label,
+      otherwise return the local type name with the first letter
+      capitalized.</p>
+
+      <p>If the element does not have an <code>xsi:type</code>
+      attribute, call <code>axsd:element-label</code>.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      match="*"
+      mode="axsd:label"
+      rdfs:label="Lookup the label of an element">
+    <xsl:param
+        name="schema"
+        select="$a:firstSchema"
+        rdfs:label="XSD to search in"/>
+
+    <xsl:choose>
+      <xsl:when test="@xsi:type">
+        <xsl:variable name="localTypeName">
+          <xsl:choose>
+            <xsl:when test="contains(@xsi:type, ':')">
+              <xsl:value-of select="substring-after(@xsi:type, ':')"/>
+            </xsl:when>
+
+            <xsl:otherwise>
+              <xsl:value-of select="@xsi:type"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
+        <xsl:for-each select="$schema">
+          <xsl:variable
+              name="definition"
+              select="key('axsd:types', $localTypeName)"/>
+
+          <xsl:choose>
+            <xsl:when test="$definition/@rdfs:label">
+              <xsl:value-of select="$definition/@rdfs:label"/>
+            </xsl:when>
+
+            <xsl:otherwise>
+              <xsl:call-template name="a:ucfirst">
+                <xsl:with-param name="text" select="$localTypeName"/>
+              </xsl:call-template>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:apply-templates select="." mode="axsd:element-label">
+          <xsl:with-param name="schema" select="$schema"/>
+        </xsl:apply-templates>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 </xsl:stylesheet>

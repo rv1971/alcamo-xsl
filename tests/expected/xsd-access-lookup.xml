@@ -6,4 +6,7 @@
   <a:item>qux qux</a:item>
   <a:item>quux local Quux</a:item>
   <a:item>corge Corge</a:item>
+  <a:item>foo Foo2</a:item>
+  <a:item>foo Baz</a:item>
+  <a:item>foo Bar object</a:item>
 </a:result>

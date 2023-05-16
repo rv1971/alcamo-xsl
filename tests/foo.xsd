@@ -20,4 +20,6 @@
       <xsd:element name="quux" rdfs:label="local Quux"/>
     </xsd:sequence>
   </xsd:complexType>
+
+  <xsd:complexType name="Baz"/>
 </xsd:schema>

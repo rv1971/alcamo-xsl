@@ -41,5 +41,8 @@
     <a:qux/>
     <a:quux/>
     <a:corge/>
+    <a:foo xsi:type="foo2"/>
+    <a:foo xsi:type="Baz"/>
+    <a:foo xsi:type="axsd:Bar"/>
   </a:data>
 </a:doc>
