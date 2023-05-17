@@ -15,7 +15,7 @@
     dc:title="Text generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-16">
+    dc:modified="2023-05-17">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -351,6 +351,35 @@
 
       <xsl:otherwise>
         <xsl:value-of select="concat($value, ' ', $plural)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="a:range-plural" rdfs:label="Create '#-# thing(s)'">
+    <xsl:param name="min" rdfs:label="Minimum value"/>
+    <xsl:param name="max" rdfs:label="Maximum value"/>
+    <xsl:param name="defaultMin" rdfs:label="Default minimum value" select="0"/>
+    <xsl:param name="singular" rdfs:label="Unit name in singular form"/>
+    <xsl:param
+        name="plural"
+        select="concat($singular, 's')"
+        rdfs:label="Unit name in plural form"/>
+
+    <xsl:call-template name="a:range">
+      <xsl:with-param name="min" select="$min"/>
+      <xsl:with-param name="max" select="$max"/>
+      <xsl:with-param name="defaultMin" select="$defaultMin"/>
+    </xsl:call-template>
+
+    <xsl:text> </xsl:text>
+
+    <xsl:choose>
+      <xsl:when test="$max = 1">
+        <xsl:value-of select="$singular"/>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:value-of select="$plural"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

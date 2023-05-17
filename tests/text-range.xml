@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="#xslt" type="text/xml"?>
+
+<a:doc xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <xsl:stylesheet
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xml:id="xslt"
+      version="1.0">
+    <xsl:import href="../xsl/text.xsl"/>
+
+    <xsl:template match="/">
+      <a:result>
+        <xsl:apply-templates select="/a:doc/a:data"/>
+      </a:result>
+    </xsl:template>
+
+    <xsl:template match="a:item">
+      <a:item>
+        <xsl:value-of select="concat(@min, ',', @max)"/>
+        <xsl:text>: </xsl:text>
+        <xsl:call-template select="." name="a:range">
+          <xsl:with-param name="min" select="@min"/>
+          <xsl:with-param name="max" select="@max"/>
+        </xsl:call-template>
+        <xsl:text>, </xsl:text>
+        <xsl:call-template select="." name="a:range">
+          <xsl:with-param name="min" select="@min"/>
+          <xsl:with-param name="max" select="@max"/>
+          <xsl:with-param name="defaultMin" select="1"/>
+        </xsl:call-template>
+      </a:item>
+    </xsl:template>
+  </xsl:stylesheet>
+
+  <a:data>
+    <a:item/>
+    <a:item max="0"/>
+    <a:item max="1"/>
+    <a:item max="2"/>
+
+    <a:item min="1"/>
+    <a:item min="1" max="1"/>
+    <a:item min="1" max="2"/>
+
+    <a:item min="2"/>
+    <a:item min="2" max="2"/>
+  </a:data>
+</a:doc>

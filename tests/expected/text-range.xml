@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <a:item>,: 0-&#x221E;, 1-&#x221E;</a:item>
+  <a:item>,0: 0, 1-0</a:item>
+  <a:item>,1: 0-1, 1</a:item>
+  <a:item>,2: 0-2, 1-2</a:item>
+  <a:item>1,: 1-&#x221E;, 1-&#x221E;</a:item>
+  <a:item>1,1: 1, 1</a:item>
+  <a:item>1,2: 1-2, 1-2</a:item>
+  <a:item>2,: 2-&#x221E;, 2-&#x221E;</a:item>
+  <a:item>2,2: 2, 2</a:item>
+</a:result>
