@@ -17,7 +17,7 @@
     dc:title="Access to XSD content"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-05-02"
-    dc:modified="2023-05-16">
+    dc:modified="2023-05-17">
   <xsl:import href="text.xsl"/>
 
   <xsd:annotation>
@@ -412,4 +412,11 @@
       </xsl:choose>
     </xsl:for-each>
   </xsl:template>
+
+    <xsl:template
+      match="@xsi:type"
+      mode="a:auto"
+      rdfs:label="Call axsd:link-to-type">
+      <xsl:call-template name="axsd:link-to-type"/>
+    </xsl:template>
 </xsl:stylesheet>

@@ -29,7 +29,7 @@
         <xsl:value-of select="@xsi:type"/>
         <xsl:text> </xsl:text>
 
-        <xsl:apply-templates select="@xsi:type" mode="axsd:link-to-type"/>
+        <xsl:apply-templates select="@xsi:type" mode="a:auto"/>
       </a:item>
     </xsl:template>
   </xsl:stylesheet>
