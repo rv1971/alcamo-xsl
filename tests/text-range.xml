@@ -19,12 +19,12 @@
       <a:item>
         <xsl:value-of select="concat(@min, ',', @max)"/>
         <xsl:text>: </xsl:text>
-        <xsl:call-template select="." name="a:range">
+        <xsl:call-template name="a:range">
           <xsl:with-param name="min" select="@min"/>
           <xsl:with-param name="max" select="@max"/>
         </xsl:call-template>
         <xsl:text>, </xsl:text>
-        <xsl:call-template select="." name="a:range">
+        <xsl:call-template name="a:range">
           <xsl:with-param name="min" select="@min"/>
           <xsl:with-param name="max" select="@max"/>
           <xsl:with-param name="defaultMin" select="1"/>
