@@ -236,9 +236,105 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Plurals</h2>
+      <h2>Counting</h2>
     </xsd:documentation>
   </xsd:annotation>
+
+  <xsl:template name="a:range" rdfs:label="Create text">
+    <xsl:param name="min" rdfs:label="Minimum value"/>
+    <xsl:param name="max" rdfs:label="Maximum value"/>
+    <xsl:param name="defaultMin" rdfs:label="Default minimum value" select="0"/>
+
+    <xsl:variable name="actualMin">
+      <xsl:choose>
+        <xsl:when test="$min">
+          <xsl:value-of select="$min"/>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:value-of select="$defaultMin"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:variable name="actualMax">
+      <xsl:choose>
+        <xsl:when test="$max">
+          <xsl:value-of select="$max"/>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:value-of select="'∞'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:choose>
+      <xsl:when test="$actualMin = $actualMax">
+        <xsl:value-of select="$actualMin"/>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:value-of select="concat($actualMin, '-', $actualMax)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="a:occurrence" rdfs:label="Create text">
+    <xsl:param
+        name="minOccurs"
+        select="@minOccurs"
+        rdfs:label="Minimum number of allowed occurrences"/>
+    <xsl:param
+        name="maxOccurs"
+        select="@maxOccurs"
+        rdfs:label="Maximum number of allowed occurrences"/>
+
+    <xsl:choose>
+      <xsl:when test="$minOccurs and $minOccurs != 1">
+        <xsl:choose>
+          <xsl:when test="$maxOccurs and $maxOccurs != 1">
+            <xsl:choose>
+              <xsl:when test="$maxOccurs = 'unbounded'">
+                <xsl:value-of select="', '"/>
+                <xsl:apply-templates select="$minOccurs" mode="a:number"/>
+                <xsl:value-of select="' or more'"/>
+              </xsl:when>
+
+              <xsl:when test="$maxOccurs = $minOccurs">
+                <xsl:value-of select="', exactly '"/>
+                <xsl:apply-templates select="$minOccurs" mode="a:number"/>
+              </xsl:when>
+
+              <xsl:otherwise>
+                <xsl:value-of select="', '"/>
+                <xsl:apply-templates select="$minOccurs" mode="a:number"/>
+                <xsl:value-of select="' to '"/>
+                <xsl:apply-templates select="$maxOccurs" mode="a:number"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+
+          <xsl:otherwise>
+            <xsl:value-of select="', optional'"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+
+      <xsl:when test="$maxOccurs and $maxOccurs != 1">
+        <xsl:choose>
+          <xsl:when test="$maxOccurs = 'unbounded'">
+            <xsl:value-of select="', one or more'"/>
+          </xsl:when>
+
+          <xsl:otherwise>
+            <xsl:value-of select="', one to '"/>
+            <xsl:apply-templates select="$maxOccurs" mode="a:number"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
 
   <xsl:template name="a:plural" rdfs:label="Create '# thing(s)'">
     <xsl:param name="value" select="." rdfs:label="Number of things"/>
@@ -433,68 +529,6 @@
           <xsl:with-param name="value" select="substring($value, 2)"/>
         </xsl:call-template>
       </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsd:annotation>
-    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Occurrence count</h2>
-    </xsd:documentation>
-  </xsd:annotation>
-
-  <xsl:template name="a:occurrence" rdfs:label="create text">
-    <xsl:param
-        name="minOccurs"
-        select="@minOccurs"
-        rdfs:label="Minimum number of allowed occurrences"/>
-    <xsl:param
-        name="maxOccurs"
-        select="@maxOccurs"
-        rdfs:label="Maximum number of allowed occurrences"/>
-
-    <xsl:choose>
-      <xsl:when test="$minOccurs and $minOccurs != 1">
-        <xsl:choose>
-          <xsl:when test="$maxOccurs and $maxOccurs != 1">
-            <xsl:choose>
-              <xsl:when test="$maxOccurs = 'unbounded'">
-                <xsl:value-of select="', '"/>
-                <xsl:apply-templates select="$minOccurs" mode="a:number"/>
-                <xsl:value-of select="' or more'"/>
-              </xsl:when>
-
-              <xsl:when test="$maxOccurs = $minOccurs">
-                <xsl:value-of select="', exactly '"/>
-                <xsl:apply-templates select="$minOccurs" mode="a:number"/>
-              </xsl:when>
-
-              <xsl:otherwise>
-                <xsl:value-of select="', '"/>
-                <xsl:apply-templates select="$minOccurs" mode="a:number"/>
-                <xsl:value-of select="' to '"/>
-                <xsl:apply-templates select="$maxOccurs" mode="a:number"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:when>
-
-          <xsl:otherwise>
-            <xsl:value-of select="', optional'"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-
-      <xsl:when test="$maxOccurs and $maxOccurs != 1">
-        <xsl:choose>
-          <xsl:when test="$maxOccurs = 'unbounded'">
-            <xsl:value-of select="', one or more'"/>
-          </xsl:when>
-
-          <xsl:otherwise>
-            <xsl:value-of select="', one to '"/>
-            <xsl:apply-templates select="$maxOccurs" mode="a:number"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
     </xsl:choose>
   </xsl:template>
 
