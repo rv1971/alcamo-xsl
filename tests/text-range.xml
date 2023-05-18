@@ -39,6 +39,12 @@
     <a:item max="1"/>
     <a:item max="2"/>
 
+    <a:item min="0"/>
+    <a:item min="000" max="0"/>
+    <a:item min="000" max="00"/>
+    <a:item min="0" max="1"/>
+    <a:item min="0" max="2"/>
+
     <a:item min="1"/>
     <a:item min="1" max="1"/>
     <a:item min="1" max="2"/>

@@ -4,6 +4,11 @@
   <a:item>,0: 0, 1-0</a:item>
   <a:item>,1: 0-1, 1</a:item>
   <a:item>,2: 0-2, 1-2</a:item>
+  <a:item>0,: 0-&#x221E;, 0-&#x221E;</a:item>
+  <a:item>000,0: 0, 0</a:item>
+  <a:item>000,00: 0, 0</a:item>
+  <a:item>0,1: 0-1, 0-1</a:item>
+  <a:item>0,2: 0-2, 0-2</a:item>
   <a:item>1,: 1-&#x221E;, 1-&#x221E;</a:item>
   <a:item>1,1: 1, 1</a:item>
   <a:item>1,2: 1-2, 1-2</a:item>

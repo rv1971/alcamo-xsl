@@ -15,7 +15,7 @@
     dc:title="Text generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-17">
+    dc:modified="2023-05-18">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -77,6 +77,11 @@
       name="a:textXslDoc"
       select="document('')"
       rdfs:label="This document"/>
+
+    <xsl:variable
+        name="a:infty"
+        select="2147483647"
+        rdfs:label="Number that will lead to empty string when used as offset in substring()"/>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -245,29 +250,12 @@
     <xsl:param name="max" rdfs:label="Maximum value"/>
     <xsl:param name="defaultMin" rdfs:label="Default minimum value" select="0"/>
 
-    <xsl:variable name="actualMin">
-      <xsl:choose>
-        <xsl:when test="$min">
-          <xsl:value-of select="$min"/>
-        </xsl:when>
-
-        <xsl:otherwise>
-          <xsl:value-of select="$defaultMin"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <xsl:variable name="actualMax">
-      <xsl:choose>
-        <xsl:when test="$max">
-          <xsl:value-of select="$max"/>
-        </xsl:when>
-
-        <xsl:otherwise>
-          <xsl:value-of select="'∞'"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
+    <xsl:variable
+        name="actualMin"
+        select="number(concat($min, substring($defaultMin, ($min != '') * $a:infty)))"/>
+    <xsl:variable
+        name="actualMax"
+        select="concat($max, substring('∞', ($max != '') * $a:infty))"/>
 
     <xsl:choose>
       <xsl:when test="$actualMin = $actualMax">
