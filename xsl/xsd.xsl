@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-05-16">
+    dc:modified="2023-05-18">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -1123,7 +1123,7 @@
     <xsl:call-template name="axsd:references"/>
   </xsl:template>
 
-  <xsl:template match="/" mode="a:collect-errors">
+  <xsl:template match="/" mode="axsd:collect-errors">
     <xsl:variable name="wrongId" select="/*/xsd:*[@name != @id]"/>
 
     <xsl:if test="$wrongId">
@@ -1165,6 +1165,10 @@
       <code>&lt;h2&gt;</code> in a documentation block. Not TOC entry
       is generated for it.</p>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="/" mode="a:collect-errors">
+    <xsl:apply-templates select="/" mode="axsd:collect-errors"/>
   </xsl:template>
 
   <xsl:template name="a:page-main">

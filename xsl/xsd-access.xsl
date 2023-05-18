@@ -264,7 +264,7 @@
       rdfs:label="Lookup the label of an element">
     <xsl:param
         name="localName"
-        select="local-name(.)"
+        select="local-name()"
         rdfs:label="Local name of element to look up label for"/>
     <xsl:param
         name="schema"

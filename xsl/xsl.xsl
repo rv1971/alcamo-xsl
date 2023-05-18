@@ -19,7 +19,7 @@
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-05-16">
+    dc:modified="2023-05-18">
   <xsl:import href="annotation.xsl"/>
   <xsl:import href="html-document.xsl"/>
   <xsl:import href="syntaxhighlight-xml.xsl"/>
@@ -456,7 +456,7 @@
     </ul>
   </xsl:template>
 
-  <xsl:template match="/" mode="a:collect-errors">
+  <xsl:template match="/" mode="axsl:collect-errors">
     <xsl:if test="/*/xh:*">
       <p>
 There is top-level HTML content in this document. It is not
@@ -479,6 +479,10 @@ preceding &lt;h2&gt; in a documentation block. Not TOC entries are
 generated for this content.
       </p>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="/" mode="a:collect-errors">
+    <xsl:apply-templates select="/" mode="axsl:collect-errors"/>
   </xsl:template>
 
   <xsl:template name="a:page-main">
