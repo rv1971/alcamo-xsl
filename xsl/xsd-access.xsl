@@ -17,7 +17,7 @@
     dc:title="Access to XSD content"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-05-02"
-    dc:modified="2023-05-17">
+    dc:modified="2023-05-18">
   <xsl:import href="text.xsl"/>
 
   <xsd:annotation>
@@ -148,7 +148,7 @@
 
     <xsl:if test="count(..|/*) = 2">
       <xsl:apply-templates select=".." mode="a:id">
-        <xsl:with-param name="intermediate" select="1"/>
+        <xsl:with-param name="intermediate" select="true()"/>
       </xsl:apply-templates>
     </xsl:if>
 
@@ -170,15 +170,14 @@
       </xsl:choose>
 
       <xsl:if test="@name|@ref|@value">
-        <xsl:text>-</xsl:text>
-        <xsl:value-of select="@name|@ref|@value"/>
+        <xsl:value-of select="concat('-', @name|@ref|@value)"/>
       </xsl:if>
 
       <xsl:if test="not(@name|@ref|@value) or parent::xsd:sequence">
-        <xsl:if test="count(../xsd:*[local-name() = local-name(current())]) > 1">
-          <xsl:text>.</xsl:text>
+        <xsl:if
+            test="count(../xsd:*[local-name() = local-name(current())]) > 1">
           <xsl:value-of
-              select="count(preceding-sibling::xsd:*[local-name() = local-name(current())]) + 1"/>
+              select="concat('.', count(preceding-sibling::xsd:*[local-name() = local-name(current())]) + 1)"/>
         </xsl:if>
       </xsl:if>
     </xsl:if>

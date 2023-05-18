@@ -17,7 +17,7 @@
     dc:title="Syntax highlighting for XML code"
     dc:creator="https://github.com/rv1971"
     dc:created="2017-09-11"
-    dc:modified="2023-05-01">
+    dc:modified="2023-05-18">
   <xsd:annotation>
     <xsd:documentation>
       <h2>Introduction</h2>
@@ -309,7 +309,7 @@
           <xsl:with-param name="prepend" select="$prepend"/>
         </xsl:apply-templates>
 
-        <xsl:text>></xsl:text>
+        <xsl:text>&gt;</xsl:text>
 
         <xsl:apply-templates select="*|text()|comment()" mode="sh:xml">
           <xsl:with-param name="lf" select="'&#x0a;'"/>
@@ -322,7 +322,6 @@
 
         <xsl:text>&lt;/</xsl:text>
         <xsl:apply-templates select="." mode="sh:name"/>
-
         <xsl:text>&gt;</xsl:text>
       </xsl:when>
 

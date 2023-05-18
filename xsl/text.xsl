@@ -573,7 +573,7 @@
   </xsd:annotation>
 
   <xsl:template match="node()" mode="a:auto" rdfs:label="Copy node">
-    <xsl:value-of select="."/>
+    <xsl:apply-templates/>
   </xsl:template>
 
   <xsl:template
