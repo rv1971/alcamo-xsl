@@ -67,18 +67,6 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Parameters</h2>
-    </xsd:documentation>
-  </xsd:annotation>
-
-  <xsl:param
-      name="a:cssList"
-      select="concat($a:xslDirUrl, 'css/alcamo.css', ' ', $a:xslDirUrl, 'css/syntaxhighlight.css', ' ', $a:xslDirUrl, 'css/xsl.css')"/>
-
-  <xsl:param name="sh:maxInlineAttrs" select="3"/>
-
-  <xsd:annotation>
-    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Variables</h2>
     </xsd:documentation>
   </xsd:annotation>

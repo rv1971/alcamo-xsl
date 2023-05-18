@@ -57,53 +57,6 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Parameters</h2>
-    </xsd:documentation>
-  </xsd:annotation>
-
-  <xsd:annotation>
-    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <table class="alcamo">
-        <tbody>
-          <tr>
-            <th class="code">output</th>
-            <td>Report errors as HTML code in the result tree.</td>
-          </tr>
-
-          <tr>
-            <th class="code">message</th>
-            <td>Report errors via <code>&lt;xsl:message&gt;</code>.</td>
-          </tr>
-
-          <tr>
-            <th class="code">both</th>
-            <td>Report errors in both channels.</td>
-          </tr>
-
-          <tr>
-            <th>any other value</th>
-            <td>Do not report errors.</td>
-          </tr>
-        </tbody>
-      </table>
-    </xsd:documentation>
-  </xsd:annotation>
-
-  <xsl:param
-      name="a:errorReportingChannels"
-      select="'both'"
-      rdfs:label="How to report errors"/>
-
-  <xsl:param
-      name="a:cssList"
-      rdfs:label="Whitespace-separated list of CSS files to link to"/>
-
-  <xsl:param
-      name="a:jsList"
-      rdfs:label="Whitespace-separated list of JS files to link to"/>
-
-  <xsd:annotation>
-    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>&lt;head&gt; element</h2>
     </xsd:documentation>
   </xsd:annotation>
