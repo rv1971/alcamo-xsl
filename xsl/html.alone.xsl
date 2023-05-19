@@ -17,7 +17,7 @@
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-18">
+    dc:modified="2023-05-19">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -282,6 +282,21 @@
       <h2>Element creation</h2>
     </xsd:documentation>
   </xsd:annotation>
+
+  <xsl:template match="*|@*" mode="a:p" rdfs:label="Create &lt;p>">
+    <p>
+      <xsl:apply-templates select="." mode="a:auto"/>
+    </p>
+  </xsl:template>
+
+  <xsl:template
+      match="rdfs:comment|@rdfs:comment"
+      mode="a:p"
+      rdfs:label="Create &lt;p>">
+    <p>
+      <xsl:value-of select="."/>
+    </p>
+  </xsl:template>
 
   <xsl:template match="*|@*" mode="a:td" rdfs:label="Create &lt;td>">
     <td>

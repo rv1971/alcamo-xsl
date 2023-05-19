@@ -25,10 +25,6 @@
     <xsl:template match="a:*|dc:*|owl:*">
       <xsl:apply-templates select="." mode="a:tr"/>
     </xsl:template>
-
-    <xsl:template match="dc:rightsHolder" mode="a:th">
-      <th>Rights</th>
-    </xsl:template>
   </xsl:stylesheet>
 
   <a:data>
