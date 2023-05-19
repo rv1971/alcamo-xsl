@@ -745,7 +745,7 @@
           mode="axsd:main"/>
 
       <xsl:apply-templates
-          select=".[@name]"
+          select="self::*[@name]"
           mode="axsd:restrictions-extensions"/>
     </section>
   </xsl:template>
