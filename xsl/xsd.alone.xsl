@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-05-18">
+    dc:modified="2023-05-19">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -518,6 +518,12 @@
                   <xsl:apply-templates select="." mode="a:id"/>
                 </xsl:attribute>
 
+                <xsl:if test="@use = 'required'">
+                  <xsl:attribute name="class">
+                    <xsl:text>code bold</xsl:text>
+                  </xsl:attribute>
+                </xsl:if>
+
                 <xsl:value-of select="@name|@ref"/>
               </a>
             </td>
@@ -526,13 +532,13 @@
               <xsl:apply-templates select="@type" mode="a:linkto"/>
             </td>
 
-            <td>
+            <td class="center">
               <xsl:choose>
                 <xsl:when test="@use">
-                  <xsl:value-of select="@use"/>
+                  <xsl:value-of select="substring(@use, 1, 1)"/>
                 </xsl:when>
 
-                <xsl:otherwise>optional</xsl:otherwise>
+                <xsl:otherwise>o</xsl:otherwise>
               </xsl:choose>
             </td>
 
