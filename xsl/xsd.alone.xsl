@@ -551,6 +551,7 @@
         <xsl:for-each select="xsd:anyAttribute">
           <tr>
             <td>Any</td>
+
             <td>
               <xsl:if test="@namespace">
                 <code>
@@ -559,7 +560,7 @@
               </xsl:if>
             </td>
 
-            <td>
+            <td class="center">
               <xsl:choose>
                 <xsl:when test="@processContents">
                   <xsl:value-of select="@processContents"/>
