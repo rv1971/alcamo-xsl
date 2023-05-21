@@ -15,7 +15,7 @@
     dc:title="Text generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-18">
+    dc:modified="2023-05-21">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -334,11 +334,11 @@
 
     <xsl:choose>
       <xsl:when test="$value = 1">
-        <xsl:value-of select="concat($value, ' ', $singular)"/>
+        <xsl:value-of select="concat($value, '&#xa0;', $singular)"/>
       </xsl:when>
 
       <xsl:otherwise>
-        <xsl:value-of select="concat($value, ' ', $plural)"/>
+        <xsl:value-of select="concat($value, '&#xa0;', $plural)"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -359,7 +359,7 @@
       <xsl:with-param name="defaultMin" select="$defaultMin"/>
     </xsl:call-template>
 
-    <xsl:text> </xsl:text>
+    <xsl:text>&#xa0;</xsl:text>
 
     <xsl:choose>
       <xsl:when test="$max = 1">
