@@ -17,7 +17,7 @@
     dc:title="Access to XSD content"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-05-02"
-    dc:modified="2023-05-18">
+    dc:modified="2023-05-21">
   <xsl:import href="text.xsl"/>
 
   <xsd:annotation>
@@ -416,6 +416,18 @@
       match="@xsi:type"
       mode="a:auto"
       rdfs:label="Call axsd:link-to-type">
-      <xsl:call-template name="axsd:link-to-type"/>
+      <xsl:param
+          name="schema"
+          select="$a:firstSchema"
+          rdfs:label="XSD to search in"/>
+      <xsl:param
+          name="schemaLocation"
+          select="$a:firstSchemaLocation"
+          rdfs:label="XSD to link to"/>
+
+      <xsl:call-template name="axsd:link-to-type">
+        <xsl:with-param name="schema" select="$schema"/>
+        <xsl:with-param name="schemaLocation" select="$schemaLocation"/>
+      </xsl:call-template>
     </xsl:template>
 </xsl:stylesheet>
