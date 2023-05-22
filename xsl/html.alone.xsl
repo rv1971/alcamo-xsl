@@ -6,12 +6,13 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:dc="http://purl.org/dc/terms/"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
     version="1.0"
-    exclude-result-prefixes="a dc owl rdfs xsd"
+    exclude-result-prefixes="a dc owl rdf rdfs xsd"
     xml:lang="en"
     dc:identifier="html.alone"
     dc:title="HTML generation"
@@ -135,6 +136,36 @@
         </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>Create a link displaying the fragment. If the target URL
+      does not have a fragment, display the complete URL.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      name="a:linkto-show-fragment"
+      match="*|@*"
+      mode="a:linkto-show-fragment"
+      rdfs:label="Create &lt;a&gt;">
+    <xsl:param
+        name="urlPrefix"
+        select="''"
+        rdfs:label="URL to prepend to link targets"/>
+
+    <a href="{$urlPrefix}{.}">
+      <xsl:choose>
+        <xsl:when test="contains(., '#')">
+          <xsl:value-of select="substring-after(., '#')"/>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:value-of select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </a>
   </xsl:template>
 
   <xsd:annotation>
@@ -423,6 +454,29 @@
       mode="a:auto"
       rdfs:label="Call a:linkto">
     <xsl:call-template name="a:linkto"/>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>Based on the assumption that rdf:type often links to a
+      fragment in an XSD, as suggested by <a
+      href="https://www.w3.org/TR/swbp-xsch-datatypes">XML Schema
+      Datatypes in RDF and OWL</a>.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      match="@rdf:type|rdf:type"
+      mode="a:auto"
+      rdfs:label="Call a:linkto-show-fragment">
+    <xsl:param
+        name="urlPrefix"
+        select="''"
+        rdfs:label="URL to prepend to link targets"/>
+
+    <xsl:call-template name="a:linkto-show-fragment">
+      <xsl:with-param name="urlPrefix" select="$urlPrefix"/>
+    </xsl:call-template>
   </xsl:template>
 
   <xsl:template

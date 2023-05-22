@@ -5,15 +5,17 @@
 <a:doc
     xmlns:dc="http://purl.org/dc/terms/"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
   <xsl:stylesheet
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:dc="http://purl.org/dc/terms/"
       xmlns:owl="http://www.w3.org/2002/07/owl#"
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
       xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
       xml:id="xslt"
       version="1.0"
-      exclude-result-prefixes="dc owl">
+      exclude-result-prefixes="dc owl rdf">
     <xsl:import href="../xsl/html.xsl"/>
 
     <xsl:template match="/">
@@ -26,11 +28,14 @@
       <a:item>
         <xsl:value-of select="@*"/>
         <xsl:value-of select="' '"/>
-        <xsl:apply-templates select="@*" mode="a:auto"/>
+
+        <xsl:apply-templates select="@*" mode="a:auto">
+          <xsl:with-param name="urlPrefix" select="'http://www.example.info/'"/>
+        </xsl:apply-templates>
       </a:item>
     </xsl:template>
 
-    <xsl:template match="dc:*|owl:*">
+    <xsl:template match="dc:*|owl:*|rdf:*">
       <a:item>
         <xsl:value-of select="."/>
         <xsl:value-of select="' '"/>
@@ -43,8 +48,10 @@
     <dc:rights>http://example.com/rights</dc:rights>
     <dc:rights>© Alice</dc:rights>
     <owl:sameAs>tag:bob@example.com,2023:foo</owl:sameAs>
+    <rdf:type>http://www.example.info/foo.xsd#Bar</rdf:type>
     <a:item dc:rights="https://example.com/rights"/>
     <a:item dc:rights="© Bob 1971"/>
     <a:item owl:sameAs="https://example.com/testcase1"/>
+    <a:item rdf:type="rdf-type/baz"/>
   </a:data>
 </a:doc>

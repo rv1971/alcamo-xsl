@@ -3,7 +3,9 @@
   <a:item>http://example.com/rights <a href="http://example.com/rights">example.com/rights</a></a:item>
   <a:item>&#xA9; Alice &#xA9; Alice</a:item>
   <a:item>tag:bob@example.com,2023:foo tag:bob@example.com,2023:foo</a:item>
+  <a:item>http://www.example.info/foo.xsd#Bar <a href="http://www.example.info/foo.xsd#Bar">Bar</a></a:item>
   <a:item>https://example.com/rights <a href="https://example.com/rights">example.com/rights</a></a:item>
   <a:item>&#xA9; Bob 1971 &#xA9; Bob 1971</a:item>
   <a:item>https://example.com/testcase1 <a href="https://example.com/testcase1">example.com/testcase1</a></a:item>
+  <a:item>rdf-type/baz <a href="http://www.example.info/rdf-type/baz">rdf-type/baz</a></a:item>
 </a:result>
