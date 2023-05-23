@@ -81,6 +81,30 @@
   </xsl:template>
 
   <xsl:template
+      name="a:linkto"
+      match="*|@*"
+      mode="a:linkto"
+      rdfs:label="Create link unless tag URI">
+    <xsl:param name="url" select="." rdfs:label="Target URL"/>
+    <xsl:param
+        name="urlPrefix"
+        select="''"
+        rdfs:label="URL to prepend to target URL"/>
+
+    <xsl:choose>
+      <xsl:when test="starts-with($url, 'tag:')">
+        <xsl:value-of select="$url"/>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <a href="{$urlPrefix}{$url}">
+          <xsl:value-of select="$url"/>
+        </a>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template
       name="a:linkto-if-url"
       match="*|@*"
       mode="a:linkto-if-url"
@@ -450,10 +474,24 @@
   </xsl:template>
 
   <xsl:template
-      match="@dc:rights|dc:rights|@owl:sameAs|owl:sameAs"
+      match="@dc:rights|dc:rights"
       mode="a:auto"
       rdfs:label="Call a:linkto-if-url">
     <xsl:call-template name="a:linkto-if-url"/>
+  </xsl:template>
+
+  <xsl:template
+      match="@owl:sameAs|owl:sameAs|@href|href|@schemaLocation|schemaLocation"
+      mode="a:auto"
+      rdfs:label="Call a:linkto">
+    <xsl:param
+        name="urlPrefix"
+        select="''"
+        rdfs:label="URL to prepend to target URL"/>
+
+    <xsl:call-template name="a:linkto">
+      <xsl:with-param name="urlPrefix" select="$urlPrefix"/>
+    </xsl:call-template>
   </xsl:template>
 
   <xsd:annotation>

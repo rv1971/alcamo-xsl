@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-05-19">
+    dc:modified="2023-05-23">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -612,11 +612,7 @@
 
             <xsl:if test="../xsd:enumeration[@owl:sameAs]">
               <td>
-                <xsl:if test="@owl:sameAs">
-                  <a href="{@owl:sameAs}">
-                    <xsl:value-of select="@owl:sameAs"/>
-                  </a>
-                </xsl:if>
+                <xsl:apply-templates select="@owl:sameAs" mode="a:auto"/>
               </td>
             </xsl:if>
           </tr>
@@ -890,9 +886,7 @@
               </td>
 
               <td>
-                <a href="{@schemaLocation}">
-                  <xsl:value-of select="@schemaLocation"/>
-                </a>
+                <xsl:apply-templates select="@schemaLocation" mode="a:auto"/>
               </td>
             </tr>
           </xsl:for-each>
@@ -908,9 +902,7 @@
       <ul>
         <xsl:for-each select="/*/xsd:include">
           <li>
-            <a href="{@schemaLocation}">
-              <xsl:value-of select="@schemaLocation"/>
-            </a>
+            <xsl:apply-templates select="@schemaLocation" mode="a:auto"/>
           </li>
         </xsl:for-each>
       </ul>
