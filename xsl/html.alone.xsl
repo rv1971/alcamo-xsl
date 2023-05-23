@@ -18,7 +18,7 @@
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-19">
+    dc:modified="2023-05-23">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -81,9 +81,9 @@
   </xsl:template>
 
   <xsl:template
-      name="a:linkto"
+      name="a:linkto-if-url"
       match="*|@*"
-      mode="a:linkto"
+      mode="a:linkto-if-url"
       rdfs:label="Create link if value is an URL">
     <xsl:param name="value" select="." rdfs:label="Value to format"/>
 
@@ -452,8 +452,8 @@
   <xsl:template
       match="@dc:rights|dc:rights|@owl:sameAs|owl:sameAs"
       mode="a:auto"
-      rdfs:label="Call a:linkto">
-    <xsl:call-template name="a:linkto"/>
+      rdfs:label="Call a:linkto-if-url">
+    <xsl:call-template name="a:linkto-if-url"/>
   </xsl:template>
 
   <xsd:annotation>
