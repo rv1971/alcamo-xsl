@@ -17,7 +17,7 @@
     dc:title="HTML document creation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-16">
+    dc:modified="2023-05-25">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -61,7 +61,7 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template name="a:cssLinks" rdfs:label="Create CSS &lt;link>s">
+  <xsl:template match="/*" mode="a:cssLinks" rdfs:label="Create CSS &lt;link>s">
     <xsl:param
         name="cssList"
         select="normalize-space($a:cssList)"
@@ -75,16 +75,16 @@
       <link rel="stylesheet" type="text/css" href="{$item}"/>
 
       <xsl:if test="substring-after($cssList, ' ')">
-        <xsl:call-template name="a:cssLinks">
+        <xsl:apply-templates select="." mode="a:cssLinks">
           <xsl:with-param
               name="cssList"
               select="substring-after($cssList, ' ')"/>
-        </xsl:call-template>
+        </xsl:apply-templates>
       </xsl:if>
     </xsl:if>
   </xsl:template>
 
-  <xsl:template name="a:jsLinks" rdfs:label="Create JS &lt;script>s">
+  <xsl:template match="/*" mode="a:jsLinks" rdfs:label="Create JS &lt;script>s">
     <xsl:param
         name="jsList"
         select="normalize-space($a:jsList)"
@@ -100,17 +100,21 @@
       </script>
 
       <xsl:if test="substring-after($jsList, ' ')">
-        <xsl:call-template name="a:jsLinks">
+        <xsl:apply-templates select="." mode="a:jsLinks">
           <xsl:with-param name="jsList" select="substring-after($jsList, ' ')"/>
-        </xsl:call-template>
+        </xsl:apply-templates>
       </xsl:if>
     </xsl:if>
   </xsl:template>
 
-  <xsl:template name="a:faviconLink" rdfs:label="create favicon &lt;link>"/>
+  <xsl:template
+      match="/*"
+      mode="a:faviconLink"
+      rdfs:label="Create favicon &lt;link>"/>
 
   <xsl:template
-      name="a:extraHeadContent"
+      match="/*"
+      mode="a:extraHeadContent"
       rdfs:label="Create extra content to include in &lt;head&gt; element"/>
 
   <xsl:template
@@ -118,7 +122,8 @@
       xmlns:dc_="http://purl.org/dc/terms/"
       xmlns:owl="tag:rv1971@web.de,2021:alcamo-xsl:alias:owl#"
       xmlns:owl_="http://www.w3.org/2002/07/owl#"
-      name="a:head"
+      match="/*"
+      mode="a:head"
       rdfs:label="Create &lt;head&gt; element">
     <head>
       <meta charset="utf-8"/>
@@ -155,13 +160,13 @@
         <meta property="owl:versionInfo" content="{$owl_:versionInfo}"/>
       </xsl:if>
 
-      <xsl:call-template name="a:cssLinks"/>
+      <xsl:apply-templates select="." mode="a:cssLinks"/>
 
-      <xsl:call-template name="a:jsLinks"/>
+      <xsl:apply-templates select="." mode="a:jsLinks"/>
 
-      <xsl:call-template name="a:faviconLink"/>
+      <xsl:apply-templates select="." mode="a:faviconLink"/>
 
-      <xsl:call-template name="a:extraHeadContent"/>
+      <xsl:apply-templates select="." mode="a:extraHeadContent"/>
     </head>
   </xsl:template>
 
@@ -213,11 +218,13 @@
   </xsd:annotation>
 
   <xsl:template
-      name="a:toc"
+      match="/*"
+      mode="a:toc"
       rdfs:label="Create table of contents, to be defined in importing stylesheets"/>
 
   <xsl:template
-      name="a:page-header"
+      match="/*"
+      mode="a:page-header"
       rdfs:label="Create &lt;header&gt; element for page">
     <header>
       <h1>
@@ -239,16 +246,18 @@
         <xsl:call-template name="a:created-modified"/>
       </p>
 
-      <xsl:call-template name="a:toc"/>
+      <xsl:apply-templates select="." mode="a:toc"/>
     </header>
   </xsl:template>
 
   <xsl:template
-      name="a:page-main"
+      match="/*"
+      mode="a:page-main"
       rdfs:label="Create main part of page, to be defined in importing stylesheets"/>
 
   <xsl:template
-      name="a:page-footer"
+      match="/*"
+      mode="a:page-footer"
       rdfs:label="Create &lt;footer&gt; element for page, to be defined in importing stylesheets"/>
 
   <xsl:template match="/" rdfs:label="Create the document">
@@ -257,16 +266,16 @@
         <xsl:copy/>
       </xsl:for-each>
 
-      <xsl:call-template name="a:head"/>
+      <xsl:apply-templates mode="a:head"/>
 
       <body>
-        <xsl:call-template name="a:page-header"/>
+        <xsl:apply-templates mode="a:page-header"/>
 
         <xsl:call-template name="a:report-errors"/>
 
-        <xsl:call-template name="a:page-main"/>
+        <xsl:apply-templates mode="a:page-main"/>
 
-        <xsl:call-template name="a:page-footer"/>
+        <xsl:apply-templates mode="a:page-footer"/>
       </body>
     </html>
   </xsl:template>

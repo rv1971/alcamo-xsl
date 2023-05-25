@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-05-23">
+    dc:modified="2023-05-25">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -991,7 +991,10 @@
     </li>
   </xsl:template>
 
-  <xsl:template name="a:toc" rdfs:label="Create TOC &lt;ul&gt;">
+  <xsl:template
+      match="/xsd:schema"
+      mode="a:toc"
+      rdfs:label="Create TOC &lt;ul&gt;">
     <ul id="toc">
       <xsl:apply-templates
           select="/*/xsd:annotation/xsd:documentation/xh:h2|/*/xsd:import[1]|/*/xsd:include[1]"
@@ -1128,8 +1131,8 @@
     <xsl:apply-templates select="/" mode="axsd:collect-errors"/>
   </xsl:template>
 
-  <xsl:template name="a:page-main">
-    <xsl:apply-templates select="/*/*" mode="axsd:main"/>
+  <xsl:template match="/xsd:schema" mode="a:page-main">
+    <xsl:apply-templates mode="axsd:main"/>
 
     <xsl:call-template name="axsd:appendix"/>
   </xsl:template>

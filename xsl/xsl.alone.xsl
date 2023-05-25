@@ -19,7 +19,7 @@
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-05-23">
+    dc:modified="2023-05-25">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -384,7 +384,7 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template name="a:toc" rdfs:label="Create TOC &lt;ul&gt;">
+  <xsl:template match="/xsl:*" mode="a:toc" rdfs:label="Create TOC &lt;ul&gt;">
     <ul id="toc">
      <xsl:if test="$axsl:intro">
        <li>
@@ -468,7 +468,7 @@ generated for this content.
     <xsl:apply-templates select="/" mode="axsl:collect-errors"/>
   </xsl:template>
 
-  <xsl:template name="a:page-main">
+  <xsl:template match="/xsl:*" mode="a:page-main">
     <xsl:apply-templates select="$axsl:intro" mode="axsl:main"/>
 
     <xsl:if test="/*/xsl:import">
