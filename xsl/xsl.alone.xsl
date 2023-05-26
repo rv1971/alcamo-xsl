@@ -19,7 +19,7 @@
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-05-25">
+    dc:modified="2023-05-26">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -394,14 +394,14 @@
        </li>
       </xsl:if>
 
-      <xsl:if test="/*/xsl:import">
+      <xsl:if test="xsl:import">
          <li>
            <p><a href="#imports">Imports</a></p>
          </li>
       </xsl:if>
 
       <xsl:apply-templates
-          select="/*/xsd:annotation/xsd:documentation/xh:h2[. != 'Introduction']"
+          select="xsd:annotation/xsd:documentation/xh:h2[. != 'Introduction']"
           mode="axsl:toc-li"/>
 
       <li>
@@ -471,12 +471,12 @@ generated for this content.
   <xsl:template match="/xsl:*" mode="a:page-main">
     <xsl:apply-templates select="$axsl:intro" mode="axsl:main"/>
 
-    <xsl:if test="/*/xsl:import">
+    <xsl:if test="xsl:import">
       <xsl:call-template name="axsl:imports"/>
     </xsl:if>
 
     <xsl:apply-templates
-        select="/*/*[count(.|$axsl:intro) = count($axsl:intro) + 1]"
+        select="*[count(.|$axsl:intro) = count($axsl:intro) + 1]"
         mode="axsl:main"/>
 
     <xsl:call-template name="axsl:references"/>

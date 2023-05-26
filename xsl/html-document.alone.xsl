@@ -17,7 +17,7 @@
     dc:title="HTML document creation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-25">
+    dc:modified="2023-05-26">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -61,7 +61,7 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="/*" mode="a:cssLinks" rdfs:label="Create CSS &lt;link>s">
+  <xsl:template match="*" mode="a:cssLinks" rdfs:label="Create CSS &lt;link>s">
     <xsl:param
         name="cssList"
         select="normalize-space($a:cssList)"
@@ -84,7 +84,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="/*" mode="a:jsLinks" rdfs:label="Create JS &lt;script>s">
+  <xsl:template match="*" mode="a:jsLinks" rdfs:label="Create JS &lt;script>s">
     <xsl:param
         name="jsList"
         select="normalize-space($a:jsList)"
@@ -108,12 +108,12 @@
   </xsl:template>
 
   <xsl:template
-      match="/*"
+      match="*"
       mode="a:faviconLink"
       rdfs:label="Create favicon &lt;link>"/>
 
   <xsl:template
-      match="/*"
+      match="*"
       mode="a:extraHeadContent"
       rdfs:label="Create extra content to include in &lt;head&gt; element"/>
 
@@ -122,7 +122,7 @@
       xmlns:dc_="http://purl.org/dc/terms/"
       xmlns:owl="tag:rv1971@web.de,2021:alcamo-xsl:alias:owl#"
       xmlns:owl_="http://www.w3.org/2002/07/owl#"
-      match="/*"
+      match="*"
       mode="a:head"
       rdfs:label="Create &lt;head&gt; element">
     <head>
@@ -218,12 +218,12 @@
   </xsd:annotation>
 
   <xsl:template
-      match="/*"
+      match="*"
       mode="a:toc"
       rdfs:label="Create table of contents, to be defined in importing stylesheets"/>
 
   <xsl:template
-      match="/*"
+      match="*"
       mode="a:page-header"
       rdfs:label="Create &lt;header&gt; element for page">
     <header>
@@ -251,12 +251,12 @@
   </xsl:template>
 
   <xsl:template
-      match="/*"
+      match="*"
       mode="a:page-main"
       rdfs:label="Create main part of page, to be defined in importing stylesheets"/>
 
   <xsl:template
-      match="/*"
+      match="*"
       mode="a:page-footer"
       rdfs:label="Create &lt;footer&gt; element for page, to be defined in importing stylesheets"/>
 
