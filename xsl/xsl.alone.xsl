@@ -443,15 +443,15 @@
     </ul>
   </xsl:template>
 
-  <xsl:template match="/" mode="axsl:collect-errors">
-    <xsl:if test="/*/xh:*">
+  <xsl:template match="*" mode="axsl:collect-errors">
+    <xsl:if test="xh:*">
       <p>
 There is top-level HTML content in this document. It is not
 processed as documentation.
       </p>
     </xsl:if>
 
-    <xsl:if test="/*/xsd:documentation">
+    <xsl:if test="xsd:documentation">
       <p>
 There are top-level &lt;xsd:documentation&gt; elements. They
 are not processed as documentation.
@@ -459,7 +459,7 @@ are not processed as documentation.
     </xsl:if>
 
     <xsl:if
-        test="/*/xsl:*[not(self::xsl:import)][1][not(preceding-sibling::xsd:annotation/xsd:documentation/xh:h2)]">
+        test="xsl:*[not(self::xsl:import)][1][not(preceding-sibling::xsd:annotation/xsd:documentation/xh:h2)]">
       <p>
 There is top-level content other than &lt;xsl:import&gt; without a
 preceding &lt;h2&gt; in a documentation block. Not TOC entries are
@@ -468,8 +468,8 @@ generated for this content.
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="/" mode="a:collect-errors">
-    <xsl:apply-templates select="/" mode="axsl:collect-errors"/>
+  <xsl:template match="*" mode="a:collect-errors">
+    <xsl:apply-templates select="*" mode="axsl:collect-errors"/>
   </xsl:template>
 
   <xsl:template match="/xsl:*" mode="a:page-main">

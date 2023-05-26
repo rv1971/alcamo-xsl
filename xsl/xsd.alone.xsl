@@ -1086,8 +1086,8 @@
     <xsl:apply-templates select="." mode="axsd:references"/>
   </xsl:template>
 
-  <xsl:template match="/" mode="axsd:collect-errors">
-    <xsl:variable name="wrongId" select="/*/xsd:*[@name != @id]"/>
+  <xsl:template match="*" mode="axsd:collect-errors">
+    <xsl:variable name="wrongId" select="xsd:*[@name != @id]"/>
 
     <xsl:if test="$wrongId">
       <p>There are objects whose ID differs from their name:</p>
@@ -1103,7 +1103,7 @@
 
     <xsl:variable
         name="definitionWithoutH2"
-        select="/*/xsd:*[not(local-name() = 'annotation')][not(local-name() = 'import')][not(local-name() = 'include')][1][not(preceding-sibling::xsd:*[1][xsd:documentation/xh:h2])]"/>
+        select="xsd:*[not(local-name() = 'annotation')][not(local-name() = 'import')][not(local-name() = 'include')][1][not(preceding-sibling::xsd:*[1][xsd:documentation/xh:h2])]"/>
 
     <xsl:if test="$definitionWithoutH2">
       <p>There is a top-level
@@ -1116,7 +1116,7 @@
 
     <xsl:variable
         name="h3WithoutH2"
-        select="/*/xsd:annotation/xsd:documentation/xh:h3[not(
+        select="xsd:annotation/xsd:documentation/xh:h3[not(
             preceding-sibling::xh:h2
             |../preceding-sibling::xsd:documentation/xh:h2
             |../../preceding-sibling::xsd:annotation/xsd:documentation/xh:h2

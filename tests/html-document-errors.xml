@@ -9,18 +9,17 @@
       xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
       xml:id="xslt"
       version="1.0"
-      exclude-result-srefixes="a">
+      exclude-result-prefixes="a">
     <xsl:import href="../xsl/html-document.xsl"/>
 
     <xsl:param name="a:errorReportingChannels" select="'output'"/>
 
     <xsl:template match="/">
-      <xsl:call-template name="a:report-errors"/>
+      <xsl:apply-templates mode="a:report-errors"/>
     </xsl:template>
 
-    <xsl:template match="/" mode="a:collect-errors">
+    <xsl:template match="/*" mode="a:collect-errors">
       <p>Lorem ipsum.</p>
     </xsl:template>
-
   </xsl:stylesheet>
 </a:doc>

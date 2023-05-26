@@ -188,10 +188,11 @@
       rdfs:label="To be overriden in importing stylesheets"/>
 
   <xsl:template
-      name="a:report-errors"
+      match="*"
+      mode="a:report-errors"
       rdfs:label="If instantiation of a:collect-errors is nonempty, add it to the result tree and/or output it as a message">
     <xsl:variable name="errors">
-      <xsl:apply-templates select="/" mode="a:collect-errors"/>
+      <xsl:apply-templates select="." mode="a:collect-errors"/>
     </xsl:variable>
 
     <xsl:if test="$errors != ''">
@@ -271,7 +272,7 @@
       <body>
         <xsl:apply-templates mode="a:page-header"/>
 
-        <xsl:call-template name="a:report-errors"/>
+        <xsl:apply-templates mode="a:report-errors"/>
 
         <xsl:apply-templates mode="a:page-main"/>
 
