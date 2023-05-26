@@ -173,7 +173,7 @@
   </xsd:annotation>
 
   <xsl:template
-      match="xsd:annotation"
+      match="xsd:documentation"
       mode="a:about"
       rdfs:label="Create about-block">
     <xsl:if test="not(.//xh:h2)">

@@ -31,7 +31,7 @@
               mode="a:toc-li"/>
         </ul>
 
-        <xsl:call-template name="a:about"/>
+        <xsl:apply-templates select="$a:about" mode="a:about"/>
 
         <xsl:apply-templates
             select="/a:doc/xsd:annotation/xsd:documentation[count(.|$a:about) = 2]"/>
