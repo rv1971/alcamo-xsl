@@ -1024,7 +1024,8 @@
   </xsl:template>
 
   <xsl:template
-      name="axsd:elements-with-id"
+      match="*"
+      mode="axsd:elements-with-id"
       rdfs:label="Create &lt;h3&gt; and &lt;table&gt; for elements with ID">
     <h3 id="elements-with-id">Elements with ID</h3>
 
@@ -1060,7 +1061,8 @@
   </xsl:template>
 
   <xsl:template
-      name="axsd:references"
+      match="*"
+      mode="axsd:references"
       rdfs:label="Create references &lt;h3&gt; and  &lt;ul&gt;">
     <h3 id="xsd-references">XSD references</h3>
 
@@ -1072,15 +1074,16 @@
   </xsl:template>
 
   <xsl:template
-      name="axsd:appendix"
+      match="*"
+      mode="axsd:appendix"
       rdfs:label="Create appendix &lt;h2&gt; and call further templates">
     <h2 id="appendix">Appendix</h2>
 
-    <xsl:if test="$axsd:elementsWithId">
-      <xsl:call-template name="axsd:elements-with-id"/>
-    </xsl:if>
+    <xsl:apply-templates
+        select="$axsd:elementsWithId[1]"
+        mode="axsd:elements-with-id"/>
 
-    <xsl:call-template name="axsd:references"/>
+    <xsl:apply-templates select="." mode="axsd:references"/>
   </xsl:template>
 
   <xsl:template match="/" mode="axsd:collect-errors">
@@ -1134,6 +1137,6 @@
   <xsl:template match="/xsd:schema" mode="a:page-main">
     <xsl:apply-templates mode="axsd:main"/>
 
-    <xsl:call-template name="axsd:appendix"/>
+    <xsl:apply-templates select="." mode="axsd:appendix"/>
   </xsl:template>
 </xsl:stylesheet>
