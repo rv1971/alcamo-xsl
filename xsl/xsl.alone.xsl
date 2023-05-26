@@ -413,21 +413,25 @@
   </xsl:template>
 
   <xsl:template
-      name="axsl:imports"
+      match="*"
+      mode="axsl:imports"
       rdfs:label="Create imports &lt;h2&gt; and  &lt;ul&gt;">
-    <h2 id="imports">Imports</h2>
+    <xsl:if test="xsl:import">
+      <h2 id="imports">Imports</h2>
 
-    <ul>
-      <xsl:for-each select="/*/xsl:import">
-        <li>
-          <xsl:apply-templates select="@href" mode="a:auto"/>
-        </li>
-      </xsl:for-each>
-    </ul>
+      <ul>
+        <xsl:for-each select="xsl:import">
+          <li>
+            <xsl:apply-templates select="@href" mode="a:auto"/>
+          </li>
+        </xsl:for-each>
+      </ul>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template
-      name="axsl:references"
+      match="*"
+      mode="axsl:references"
       rdfs:label="Create references &lt;h2&gt; and  &lt;ul&gt;">
     <h2 id="xslt-references">XSLT references</h2>
 
@@ -471,14 +475,12 @@ generated for this content.
   <xsl:template match="/xsl:*" mode="a:page-main">
     <xsl:apply-templates select="$axsl:intro" mode="axsl:main"/>
 
-    <xsl:if test="xsl:import">
-      <xsl:call-template name="axsl:imports"/>
-    </xsl:if>
+    <xsl:apply-templates select="." mode="axsl:imports"/>
 
     <xsl:apply-templates
         select="*[count(.|$axsl:intro) = count($axsl:intro) + 1]"
         mode="axsl:main"/>
 
-    <xsl:call-template name="axsl:references"/>
+    <xsl:apply-templates select="." mode="axsl:references"/>
   </xsl:template>
 </xsl:stylesheet>
