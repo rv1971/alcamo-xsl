@@ -469,7 +469,7 @@ generated for this content.
   </xsl:template>
 
   <xsl:template match="*" mode="a:collect-errors">
-    <xsl:apply-templates select="*" mode="axsl:collect-errors"/>
+    <xsl:apply-templates select="." mode="axsl:collect-errors"/>
   </xsl:template>
 
   <xsl:template match="/xsl:*" mode="a:page-main">
