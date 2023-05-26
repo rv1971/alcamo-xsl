@@ -17,7 +17,7 @@
     dc:title="Process &lt;xsd:annotation&gt;"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-18">
+    dc:modified="2023-05-26">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -172,13 +172,14 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template name="a:about" rdfs:label="Create about-block from $a:about">
-    <xsl:if test="$a:about">
-      <xsl:if test="not($a:about//xh:h2)">
-        <h2 id="about">About</h2>
-      </xsl:if>
-
-      <xsl:apply-templates select="$a:about" mode="a:copy"/>
+  <xsl:template
+      match="xsd:annotation"
+      mode="a:about"
+      rdfs:label="Create about-block">
+    <xsl:if test="not(.//xh:h2)">
+      <h2 id="about">About</h2>
     </xsl:if>
+
+    <xsl:apply-templates mode="a:copy"/>
   </xsl:template>
 </xsl:stylesheet>
