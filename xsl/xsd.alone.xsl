@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-05-26">
+    dc:modified="2023-05-31">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -124,26 +124,27 @@
   </xsd:annotation>
 
   <xsl:template
+      name="xsd:linkto-type"
       match="@base|@itemType|@type"
       mode="a:linkto"
       rdfs:label="Create &lt;code&gt; or &lt;a&gt;">
+    <xsl:param name="name" select="."/>
+
     <xsl:variable name="link">
       <xsl:choose>
-        <xsl:when test="contains(., ':')">
+        <xsl:when test="contains($name, ':')">
           <code>
-            <xsl:value-of select="."/>
+            <xsl:value-of select="$name"/>
           </code>
         </xsl:when>
 
-        <xsl:when test="key('axsd:types', .)">
-          <a href="#type-{.}" class="code">
-            <xsl:value-of select="."/>
+        <xsl:when test="key('axsd:types', $name)">
+          <a href="#type-{$name}" class="code">
+            <xsl:value-of select="$name"/>
           </a>
         </xsl:when>
 
         <xsl:otherwise>
-          <xsl:variable name="name" select="."/>
-
           <xsl:for-each select="/*/xsd:include/@schemaLocation">
             <xsl:variable name="schemaLocation" select="."/>
 
@@ -170,10 +171,39 @@
 
       <xsl:otherwise>
         <code>
-          <xsl:value-of select="."/>
+          <xsl:value-of select="$name"/>
         </code>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template
+      name="xsd:linksto-types"
+      match="*|@*"
+      mode="xsd:linksto-types"
+      rdfs:label="Create &lt;li&gt;s caling a:linkto-type">
+    <xsl:param
+        name="names"
+        select="normalize-space()"
+        rdfs:label="space-separated list of remaining names"/>
+
+    <xsl:if test="$names">
+      <xsl:variable
+          name="name"
+          select="substring-before(concat($names, ' '), ' ')"/>
+
+      <li>
+        <xsl:call-template name="xsd:linkto-type">
+          <xsl:with-param name="name" select="$name"/>
+        </xsl:call-template>
+      </li>
+
+      <xsl:if test="substring-after($names, ' ')">
+        <xsl:call-template name="xsd:linksto-types">
+          <xsl:with-param name="names" select="substring-after($names, ' ')"/>
+        </xsl:call-template>
+      </xsl:if>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template
@@ -318,6 +348,14 @@
     <xsl:text> of type </xsl:text>
 
     <xsl:apply-templates select="." mode="a:linkto"/>
+  </xsl:template>
+
+  <xsl:template match="@memberTypes" mode="axsd:title-suffix">
+    <xsl:text> of types </xsl:text>
+
+    <ul class="inline">
+      <xsl:apply-templates select="." mode="xsd:linksto-types"/>
+    </ul>
   </xsl:template>
 
   <xsl:template match="@name" mode="axsd:title-suffix">
