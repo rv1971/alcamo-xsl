@@ -164,7 +164,7 @@
       <xsl:apply-templates select="." mode="a:title"/>
     </xsl:param>
 
-    <xsl:variable name="from">ABCDEFGHIJKLMNOPQRSTUVWXYZ !"#$%&amp;'()*+,./:;&lt;&gt;?@[\]^`{|}~</xsl:variable>
+    <xsl:variable name="from">ABCDEFGHIJKLMNOPQRSTUVWXYZ !"#$%&amp;'()*+,/:;&lt;&gt;?@[\]^`{|}~</xsl:variable>
 
     <xsl:value-of
         select="translate($text, $from, 'abcdefghijklmnopqrstuvwxyz-')"/>
