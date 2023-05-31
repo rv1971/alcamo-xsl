@@ -151,7 +151,7 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="*" mode="a:title" rdfs:label="Create title text">
+  <xsl:template match="*|@*" mode="a:title" rdfs:label="Create title text">
     <xsl:value-of select="."/>
   </xsl:template>
 
@@ -168,6 +168,13 @@
 
     <xsl:value-of
         select="translate($text, $from, 'abcdefghijklmnopqrstuvwxyz-')"/>
+  </xsl:template>
+
+  <xsl:template
+      match="@xml:id"
+      mode="a:id"
+      rdfs:label="Return unchanged">
+    <xsl:value-of select="."/>
   </xsl:template>
 
   <xsd:annotation>

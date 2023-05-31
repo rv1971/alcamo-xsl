@@ -12,13 +12,23 @@
     <xsl:template match="/">
       <a:result>
         <xsl:apply-templates select="/a:doc/a:data"/>
-     </a:result>
+
+        <xsl:apply-templates select="/a:doc/a:data/a:item/@*"/>
+      </a:result>
     </xsl:template>
 
     <xsl:template match="a:item">
       <a:item>
         <xsl:value-of select="."/>
         <xsl:value-of select="@*"/>
+        <xsl:value-of select="' '"/>
+        <xsl:apply-templates select="." mode="a:id"/>
+      </a:item>
+    </xsl:template>
+
+    <xsl:template match="@id|@xml:id">
+      <a:item>
+        <xsl:value-of select="."/>
         <xsl:value-of select="' '"/>
         <xsl:apply-templates select="." mode="a:id"/>
       </a:item>
