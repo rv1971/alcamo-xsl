@@ -254,12 +254,35 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="*|@*" mode="a:a" rdfs:label="Create &lt;a&gt;">
+  <xsl:template match="*" mode="a:a" rdfs:label="Create &lt;a&gt;">
     <a>
       <xsl:attribute name="href">
         <xsl:text>#</xsl:text>
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
+
+      <xsl:if test="@rdfs:label">
+        <xsl:attribute name="title">
+          <xsl:value-of select="@rdfs:label"/>
+        </xsl:attribute>
+      </xsl:if>
+
+      <xsl:apply-templates select="." mode="a:title"/>
+    </a>
+  </xsl:template>
+
+  <xsl:template match="@*" mode="a:a" rdfs:label="Create &lt;a&gt;">
+    <a>
+      <xsl:attribute name="href">
+        <xsl:text>#</xsl:text>
+        <xsl:apply-templates select="." mode="a:id"/>
+      </xsl:attribute>
+
+      <xsl:if test="../@rdfs:label">
+        <xsl:attribute name="title">
+          <xsl:value-of select="../@rdfs:label"/>
+        </xsl:attribute>
+      </xsl:if>
 
       <xsl:apply-templates select="." mode="a:title"/>
     </a>
@@ -274,6 +297,12 @@
 
   <xsl:template match="@xml:id" mode="a:a" rdfs:label="Create &lt;a&gt;">
     <a href="#{.}">
+      <xsl:if test="../@rdfs:label">
+        <xsl:attribute name="title">
+          <xsl:value-of select="../@rdfs:label"/>
+        </xsl:attribute>
+      </xsl:if>
+
       <xsl:value-of select="."/>
     </a>
   </xsl:template>

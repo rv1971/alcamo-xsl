@@ -5,6 +5,7 @@
 <a:doc xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
   <xsl:stylesheet
       xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
       xmlns:xh="http://www.w3.org/1999/xhtml"
       xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
       xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
@@ -15,7 +16,9 @@
 
     <xsl:template match="/">
       <body xmlns:dc="http://purl.org/dc/terms/">
-        <p id="P1" xml:id="p1">Paragraph 1</p>
+        <p id="P1" xml:id="p1" rdfs:label="The very first paragraph">Paragraph 1</p>
+
+        <p id="P2">Paragraph 2</p>
 
         <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:a"/>
 
@@ -25,13 +28,15 @@
 
         <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:h2"/>
 
-        <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:h3"/>
+        <xsl:apply-templates select="//xh:body/xh:p[2]/@id" mode="a:a"/>
 
-        <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:h4"/>
+        <xsl:apply-templates select="//xh:body/xh:p[2]" mode="a:h3"/>
 
-        <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:h5"/>
+        <xsl:apply-templates select="//xh:body/xh:p[2]" mode="a:h4"/>
 
-        <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:h6"/>
+        <xsl:apply-templates select="//xh:body/xh:p[2]" mode="a:h5"/>
+
+        <xsl:apply-templates select="//xh:body/xh:p[2]" mode="a:h6"/>
       </body>
     </xsl:template>
   </xsl:stylesheet>
