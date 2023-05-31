@@ -18,7 +18,7 @@
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-23">
+    dc:modified="2023-05-31">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -254,7 +254,7 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="*" mode="a:a" rdfs:label="Create &lt;a&gt;">
+  <xsl:template match="*|@*" mode="a:a" rdfs:label="Create &lt;a&gt;">
     <a>
       <xsl:attribute name="href">
         <xsl:text>#</xsl:text>
@@ -262,6 +262,19 @@
       </xsl:attribute>
 
       <xsl:apply-templates select="." mode="a:title"/>
+    </a>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>More efficient implementation for <code>@xml:id</code> which
+      is known to be an ID.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template match="@xml:id" mode="a:a" rdfs:label="Create &lt;a&gt;">
+    <a href="#{.}">
+      <xsl:value-of select="."/>
     </a>
   </xsl:template>
 

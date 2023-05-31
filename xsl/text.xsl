@@ -170,6 +170,13 @@
         select="translate($text, $from, 'abcdefghijklmnopqrstuvwxyz-')"/>
   </xsl:template>
 
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>More efficient implementation for <code>@xml:id</code> which
+      is known to be an ID.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
   <xsl:template
       match="@xml:id"
       mode="a:id"

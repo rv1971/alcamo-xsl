@@ -15,9 +15,13 @@
 
     <xsl:template match="/">
       <body xmlns:dc="http://purl.org/dc/terms/">
-        <p id="p1">Paragraph 1</p>
+        <p id="P1" xml:id="p1">Paragraph 1</p>
 
         <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:a"/>
+
+        <xsl:apply-templates select="//xh:body/xh:p[1]/@id" mode="a:a"/>
+
+        <xsl:apply-templates select="//xh:body/xh:p[1]/@xml:id" mode="a:a"/>
 
         <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:h2"/>
 

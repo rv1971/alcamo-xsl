@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <body xmlns:dc="http://purl.org/dc/terms/" xmlns="http://www.w3.org/1999/xhtml">
-  <p id="p1">Paragraph 1</p>
+  <p id="P1" xml:id="p1">Paragraph 1</p>
   <a href="#p1">Paragraph 1</a>
+  <a href="#p1">P1</a>
+  <a href="#p1">p1</a>
   <h2 id="p1">Paragraph 1</h2>
   <h3 id="p1">Paragraph 1</h3>
   <h4 id="p1">Paragraph 1</h4>
