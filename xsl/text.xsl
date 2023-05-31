@@ -15,7 +15,7 @@
     dc:title="Text generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-21">
+    dc:modified="2023-05-31">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -237,6 +237,37 @@
     <xsl:for-each select="$a:textXslDoc">
       <xsl:value-of select="string(key('a:hexDigits', $value mod 16))"/>
     </xsl:for-each>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>If the hex representation is less than `length`, it is
+      left-padded with zeros, otherwise it is returned unchanged.</p>
+
+      <p><b>NOTE:</b> This template works for a maximum length of 64
+      digits, i.e. for numbers up to 256 bit.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      name="a:fixed-length-hex"
+      match="*|@*"
+      mode="a:fixed-length-hex"
+      rdfs:label="Create hex representation of fixed length">
+    <xsl:param name="value" select="." rdfs:label="Number to convert"/>
+    <xsl:param name="length" rdfs:label="length to pad to"/>
+
+    <xsl:variable name="hex">
+      <xsl:call-template name="a:hex">
+        <xsl:with-param name="value" select="$value"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:value-of
+        select="concat(
+            substring('0000000000000000000000000000000000000000000000000000000000000000', 1, $length - string-length($hex)),
+            $hex
+        )"/>
   </xsl:template>
 
   <xsd:annotation>

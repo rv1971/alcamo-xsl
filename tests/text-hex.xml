@@ -18,8 +18,19 @@
     <xsl:template match="a:item">
       <a:item>
         <xsl:value-of select="."/>
-        <xsl:value-of select="' '"/>
+        <xsl:text> </xsl:text>
         <xsl:apply-templates select="." mode="a:hex"/>
+        <xsl:text> </xsl:text>
+
+        <xsl:apply-templates select="." mode="a:fixed-length-hex">
+          <xsl:with-param name="length" select="2"/>
+        </xsl:apply-templates>
+
+        <xsl:text> </xsl:text>
+
+        <xsl:apply-templates select="." mode="a:fixed-length-hex">
+          <xsl:with-param name="length" select="4"/>
+        </xsl:apply-templates>
       </a:item>
     </xsl:template>
   </xsl:stylesheet>
