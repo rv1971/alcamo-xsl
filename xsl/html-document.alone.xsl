@@ -17,7 +17,7 @@
     dc:title="HTML document creation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-26">
+    dc:modified="2023-06-02">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -262,22 +262,30 @@
       rdfs:label="Create &lt;footer&gt; element for page, to be defined in importing stylesheets"/>
 
   <xsl:template match="/" rdfs:label="Create the document">
-    <html>
-      <xsl:for-each select="$a:metaRoot/@xml:lang">
-        <xsl:copy/>
-      </xsl:for-each>
-
-      <xsl:apply-templates mode="a:head"/>
-
-      <body>
-        <xsl:apply-templates mode="a:page-header"/>
-
+    <xsl:choose>
+      <xsl:when test="$a:errorsOnly">
         <xsl:apply-templates mode="a:report-errors"/>
+      </xsl:when>
 
-        <xsl:apply-templates mode="a:page-main"/>
+      <xsl:otherwise>
+        <html>
+          <xsl:for-each select="$a:metaRoot/@xml:lang">
+            <xsl:copy/>
+          </xsl:for-each>
 
-        <xsl:apply-templates mode="a:page-footer"/>
-      </body>
-    </html>
+          <xsl:apply-templates mode="a:head"/>
+
+          <body>
+            <xsl:apply-templates mode="a:page-header"/>
+
+            <xsl:apply-templates mode="a:report-errors"/>
+
+            <xsl:apply-templates mode="a:page-main"/>
+
+            <xsl:apply-templates mode="a:page-footer"/>
+          </body>
+        </html>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 </xsl:stylesheet>

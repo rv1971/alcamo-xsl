@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-05-31">
+    dc:modified="2023-06-02">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -1124,11 +1124,13 @@
     <xsl:apply-templates select="." mode="axsd:references"/>
   </xsl:template>
 
-  <xsl:template match="*" mode="axsd:collect-errors">
+  <xsl:template match="/*" mode="axsd:collect-errors">
     <xsl:variable name="wrongId" select="xsd:*[@name != @id]"/>
 
     <xsl:if test="$wrongId">
-      <p>There are objects whose ID differs from their name:</p>
+      <p>
+There are objects whose ID differs from their name:
+</p>
 
       <ul class="code">
         <xsl:for-each select="$wrongId">
@@ -1144,12 +1146,11 @@
         select="xsd:*[not(local-name() = 'annotation')][not(local-name() = 'import')][not(local-name() = 'include')][1][not(preceding-sibling::xsd:*[1][xsd:documentation/xh:h2])]"/>
 
     <xsl:if test="$definitionWithoutH2">
-      <p>There is a top-level
-      <code>&lt;<xsl:value-of select="name($definitionWithoutH2)"/>&gt;</code>
-      without a preceding
-      <code>&lt;h2&gt;</code> in a documentation block. Not TOC
-      entry is generated for it.
-    </p>
+      <p>
+There is a top-level <code>&lt;<xsl:value-of select="name($definitionWithoutH2)"/>&gt;</code>
+without a preceding <code>&lt;h2&gt;</code> in a documentation block.
+No TOC entry is generated for it.
+</p>
     </xsl:if>
 
     <xsl:variable
@@ -1161,15 +1162,17 @@
         )]"/>
 
     <xsl:if test="$h3WithoutH2">
-      <p>There is an <code>&lt;h3&gt;<xsl:value-of
-      select="$h3WithoutH2[1]"/>&lt;/h3&gt;</code> without a preceding
-      <code>&lt;h2&gt;</code> in a documentation block. Not TOC entry
-      is generated for it.</p>
+      <p>
+There is an <code>&lt;h3&gt;<xsl:value-of
+select="$h3WithoutH2[1]"/>&lt;/h3&gt;</code>
+without a preceding <code>&lt;h2&gt;</code> in a documentation block.
+No TOC entry is generated for it.
+</p>
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="/" mode="a:collect-errors">
-    <xsl:apply-templates select="/" mode="axsd:collect-errors"/>
+  <xsl:template match="/*" mode="a:collect-errors">
+    <xsl:apply-templates select="." mode="axsd:collect-errors"/>
   </xsl:template>
 
   <xsl:template match="/xsd:schema" mode="a:page-main">

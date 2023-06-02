@@ -448,14 +448,14 @@
       <p>
 There is top-level HTML content in this document. It is not
 processed as documentation.
-      </p>
+</p>
     </xsl:if>
 
     <xsl:if test="xsd:documentation">
       <p>
 There are top-level &lt;xsd:documentation&gt; elements. They
 are not processed as documentation.
-      </p>
+</p>
     </xsl:if>
 
     <xsl:if
@@ -464,7 +464,7 @@ are not processed as documentation.
 There is top-level content other than &lt;xsl:import&gt; without a
 preceding &lt;h2&gt; in a documentation block. Not TOC entries are
 generated for this content.
-      </p>
+</p>
     </xsl:if>
   </xsl:template>
 
