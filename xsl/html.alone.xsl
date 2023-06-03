@@ -307,6 +307,15 @@
     </a>
   </xsl:template>
 
+  <xsl:template
+      match="*|@*"
+      mode="a:li-a"
+      rdfs:label="Create &lt;li> containing call to a:a">
+    <li>
+      <xsl:apply-templates select="." mode="a:a"/>
+    </li>
+  </xsl:template>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Token lists</h2>

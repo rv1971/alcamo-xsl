@@ -3,8 +3,17 @@
   <p id="P1" xml:id="p1" rdfs:label="The very first paragraph">Paragraph 1</p>
   <p id="P2">Paragraph 2</p>
   <a href="#p1" title="The very first paragraph">Paragraph 1</a>
+  <li>
+    <a href="#p1" title="The very first paragraph">Paragraph 1</a>
+  </li>
   <a href="#p1" title="The very first paragraph">P1</a>
+  <li>
+    <a href="#p1" title="The very first paragraph">P1</a>
+  </li>
   <a href="#p1" title="The very first paragraph">p1</a>
+  <li>
+    <a href="#p1" title="The very first paragraph">p1</a>
+  </li>
   <h2 id="p1">Paragraph 1</h2>
   <a href="#p2">P2</a>
   <h3 id="P2">Paragraph 2</h3>

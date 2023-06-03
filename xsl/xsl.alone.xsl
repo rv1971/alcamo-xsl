@@ -19,7 +19,7 @@
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-05-26">
+    dc:modified="2023-06-03">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -343,20 +343,15 @@
       <xsl:variable name="subToc">
         <xsl:choose>
           <xsl:when test="$xsdf">
-            <xsl:for-each
-                select="$xsdf/preceding::*[count($topf | .) = count($topf)]|following-sibling::xh:h3">
-              <li>
-                <xsl:apply-templates select="." mode="a:a"/>
-              </li>
-            </xsl:for-each>
+            <xsl:apply-templates
+                select="$xsdf/preceding::*[count($topf | .) = count($topf)]|following-sibling::xh:h3"
+                mode="a:li-a"/>
           </xsl:when>
 
           <xsl:otherwise>
-            <xsl:for-each select="$topf|following-sibling::xh:h3">
-              <li>
-                <xsl:apply-templates select="." mode="a:a"/>
-              </li>
-            </xsl:for-each>
+            <xsl:apply-templates
+                select="$topf|following-sibling::xh:h3"
+                mode="a:li-a"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>

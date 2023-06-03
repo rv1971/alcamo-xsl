@@ -22,9 +22,15 @@
 
         <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:a"/>
 
+        <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:li-a"/>
+
         <xsl:apply-templates select="//xh:body/xh:p[1]/@id" mode="a:a"/>
 
+        <xsl:apply-templates select="//xh:body/xh:p[1]/@id" mode="a:li-a"/>
+
         <xsl:apply-templates select="//xh:body/xh:p[1]/@xml:id" mode="a:a"/>
+
+        <xsl:apply-templates select="//xh:body/xh:p[1]/@xml:id" mode="a:li-a"/>
 
         <xsl:apply-templates select="//xh:body/xh:p[1]" mode="a:h2"/>
 

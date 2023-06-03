@@ -669,11 +669,7 @@
         <p>Restrictions</p>
 
         <ul class="code">
-          <xsl:for-each select="$restrictions">
-            <li>
-              <xsl:apply-templates select="." mode="a:a"/>
-            </li>
-          </xsl:for-each>
+          <xsl:apply-templates select="$restrictions" mode="a:li-a"/>
         </ul>
       </section>
     </xsl:if>
@@ -687,11 +683,7 @@
         <p>Extensions</p>
 
         <ul class="code">
-          <xsl:for-each select="$extensions">
-            <li>
-              <xsl:apply-templates select="." mode="a:a"/>
-            </li>
-          </xsl:for-each>
+          <xsl:apply-templates select="$extensions" mode="a:li-a"/>
         </ul>
       </section>
     </xsl:if>
@@ -977,20 +969,15 @@
       <xsl:variable name="subToc">
         <xsl:choose>
           <xsl:when test="$xsdf">
-            <xsl:for-each
-                select="$xsdf/preceding::*[count($topf | .) = count($topf)]|following-sibling::xh:h3">
-              <li>
-                <xsl:apply-templates select="." mode="a:a"/>
-              </li>
-            </xsl:for-each>
+            <xsl:apply-templates
+                select="$xsdf/preceding::*[count($topf | .) = count($topf)]|following-sibling::xh:h3"
+                mode="a:li-a"/>
           </xsl:when>
 
           <xsl:otherwise>
-            <xsl:for-each select="$topf|following-sibling::xh:h3">
-              <li>
-                <xsl:apply-templates select="." mode="a:a"/>
-              </li>
-            </xsl:for-each>
+            <xsl:apply-templates
+                select="$topf|following-sibling::xh:h3"
+                mode="a:li-a"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
