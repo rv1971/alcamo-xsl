@@ -25,6 +25,7 @@
     </xsl:template>
 
     <xsl:template match="a:*|dc:*|owl:*|rdfs:*">
+      <xsl:apply-templates select="." mode="a:li"/>
       <xsl:apply-templates select="." mode="a:p"/>
     </xsl:template>
   </xsl:stylesheet>

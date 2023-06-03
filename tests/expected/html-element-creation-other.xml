@@ -1,12 +1,21 @@
 <?xml version="1.0"?>
 <a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#" xmlns="http://www.w3.org/1999/xhtml" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+  <li>foo</li>
   <p>foo</p>
+  <li>
+    <a href="mailto:alice@example.org">alice</a>
+  </li>
   <p>
     <a href="mailto:alice@example.org">alice</a>
   </p>
+  <li>
+    <a href="mailto:bob@example.org">bob</a>
+  </li>
   <p>
     <a href="mailto:bob@example.org">bob</a>
   </p>
+  <li>0.42.1</li>
   <p>0.42.1</p>
+  <li>Lorem ipsum.</li>
   <p>Lorem ipsum.</p>
 </a:result>

@@ -18,7 +18,7 @@
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-31">
+    dc:modified="2023-06-03">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -380,7 +380,28 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="*|@*" mode="a:p" rdfs:label="Create &lt;p>">
+  <xsl:template
+      match="*|@*"
+      mode="a:li"
+      rdfs:label="Create &lt;li> containing call to a:auto">
+    <li>
+      <xsl:apply-templates select="." mode="a:auto"/>
+    </li>
+  </xsl:template>
+
+  <xsl:template
+      match="rdfs:comment|@rdfs:comment"
+      mode="a:li"
+      rdfs:label="Create &lt;li> containing comment text">
+    <li>
+      <xsl:value-of select="."/>
+    </li>
+  </xsl:template>
+
+  <xsl:template
+      match="*|@*"
+      mode="a:p"
+      rdfs:label="Create &lt;p> containing call to a:auto">
     <p>
       <xsl:apply-templates select="." mode="a:auto"/>
     </p>
@@ -389,13 +410,16 @@
   <xsl:template
       match="rdfs:comment|@rdfs:comment"
       mode="a:p"
-      rdfs:label="Create &lt;p>">
+      rdfs:label="Create &lt;p> containing comment text">
     <p>
       <xsl:value-of select="."/>
     </p>
   </xsl:template>
 
-  <xsl:template match="*|@*" mode="a:td" rdfs:label="Create &lt;td>">
+  <xsl:template
+      match="*|@*"
+      mode="a:td"
+      rdfs:label="Create &lt;td> containing call to a:auto">
     <td>
       <xsl:apply-templates select="." mode="a:auto"/>
     </td>

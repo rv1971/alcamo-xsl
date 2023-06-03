@@ -420,11 +420,7 @@
       <h2 id="imports">Imports</h2>
 
       <ul>
-        <xsl:for-each select="xsl:import">
-          <li>
-            <xsl:apply-templates select="@href" mode="a:auto"/>
-          </li>
-        </xsl:for-each>
+        <xsl:apply-templates select="xsl:import/@href" mode="a:li"/>
       </ul>
     </xsl:if>
   </xsl:template>
