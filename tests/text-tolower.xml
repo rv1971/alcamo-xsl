@@ -24,6 +24,8 @@
         <xsl:apply-templates select="." mode="a:toupper"/>
         <xsl:value-of select="' '"/>
         <xsl:apply-templates select="." mode="a:ucfirst"/>
+        <xsl:value-of select="' '"/>
+        <xsl:apply-templates select="." mode="a:ucfirst-undash"/>
       </a:item>
     </xsl:template>
   </xsl:stylesheet>
@@ -31,5 +33,6 @@
   <a:data>
     <a:item>foO</a:item>
     <a:item>Lorem ipsum dolor sit amet.</a:item>
+    <a:item>bar-baz-qux</a:item>
   </a:data>
 </a:doc>

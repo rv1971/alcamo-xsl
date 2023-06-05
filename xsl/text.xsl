@@ -122,6 +122,20 @@
         select="concat(translate(substring($text, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring($text, 2))"/>
   </xsl:template>
 
+  <xsl:template
+      name="a:ucfirst-undash"
+      match="*|@*"
+      mode="a:ucfirst-undash"
+      rdfs:label="Convert first character to uppercase and replace dashes by spaces">
+    <xsl:param name="text" select="." rdfs:label="Text to convert"/>
+
+    <xsl:value-of
+        select="concat(
+            translate(substring($text, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
+            translate(substring($text, 2), '-', ' ')
+        )"/>
+  </xsl:template>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>QName handling</h2>

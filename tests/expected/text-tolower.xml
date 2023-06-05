@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
-  <a:item>foO foo FOO FoO</a:item>
-  <a:item>Lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. LOREM IPSUM DOLOR SIT AMET. Lorem ipsum dolor sit amet.</a:item>
+  <a:item>foO foo FOO FoO FoO</a:item>
+  <a:item>Lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. LOREM IPSUM DOLOR SIT AMET. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</a:item>
+  <a:item>bar-baz-qux bar-baz-qux BAR-BAZ-QUX Bar-baz-qux Bar baz qux</a:item>
 </a:result>
