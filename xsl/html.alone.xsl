@@ -439,7 +439,7 @@
       mode="a:th"
       rdfs:label="Create &lt;th> containing local node name">
     <th>
-      <xsl:call-template name="a:ucfirst">
+      <xsl:call-template name="a:ucfirst-undash">
         <xsl:with-param name="text" select="local-name()"/>
       </xsl:call-template>
     </th>

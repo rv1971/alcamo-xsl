@@ -28,7 +28,7 @@
   </xsl:stylesheet>
 
   <a:data>
-    <a:item>foo</a:item>
+    <a:baz-item>foo</a:baz-item>
     <dc:creator>alice@example.org</dc:creator>
     <dc:rightsHolder>mailto:bob@example.org</dc:rightsHolder>
     <owl:versionInfo>0.42.1</owl:versionInfo>
