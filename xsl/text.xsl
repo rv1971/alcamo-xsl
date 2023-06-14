@@ -625,7 +625,7 @@
   </xsd:annotation>
 
   <xsl:template
-      name="a:extract-id"
+      name="a:extract-id-from-xpointer"
       match="*|@*"
       mode="a:extract-id-from-xpointer"
       rdfs:label="Extract ID from XPointer, if possible">
@@ -633,7 +633,7 @@
 
     <xsl:choose>
       <xsl:when test="not(contains($xpointer, '('))">
-        <xsl:value-of select="concat('#', $xpointer)"/>
+        <xsl:value-of select="$xpointer"/>
       </xsl:when>
 
       <xsl:when test="contains($xpointer, 'element(')">
@@ -643,20 +643,17 @@
 
         <xsl:if test="not(starts-with($schemeData, '/'))">
           <xsl:value-of
-              select="concat('#', substring-before(concat($schemeData, '/'), '/'))"/>
+              select="substring-before(concat($schemeData, '/'), '/')"/>
         </xsl:if>
       </xsl:when>
 
       <xsl:when test="contains($xpointer, 'xpointer(id(')">
-        <xsl:value-of select="concat(
-            '#',
-            substring-before(
-                substring-after(
-                    translate($xpointer, $a:apos, $a:quot),
-                    $a:xpointerToIdStart
-                ),
-                $a:quot
-            )
+        <xsl:value-of select="substring-before(
+            substring-after(
+                translate($xpointer, $a:apos, $a:quot),
+                $a:xpointerToIdStart
+            ),
+            $a:quot
         )"/>
       </xsl:when>
     </xsl:choose>

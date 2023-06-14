@@ -224,9 +224,15 @@
       <xsl:attribute name="href">
         <xsl:value-of select="concat($urlPrefix, @href)"/>
 
-        <xsl:apply-templates
-            select="@xpointer"
-            mode="a:extract-id-from-xpointer"/>
+        <xsl:variable name="id">
+          <xsl:apply-templates
+              select="@xpointer"
+              mode="a:extract-id-from-xpointer"/>
+        </xsl:variable>
+
+        <xsl:if test="$id != ''">
+          <xsl:value-of select="concat('#', $id)"/>
+        </xsl:if>
       </xsl:attribute>
 
       <xsl:value-of select="@href"/>
