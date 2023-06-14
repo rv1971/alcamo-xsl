@@ -401,8 +401,29 @@
 
       <li>
         <p>
-          <a href="#xslt-references">XSLT references</a>
+          <a href="#appendix">Appendix</a>
         </p>
+        <ul>
+          <li>
+            <p>
+              <a href="#modes-defined">Modes defined</a>
+            </p>
+          </li>
+
+          <xsl:if test="xsl:*[@name]">
+            <li>
+              <p>
+                <a href="#named-elements">Named elements</a>
+              </p>
+            </li>
+          </xsl:if>
+
+          <li>
+            <p>
+              <a href="#xslt-references">XSLT references</a>
+            </p>
+          </li>
+        </ul>
       </li>
     </ul>
   </xsl:template>
@@ -422,9 +443,85 @@
 
   <xsl:template
       match="*"
+      mode="axsl:modes-defined"
+      rdfs:label="Create mixed content">
+    <h3 id="modes-defined">Modes defined</h3>
+
+    <table class="alcamo">
+      <thead>
+        <th>Mode</th>
+        <th>Defined for</th>
+      </thead>
+
+      <tbody>
+        <xsl:for-each select="xsl:template[@mode]">
+          <xsl:sort select="@mode"/>
+          <xsl:sort select="@match"/>
+
+          <tr class="code">
+            <td>
+              <xsl:value-of select="@mode"/>
+            </td>
+
+            <td>
+              <a>
+                <xsl:attribute name="href">
+                  <xsl:text>#</xsl:text>
+                  <xsl:apply-templates select="." mode="a:id"/>
+                </xsl:attribute>
+
+                <xsl:value-of select="@match"/>
+              </a>
+            </td>
+          </tr>
+        </xsl:for-each>
+      </tbody>
+    </table>
+  </xsl:template>
+
+  <xsl:template
+      match="*"
+      mode="axsl:named-elements"
+      rdfs:label="Create mixed content">
+    <h3 id="named-elements">Named elements</h3>
+
+    <table class="alcamo">
+      <thead>
+        <th>Name</th>
+        <th>Element type</th>
+      </thead>
+
+      <tbody>
+        <xsl:for-each select="xsl:*[@name]">
+          <xsl:sort select="@name"/>
+          <xsl:sort select="local-name()"/>
+
+          <tr class="code">
+            <td>
+              <xsl:value-of select="@name"/>
+            </td>
+
+            <td>
+              <a>
+                <xsl:attribute name="href">
+                  <xsl:text>#</xsl:text>
+                  <xsl:apply-templates select="." mode="a:id"/>
+                </xsl:attribute>
+
+                <xsl:value-of select="local-name()"/>
+              </a>
+            </td>
+          </tr>
+        </xsl:for-each>
+      </tbody>
+    </table>
+  </xsl:template>
+
+  <xsl:template
+      match="*"
       mode="axsl:references"
       rdfs:label="Create references &lt;h2&gt; and  &lt;ul&gt;">
-    <h2 id="xslt-references">XSLT references</h2>
+    <h3 id="xslt-references">XSLT references</h3>
 
     <ul>
       <li><a href="http://www.w3.org/TR/xslt10">XSL Transformations
@@ -432,6 +529,21 @@
       <li><a href="https://www.w3.org/TR/1999/REC-xpath-19991116">XML
       Path Language (XPath) 1.0</a></li>
     </ul>
+  </xsl:template>
+
+  <xsl:template
+      match="*"
+      mode="axsl:appendix"
+      rdfs:label="Create appendix &lt;h2&gt; and call further templates">
+    <h2 id="appendix">Appendix</h2>
+
+    <xsl:apply-templates select="." mode="axsl:modes-defined"/>
+
+    <xsl:if test="xsl:*[@name]">
+      <xsl:apply-templates select="." mode="axsl:named-elements"/>
+    </xsl:if>
+
+    <xsl:apply-templates select="." mode="axsl:references"/>
   </xsl:template>
 
   <xsl:template match="*" mode="axsl:collect-errors">
@@ -472,6 +584,6 @@ generated for this content.
         select="*[count(.|$axsl:intro) = count($axsl:intro) + 1]"
         mode="axsl:main"/>
 
-    <xsl:apply-templates select="." mode="axsl:references"/>
+    <xsl:apply-templates select="." mode="axsl:appendix"/>
   </xsl:template>
 </xsl:stylesheet>
