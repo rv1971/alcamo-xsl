@@ -620,6 +620,50 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>XPointer handling</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      name="a:extract-id"
+      match="*|@*"
+      mode="a:extract-id-from-xpointer"
+      rdfs:label="Extract ID from XPointer, if possible">
+    <xsl:param name="xpointer" select="." rdfs:label="XPointer"/>
+
+    <xsl:choose>
+      <xsl:when test="not(contains($xpointer, '('))">
+        <xsl:value-of select="concat('#', $xpointer)"/>
+      </xsl:when>
+
+      <xsl:when test="contains($xpointer, 'element(')">
+        <xsl:variable
+            name="schemeData"
+            select="substring-before(substring-after($xpointer, 'element('), ')')"/>
+
+        <xsl:if test="not(starts-with($schemeData, '/'))">
+          <xsl:value-of
+              select="concat('#', substring-before(concat($schemeData, '/'), '/'))"/>
+        </xsl:if>
+      </xsl:when>
+
+      <xsl:when test="contains($xpointer, 'xpointer(id(')">
+        <xsl:value-of select="concat(
+            '#',
+            substring-before(
+                substring-after(
+                    translate($xpointer, $a:apos, $a:quot),
+                    $a:xpointerToIdStart
+                ),
+                $a:quot
+            )
+        )"/>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2><code>auto</code> mode</h2>
 
       <p>By default, the <code>auto</code> mode copies a node value

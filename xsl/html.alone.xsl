@@ -220,39 +220,15 @@
         select="''"
         rdfs:label="URL to prepend to link targets"/>
 
-    <xsl:variable name="fragment">
-      <xsl:choose>
-        <xsl:when test="@xpointer and not(contains(@xpointer, '('))">
-          <xsl:value-of select="concat('#', @xpointer)"/>
-        </xsl:when>
+    <a>
+      <xsl:attribute name="href">
+        <xsl:value-of select="concat($urlPrefix, @href)"/>
 
-        <xsl:when test="contains(@xpointer, 'element(')">
-          <xsl:variable
-              name="schemeData"
-              select="substring-before(substring-after(@xpointer, 'element('), ')')"/>
+        <xsl:apply-templates
+            select="@xpointer"
+            mode="a:extract-id-from-xpointer"/>
+      </xsl:attribute>
 
-          <xsl:if test="not(starts-with($schemeData, '/'))">
-            <xsl:value-of
-                select="concat('#', substring-before(concat($schemeData, '/'), '/'))"/>
-          </xsl:if>
-        </xsl:when>
-
-        <xsl:when test="contains(@xpointer, 'xpointer(id(')">
-          <xsl:value-of select="concat(
-              '#',
-              substring-before(
-                  substring-after(
-                      translate(@xpointer, $a:apos, $a:quot),
-                      $a:xpointerToIdStart
-                  ),
-                  $a:quot
-              )
-          )"/>
-        </xsl:when>
-      </xsl:choose>
-    </xsl:variable>
-
-    <a href="{$urlPrefix}{@href}{$fragment}">
       <xsl:value-of select="@href"/>
 
       <xsl:if test="@xpointer">
