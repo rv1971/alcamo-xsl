@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="#xslt" type="text/xml"?>
+
+<a:doc
+    xmlns:dc="http://purl.org/dc/terms/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <xsl:stylesheet
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:dc="http://purl.org/dc/terms/"
+      xmlns:owl="http://www.w3.org/2002/07/owl#"
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xml:id="xslt"
+      version="1.0"
+      exclude-result-prefixes="dc owl rdf">
+    <xsl:import href="../xsl/html.xsl"/>
+
+    <xsl:template match="/">
+      <a:result xmlns:xi="http://www.w3.org/2001/XInclude">
+        <xsl:apply-templates select="/a:doc/a:data/*" mode="a:linkto"/>
+     </a:result>
+    </xsl:template>
+  </xsl:stylesheet>
+
+  <a:data>
+    <xi:include href="foo.html"/>
+    <xi:include href="foo.html" xpointer="bar"/>
+    <xi:include href="foo.html" xpointer="element(bar)"/>
+    <xi:include href="foo.html" xpointer="element(bar/1)"/>
+    <xi:include href="foo.html" xpointer="element(/1/2)"/>
+    <xi:include href="foo.html" xpointer="xpointer(id('baz')/corge)"/>
+    <xi:include
+        href="foo.html"
+        xpointer='xmlns(q=https://qux.example.org)xpointer(id("baz"))'/>
+    <xi:include href="foo.html" xpointer="xmlns(q=https://qux.example.org)q:qux(42)"/>
+  </a:data>
+</a:doc>

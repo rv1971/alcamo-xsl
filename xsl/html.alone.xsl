@@ -8,17 +8,18 @@
     xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
     version="1.0"
-    exclude-result-prefixes="a dc owl rdf rdfs xsd"
+    exclude-result-prefixes="a dc owl rdf rdfs xi xsd"
     xml:lang="en"
     dc:identifier="html.alone"
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-06-03">
+    dc:modified="2023-06-14">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -26,6 +27,16 @@
       <p>General-purpose templates that generate HTML code.</p>
     </xsd:documentation>
   </xsd:annotation>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Variables</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:variable
+      name="a:xpointerToIdStart"
+      rdfs:label="String needed to extract an ID from a XPointer">xpointer(id("</xsl:variable>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -189,6 +200,64 @@
           <xsl:value-of select="."/>
         </xsl:otherwise>
       </xsl:choose>
+    </a>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>If the xpointer is an ID or an element() or xpointer() routed
+      at an ID, link to that ID; otherwise simply link to the
+      document.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      match="xi:include"
+      mode="a:linkto"
+      rdfs:label="Create link to XIncluded resource">
+    <xsl:param
+        name="urlPrefix"
+        select="''"
+        rdfs:label="URL to prepend to link targets"/>
+
+    <xsl:variable name="fragment">
+      <xsl:choose>
+        <xsl:when test="@xpointer and not(contains(@xpointer, '('))">
+          <xsl:value-of select="concat('#', @xpointer)"/>
+        </xsl:when>
+
+        <xsl:when test="contains(@xpointer, 'element(')">
+          <xsl:variable
+              name="schemeData"
+              select="substring-before(substring-after(@xpointer, 'element('), ')')"/>
+
+          <xsl:if test="not(starts-with($schemeData, '/'))">
+            <xsl:value-of
+                select="concat('#', substring-before(concat($schemeData, '/'), '/'))"/>
+          </xsl:if>
+        </xsl:when>
+
+        <xsl:when test="contains(@xpointer, 'xpointer(id(')">
+          <xsl:value-of select="concat(
+              '#',
+              substring-before(
+                  substring-after(
+                      translate(@xpointer, $a:apos, $a:quot),
+                      $a:xpointerToIdStart
+                  ),
+                  $a:quot
+              )
+          )"/>
+        </xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+
+    <a href="{$urlPrefix}{@href}{$fragment}">
+      <xsl:value-of select="@href"/>
+
+      <xsl:if test="@xpointer">
+        <xsl:value-of select="concat('#', @xpointer)"/>
+      </xsl:if>
     </a>
   </xsl:template>
 

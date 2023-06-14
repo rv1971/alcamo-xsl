@@ -15,7 +15,7 @@
     dc:title="Text generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-31">
+    dc:modified="2023-06-14">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -82,6 +82,16 @@
         name="a:infty"
         select="2147483647"
         rdfs:label="Number that will lead to empty string when used as offset in substring()"/>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Variables</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:variable name="a:apos" rdfs:label="Apostroph">'</xsl:variable>
+
+  <xsl:variable name="a:quot" rdfs:label="Quote">"</xsl:variable>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">

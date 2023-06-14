@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<a:result xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#" xmlns="http://www.w3.org/1999/xhtml">
+  <a href="foo.html">foo.html</a>
+  <a href="foo.html#bar">foo.html#bar</a>
+  <a href="foo.html#bar">foo.html#element(bar)</a>
+  <a href="foo.html#bar">foo.html#element(bar/1)</a>
+  <a href="foo.html">foo.html#element(/1/2)</a>
+  <a href="foo.html#baz">foo.html#xpointer(id('baz')/corge)</a>
+  <a href="foo.html#baz">foo.html#xmlns(q=https://qux.example.org)xpointer(id("baz"))</a>
+  <a href="foo.html">foo.html#xmlns(q=https://qux.example.org)q:qux(42)</a>
+</a:result>
