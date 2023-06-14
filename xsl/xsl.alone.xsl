@@ -19,7 +19,7 @@
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-06-03">
+    dc:modified="2023-06-14">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
