@@ -9,15 +9,16 @@
     xmlns:xh="http://www.w3.org/1999/xhtml"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
     xmlns:sh="tag:rv1971@web.de,2021:alcamo-xsl:syntaxhighlight:xml#"
     version="1.0"
-    exclude-result-prefixes="dc rdfs xh xsd sh"
+    exclude-result-prefixes="a dc rdfs xh xsd sh"
     xml:lang="en"
     dc:identifier="syntaxhighlight-xml.alone"
     dc:title="Syntax highlighting for XML code"
     dc:creator="https://github.com/rv1971"
     dc:created="2017-09-11"
-    dc:modified="2023-05-18">
+    dc:modified="2023-06-26">
   <xsd:annotation>
     <xsd:documentation>
       <h2>Introduction</h2>
@@ -235,7 +236,11 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="*" mode="sh:xml" rdfs:label="Format an element">
+  <xsl:template
+      name="sh:xml"
+      match="*"
+      mode="sh:xml"
+      rdfs:label="Format an element">
     <xsl:param
         name="lf"
         rdfs:label="Linefeed string to insert at the beginning"/>
@@ -306,6 +311,89 @@
         </xsl:apply-templates>
 
         <xsl:text>/&gt;</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation>
+      <h2>HTML handling</h2>
+
+      <p>Copy HTML code unchanged to the result tree. Omit
+      <code>&lt;xsd:annotation&gt;/&lt;xsd:documentation&gt;</code>
+      surrounding pure HTML content and wrap pure HTML documentation
+      blocks into &lt;div&gt; so that CSS can be used to display them
+      in non-pre-style.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      match="xh:*"
+      mode="sh:xml"
+      rdfs:label="Copy HTML code unchanged">
+    <xsl:param
+        name="lf"
+        rdfs:label="Linefeed string to insert at the beginning"/>
+    <xsl:param name="prepend" rdfs:label="String to prepend to each line"/>
+
+    <xsl:choose>
+      <xsl:when test="$sh:htmlPassthru">
+        <xsl:apply-templates select="." mode="a:copy"/>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:call-template name="sh:xml">
+          <xsl:with-param name="lf" select="$lf"/>
+          <xsl:with-param name="prepend" select="$prepend"/>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template
+      match="xsd:documentation[not(*[not(self::xh:*)])][not(text()[normalize-space()])]"
+      mode="sh:xml"
+      rdfs:label="Wrap HTML-only documentation into &lt;div&gt;">
+    <xsl:param
+        name="lf"
+        rdfs:label="Linefeed string to insert at the beginning"/>
+    <xsl:param name="prepend" rdfs:label="String to prepend to each line"/>
+
+    <xsl:choose>
+      <xsl:when test="$sh:htmlPassthru">
+        <div>
+          <xsl:apply-templates mode="a:copy"/>
+        </div>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:call-template name="sh:xml">
+          <xsl:with-param name="lf" select="$lf"/>
+          <xsl:with-param name="prepend" select="$prepend"/>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template
+      match="xsd:annotation[not(*[not(self::xsd:documentation[not(*[not(self::xh:*)])][not(text()[normalize-space()])])])]"
+      mode="sh:xml"
+      rdfs:label="Omit &lt;xsd:annotation/xsd:documentation&gt; surrounding HTML-only documentation">
+    <xsl:param
+        name="lf"
+        rdfs:label="Linefeed string to insert at the beginning"/>
+    <xsl:param name="prepend" rdfs:label="String to prepend to each line"/>
+
+    <xsl:choose>
+      <xsl:when test="$sh:htmlPassthru">
+        <xsl:apply-templates mode="sh:xml"/>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:call-template name="sh:xml">
+          <xsl:with-param name="lf" select="$lf"/>
+          <xsl:with-param name="prepend" select="$prepend"/>
+        </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

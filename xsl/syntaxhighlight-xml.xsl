@@ -15,7 +15,8 @@
     dc:title="Syntax highlighting for XML code"
     dc:creator="https://github.com/rv1971"
     dc:created="2017-09-11"
-    dc:modified="2023-05-18">
+    dc:modified="2023-06-26">
+  <xsl:import href="annotation.xsl"/>
   <xsl:import href="syntaxhighlight-xml.alone.xsl"/>
 
   <xsd:annotation>
@@ -23,6 +24,11 @@
       <h2>Parameters</h2>
     </xsd:documentation>
   </xsd:annotation>
+
+  <xsl:param
+      name="sh:htmlPassthru"
+      select="false()"
+      rdfs:label="Whether to pass HTML unchanged through to the result tree"/>
 
   <xsl:param
       name="sh:indent"

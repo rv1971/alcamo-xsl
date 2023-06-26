@@ -15,10 +15,12 @@
       exclude-result-prefixes="a sh">
     <xsl:import href="../xsl/syntaxhighlight-xml.xsl"/>
 
+    <xsl:param name="sh:htmlPassthru" select="true()"/>
+
     <xsl:template match="/">
       <pre>
         <xsl:apply-templates mode="sh:xml"/>
-     </pre>
+      </pre>
     </xsl:template>
 
     <xsl:template name="foo">
@@ -37,9 +39,45 @@ be indented.</xsl:text>
 
   <bar content="elements without child nodes are not surrounded by empty lines"/>
   <baz content="elements without child nodes are not surrounded by empty lines"/>
+
+  <p xmlns="http://www.w3.org/1999/xhtml">Lorem <i>ipsum</i></p>
+
+  <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+    <p><b>dolor</b> sit amet,</p>
+    <p>consetetur sadipscing <u>elitr,</u></p>
+  </xsd:documentation>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <p>Lorem ipsum</p>
+      <p>sed diam nonumy eirmod tempor invidunt</p>
+      <p>ut labore et dolore magna aliquyam erat,</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>sed diam voluptua.</p>
+    </xsd:documentation>
+
+    <xsd:documentation xmlns="http://foo.example.info">
+      <p>At vero eos et accusam et justo duo dolores et ea rebum.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:annotation>
+    <xsd:documentation>
+      Stet clita kasd gubergren,
+    </xsd:documentation>
+
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>Lorem</p>
+      <foo xmlns="http://foo.example.info">ipsum</foo>
     </xsd:documentation>
   </xsd:annotation>
 </a:doc>
