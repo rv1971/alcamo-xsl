@@ -939,6 +939,48 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Examples</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template match="xsd:appinfo[axsd:example]" mode="axsd:main">
+    <xsl:apply-templates select="axsd:example" mode="axsd:main"/>
+  </xsl:template>
+
+  <xsl:template match="axsd:example" mode="axsd:main">
+    <section>
+      <h4>
+        <xsl:text>Example</xsl:text>
+
+        <xsl:if test="@rdfs:label">
+          <xsl:value-of select="concat('&#xa0;– ', @rdfs:label)"/>
+        </xsl:if>
+      </h4>
+
+      <pre>
+        <xsl:apply-templates mode="sh:xml"/>
+      </pre>
+    </section>
+  </xsl:template>
+
+  <xsl:template match="axsd:example[@source]" mode="axsd:main">
+    <section>
+      <h4>
+        <xsl:text>Example</xsl:text>
+
+        <xsl:if test="@rdfs:label">
+          <xsl:value-of select="concat('&#xa0;– ', @rdfs:label)"/>
+        </xsl:if>
+      </h4>
+
+      <pre>
+        <xsl:apply-templates select="document(@source)" mode="sh:xml"/>
+      </pre>
+    </section>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Document skeleton</h2>
     </xsd:documentation>
   </xsd:annotation>
@@ -1202,6 +1244,18 @@ There is an <code>&lt;h3&gt;<xsl:value-of
 select="$h3WithoutH2[1]"/>&lt;/h3&gt;</code>
 without a preceding <code>&lt;h2&gt;</code> in a documentation block.
 No TOC entry is generated for it.
+</p>
+    </xsl:if>
+
+    <xsl:variable
+        name="mixedAppinfo"
+        select="xsd:*/xsd:annotation/xsd:appinfo[axsd:example][*[not(self::axsd:example)]]"/>
+
+    <xsl:if test="$mixedAppinfo">
+      <p>
+There is an <code>&lt;xsd:appinfo&gt;</code> block
+containing examples as well as other stuff.
+The other stuff will be ignored.
 </p>
     </xsl:if>
   </xsl:template>
