@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-06-03">
+    dc:modified="2023-06-30">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -1028,6 +1028,12 @@
           <a href="#appendix">Appendix</a>
         </p>
         <ul>
+          <li>
+            <p>
+              <a href="#named-elements">Named elements</a>
+            </p>
+          </li>
+
           <xsl:if test="$axsd:elementsWithId">
             <li>
               <p>
@@ -1044,6 +1050,48 @@
         </ul>
       </li>
     </ul>
+  </xsl:template>
+
+  <xsl:template match="*" mode="axsd:named-elements">
+    <h3 id="named-elements">Named elements</h3>
+
+    <table class="alcamo">
+      <thead>
+        <tr>
+          <th>Tag name</th>
+          <th>Name</th>
+          <th>Label</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <xsl:for-each select="xsd:*[@name]">
+          <xsl:sort select="local-name()"/>
+          <xsl:sort select="@name"/>
+
+          <tr>
+            <td class="code">
+              <xsl:value-of select="local-name()"/>
+            </td>
+
+            <td class="code">
+              <a>
+                <xsl:attribute name="href">
+                  <xsl:text>#</xsl:text>
+                  <xsl:apply-templates select="." mode="a:id"/>
+                </xsl:attribute>
+
+                <xsl:value-of select="@name"/>
+              </a>
+            </td>
+
+            <td>
+              <xsl:value-of select="@rdfs:label"/>
+            </td>
+          </tr>
+        </xsl:for-each>
+      </tbody>
+    </table>
   </xsl:template>
 
   <xsl:template
@@ -1101,6 +1149,8 @@
       mode="axsd:appendix"
       rdfs:label="Create appendix &lt;h2&gt; and call further templates">
     <h2 id="appendix">Appendix</h2>
+
+    <xsl:apply-templates select="." mode="axsd:named-elements"/>
 
     <xsl:apply-templates
         select="$axsd:elementsWithId[1]"
