@@ -439,6 +439,8 @@
 
     <xsl:apply-templates select="@type" mode="axsd:title-suffix"/>
 
+    <xsl:apply-templates select="@fixed" mode="axsd:title-suffix"/>
+
     <xsl:call-template name="a:occurrence"/>
   </xsl:template>
 
