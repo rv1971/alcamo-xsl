@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-07-02">
+    dc:modified="2023-08-24">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -546,7 +546,9 @@
             </xsl:otherwise>
           </xsl:choose>
 
-          <th>Label</th>
+          <xsl:if test="xsd:attribute/@rdfs:label">
+            <th>Label</th>
+          </xsl:if>
         </tr>
       </thead>
 
@@ -584,9 +586,7 @@
               </xsl:choose>
             </td>
 
-            <td>
-              <xsl:value-of select="@rdfs:label"/>
-            </td>
+            <xsl:apply-templates select="@rdfs:label" mode="a:td"/>
           </tr>
         </xsl:for-each>
 
@@ -612,9 +612,7 @@
               </xsl:choose>
             </td>
 
-            <td>
-              <xsl:value-of select="@rdfs:label"/>
-            </td>
+            <xsl:apply-templates select="@rdfs:label" mode="a:td"/>
           </tr>
         </xsl:for-each>
       </tbody>
