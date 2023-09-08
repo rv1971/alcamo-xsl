@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="#xslt" type="text/xml"?>
+
+<a:doc xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <xsl:stylesheet
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xml:id="xslt"
+      version="1.0">
+    <xsl:import href="../xsl/text.xsl"/>
+
+    <xsl:template match="/">
+      <a:result>
+        <xsl:apply-templates select="/a:doc/a:data"/>
+     </a:result>
+    </xsl:template>
+
+    <xsl:template match="a:item">
+      <a:item>
+        <xsl:text>"</xsl:text>
+        <xsl:value-of select="."/>
+        <xsl:text>": </xsl:text>
+        <xsl:apply-templates select="." mode="a:count-list-items"/>
+      </a:item>
+    </xsl:template>
+  </xsl:stylesheet>
+
+  <a:data>
+    <a:item></a:item>
+    <a:item>	</a:item>
+    <a:item>
+    </a:item>
+    <a:item>  foo
+    </a:item>
+    <a:item>foo-bar</a:item>
+    <a:item>foo-bar  baz   qux
+    </a:item>
+  </a:data>
+</a:doc>
