@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-08-24">
+    dc:modified="2023-10-20">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -421,7 +421,10 @@
 
     <xsl:apply-templates select="@xpath" mode="axsd:title-suffix"/>
 
-    <xsl:call-template name="a:occurrence"/>
+    <xsl:if test="@minOccurs or @maxOccurs">
+      <xsl:text>, </xsl:text>
+      <xsl:call-template name="a:occurrence"/>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="xsd:attribute[count(..|/*) = 2]" mode="a:title">
@@ -441,7 +444,10 @@
 
     <xsl:apply-templates select="@fixed" mode="axsd:title-suffix"/>
 
-    <xsl:call-template name="a:occurrence"/>
+    <xsl:if test="@minOccurs or @maxOccurs">
+      <xsl:text>, </xsl:text>
+      <xsl:call-template name="a:occurrence"/>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="xsd:enumeration" mode="a:title">

@@ -15,7 +15,7 @@
     dc:title="Text generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-09-08">
+    dc:modified="2023-10-30">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -378,18 +378,16 @@
           <xsl:when test="$maxOccurs and $maxOccurs != 1">
             <xsl:choose>
               <xsl:when test="$maxOccurs = 'unbounded'">
-                <xsl:value-of select="', '"/>
                 <xsl:apply-templates select="$minOccurs" mode="a:number"/>
                 <xsl:value-of select="' or more'"/>
               </xsl:when>
 
               <xsl:when test="$maxOccurs = $minOccurs">
-                <xsl:value-of select="', exactly '"/>
+                <xsl:value-of select="'exactly '"/>
                 <xsl:apply-templates select="$minOccurs" mode="a:number"/>
               </xsl:when>
 
               <xsl:otherwise>
-                <xsl:value-of select="', '"/>
                 <xsl:apply-templates select="$minOccurs" mode="a:number"/>
                 <xsl:value-of select="' to '"/>
                 <xsl:apply-templates select="$maxOccurs" mode="a:number"/>
@@ -398,7 +396,7 @@
           </xsl:when>
 
           <xsl:otherwise>
-            <xsl:value-of select="', optional'"/>
+            <xsl:value-of select="'optional'"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -406,11 +404,11 @@
       <xsl:when test="$maxOccurs and $maxOccurs != 1">
         <xsl:choose>
           <xsl:when test="$maxOccurs = 'unbounded'">
-            <xsl:value-of select="', one or more'"/>
+            <xsl:value-of select="'one or more'"/>
           </xsl:when>
 
           <xsl:otherwise>
-            <xsl:value-of select="', one to '"/>
+            <xsl:value-of select="'one to '"/>
             <xsl:apply-templates select="$maxOccurs" mode="a:number"/>
           </xsl:otherwise>
         </xsl:choose>

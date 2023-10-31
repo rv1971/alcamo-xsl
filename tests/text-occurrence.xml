@@ -17,7 +17,7 @@
 
     <xsl:template match="a:item">
       <a:item>
-        <xsl:value-of select="concat(@minOccurs, ', ', @maxOccurs)"/>
+        <xsl:value-of select="concat(@minOccurs, ', ', @maxOccurs, ': ')"/>
         <xsl:call-template select="." name="a:occurrence"/>
       </a:item>
     </xsl:template>
