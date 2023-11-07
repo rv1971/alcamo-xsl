@@ -19,7 +19,7 @@
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-06-14">
+    dc:modified="2023-11-07">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -40,7 +40,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Links</h2>
+      <h2>External links</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -301,6 +301,29 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>HTML attributes</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      match="*|@*"
+      mode="a:title-attr"
+      rdfs:label="Create attribiute"/>
+
+  <xsl:template match="*[@rdfs:label]" mode="a:title-attr">
+    <xsl:attribute name="title">
+      <xsl:value-of select="@rdfs:label"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="@*[../@rdfs:label]" mode="a:title-attr">
+    <xsl:attribute name="title">
+      <xsl:value-of select="../@rdfs:label"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Links to HTML elements</h2>
     </xsd:documentation>
   </xsd:annotation>
@@ -312,11 +335,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:if test="@rdfs:label">
-        <xsl:attribute name="title">
-          <xsl:value-of select="@rdfs:label"/>
-        </xsl:attribute>
-      </xsl:if>
+      <xsl:apply-templates select="." mode="a:title-attr"/>
 
       <xsl:apply-templates select="." mode="a:title"/>
     </a>
@@ -329,11 +348,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:if test="../@rdfs:label">
-        <xsl:attribute name="title">
-          <xsl:value-of select="../@rdfs:label"/>
-        </xsl:attribute>
-      </xsl:if>
+      <xsl:apply-templates select="." mode="a:title-attr"/>
 
       <xsl:apply-templates select="." mode="a:title"/>
     </a>
@@ -348,11 +363,7 @@
 
   <xsl:template match="@xml:id" mode="a:a" rdfs:label="Create &lt;a&gt;">
     <a href="#{.}">
-      <xsl:if test="../@rdfs:label">
-        <xsl:attribute name="title">
-          <xsl:value-of select="../@rdfs:label"/>
-        </xsl:attribute>
-      </xsl:if>
+      <xsl:apply-templates select="." mode="a:title-attr"/>
 
       <xsl:value-of select="."/>
     </a>
