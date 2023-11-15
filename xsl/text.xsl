@@ -6,6 +6,7 @@
     xmlns:dc="http://purl.org/dc/terms/"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:xh="http://www.w3.org/1999/xhtml"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
@@ -175,8 +176,19 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="*|@*" mode="a:title" rdfs:label="Create title text">
+  <xsl:template
+      match="*|@*" mode="a:title"
+      rdfs:label="Use content as title text">
     <xsl:value-of select="."/>
+  </xsl:template>
+
+  <xsl:template
+      match="*[normalize-space(text()) = '']"
+      mode="a:title"
+      rdfs:label="For nodes with no text, create title text from local name">
+    <xsl:call-template name="a:ucfirst-undash">
+      <xsl:with-param name="text" select="local-name()"/>
+    </xsl:call-template>
   </xsl:template>
 
   <xsl:template
@@ -194,36 +206,62 @@
         select="translate($text, $from, 'abcdefghijklmnopqrstuvwxyz-')"/>
   </xsl:template>
 
+  <xsl:template
+      match="*[normalize-space(text()) = '']"
+      mode="a:id"
+      rdfs:label="For nodes with no text, use local name as ID">
+    <xsl:value-of select="local-name()"/>
+  </xsl:template>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <p>More efficient implementation for <code>@xml:id</code> which
-      is known to be an ID.</p>
+      <p>Recursive implementation for <code>@id</code> which
+      is expected to be an ID unique within its parent.</p>
+
+      <p>This is liklely to be overriden for specific cases.</p>
     </xsd:documentation>
   </xsd:annotation>
 
   <xsl:template
-      match="@xml:id"
+      match="@id[not(namespace-uri())]"
       mode="a:id"
-      rdfs:label="Return unchanged">
+      rdfs:label="Append to grandparent's ID">
+    <xsl:variable name="grandParentId">
+      <xsl:apply-templates select="../.." mode="a:id"/>
+    </xsl:variable>
+
+    <xsl:value-of select="$grandParentId"/>
+    <xsl:if test="$grandParentId">.</xsl:if>
+    <xsl:value-of select="."/>
+  </xsl:template>
+
+  <xsl:template
+      match="@xml:id|xh:*/@id|xsd:*/@id"
+      mode="a:id"
+      rdfs:label="Use xml:id, HTML ID and XSD ID unchanged">
     <xsl:value-of select="."/>
   </xsl:template>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <p>Use an existing <code>id</code> attribute, or generate one of
-      there is none.</p>
+      <p>Use an existing <code>id</code> attribute.</p>
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="*[@xml:id]" mode="a:id" rdfs:label="Create ID text">
+  <xsl:template
+      match="*[@xml:id]"
+      mode="a:id"
+      priority="1"
+      rdfs:label="Create ID text">
     <xsl:value-of select="@xml:id"/>
   </xsl:template>
 
   <xsl:template
       match="*[not(@xml:id)][@id]"
       mode="a:id"
+      priority="1"
       rdfs:label="Create ID text">
-    <xsl:value-of select="@id"/>
+    <xsl:apply-templates select="@id" mode="a:id"/>
   </xsl:template>
 
   <xsd:annotation>
