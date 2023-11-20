@@ -19,7 +19,7 @@
     dc:title="Format an XSLT stylesheet for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-18"
-    dc:modified="2023-11-15">
+    dc:modified="2023-11-20">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -78,7 +78,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Headings</h2>
+      <h2>Title generation</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -147,6 +147,16 @@
     <code>
       <xsl:value-of select="concat('$', @name)"/>
     </code>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>ID generation</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template match="xsl:*" mode="a:id" rdfs:label="Create ID from title">
+    <xsl:call-template name="a:id"/>
   </xsl:template>
 
   <xsd:annotation>

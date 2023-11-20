@@ -16,7 +16,7 @@
     dc:title="Text generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-10-30">
+    dc:modified="2023-11-20">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -172,7 +172,7 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>ID handling</h2>
+      <h2>Title generation</h2>
     </xsd:documentation>
   </xsd:annotation>
 
@@ -191,7 +191,13 @@
     </xsl:call-template>
   </xsl:template>
 
-  <xsl:template
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>ID generation</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+ <xsl:template
       name="a:id"
       match="*|@*"
       mode="a:id"
