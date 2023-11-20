@@ -308,18 +308,16 @@
   <xsl:template
       match="*|@*"
       mode="a:title-attr"
-      rdfs:label="Create attribute"/>
+      rdfs:label="Create title attribute from a:label">
+    <xsl:variable name="label">
+      <xsl:apply-templates select="." mode="a:label"/>
+    </xsl:variable>
 
-  <xsl:template match="*[@rdfs:label]" mode="a:title-attr">
-    <xsl:attribute name="title">
-      <xsl:value-of select="@rdfs:label"/>
-    </xsl:attribute>
-  </xsl:template>
-
-  <xsl:template match="@*[../@rdfs:label]" mode="a:title-attr">
-    <xsl:attribute name="title">
-      <xsl:value-of select="../@rdfs:label"/>
-    </xsl:attribute>
+    <xsl:if test="$label != ''">
+      <xsl:attribute name="title">
+        <xsl:value-of select="$label"/>
+      </xsl:attribute>
+    </xsl:if>
   </xsl:template>
 
   <xsd:annotation>

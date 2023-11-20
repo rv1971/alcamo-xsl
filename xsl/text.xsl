@@ -270,6 +270,39 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Label generation</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      match="*|@*"
+      mode="a:label"
+      rdfs:label="Default label is empty"/>
+
+  <xsl:template
+      match="*[@rdfs:label]"
+      mode="a:label"
+      rdfs:label="Create label text from rdfs:label attribute">
+    <xsl:value-of select="@rdfs:label"/>
+  </xsl:template>
+
+  <xsl:template
+      match="*[rdfs:label]"
+      mode="a:label"
+      rdfs:label="Create label text from &lt;rdfs:label&gt; element">
+    <xsl:value-of select="rdfs:label[1]"/>
+  </xsl:template>
+
+  <xsl:template
+      match="@*[../@rdfs:label]"
+      mode="a:label"
+      rdfs:label="Create label text from rdfs:label attribute">
+    <xsl:value-of select="../@rdfs:label"/>
+  </xsl:template>
+
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>List handling</h2>
     </xsd:documentation>
   </xsd:annotation>
