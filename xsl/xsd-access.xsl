@@ -17,7 +17,7 @@
     dc:title="Access to XSD content"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-05-02"
-    dc:modified="2023-05-21">
+    dc:modified="2023-11-20">
   <xsl:import href="text.xsl"/>
 
   <xsd:annotation>
@@ -87,7 +87,7 @@
   <xsl:key
       name="axsd:namedRestrictions"
       match="/*/xsd:simpleType|/*/xsd:complexType"
-      use="xsd:restriction/@base"
+      use="xsd:restriction/@base|xsd:complexContent/xsd:restriction/@base|xsd:simpleContent/xsd:restriction/@base"
       rdfs:label="Top-level restriction types defined in the current document"/>
 
   <xsl:key
