@@ -308,7 +308,7 @@
   <xsl:template
       match="*|@*"
       mode="a:title-attr"
-      rdfs:label="Create attribiute"/>
+      rdfs:label="Create attribute"/>
 
   <xsl:template match="*[@rdfs:label]" mode="a:title-attr">
     <xsl:attribute name="title">
