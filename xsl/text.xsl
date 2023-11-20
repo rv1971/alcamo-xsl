@@ -172,20 +172,18 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Title generation</h2>
+      <h2>Name generation</h2>
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template
-      match="*|@*" mode="a:title"
-      rdfs:label="Use content as title text">
+  <xsl:template match="*|@*" mode="a:name" rdfs:label="Use content as name">
     <xsl:value-of select="."/>
   </xsl:template>
 
   <xsl:template
       match="*[normalize-space(text()) = '']"
-      mode="a:title"
-      rdfs:label="For nodes with no text, create title text from local name">
+      mode="a:name"
+      rdfs:label="For nodes with no text, create name from local name">
     <xsl:call-template name="a:ucfirst-undash">
       <xsl:with-param name="text" select="local-name()"/>
     </xsl:call-template>
@@ -203,7 +201,7 @@
       mode="a:id"
       rdfs:label="Convert to lowercase ID, replacing spaces by hyphens and removing punctuation">
     <xsl:param name="text" rdfs:label="Text to convert">
-      <xsl:apply-templates select="." mode="a:title"/>
+      <xsl:apply-templates select="." mode="a:name"/>
     </xsl:param>
 
     <xsl:variable name="from">ABCDEFGHIJKLMNOPQRSTUVWXYZ !"#$%&amp;'()*+,/:;&lt;&gt;?@[\]^`{|}~</xsl:variable>

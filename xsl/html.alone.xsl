@@ -255,7 +255,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="a:title"/>
+      <xsl:apply-templates select="." mode="a:name"/>
     </h2>
   </xsl:template>
 
@@ -265,7 +265,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="a:title"/>
+      <xsl:apply-templates select="." mode="a:name"/>
     </h3>
   </xsl:template>
 
@@ -275,7 +275,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="a:title"/>
+      <xsl:apply-templates select="." mode="a:name"/>
     </h4>
   </xsl:template>
 
@@ -285,7 +285,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="a:title"/>
+      <xsl:apply-templates select="." mode="a:name"/>
     </h5>
   </xsl:template>
 
@@ -295,7 +295,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="a:title"/>
+      <xsl:apply-templates select="." mode="a:name"/>
     </h6>
   </xsl:template>
 
@@ -337,7 +337,7 @@
 
       <xsl:apply-templates select="." mode="a:title-attr"/>
 
-      <xsl:apply-templates select="." mode="a:title"/>
+      <xsl:apply-templates select="." mode="a:name"/>
     </a>
   </xsl:template>
 
@@ -350,7 +350,7 @@
 
       <xsl:apply-templates select="." mode="a:title-attr"/>
 
-      <xsl:apply-templates select="." mode="a:title"/>
+      <xsl:apply-templates select="." mode="a:name"/>
     </a>
   </xsl:template>
 

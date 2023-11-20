@@ -5,14 +5,16 @@
 <a:doc
     xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#"
     xmlns:axsd="tag:rv1971@web.de,2021:alcamo-xsl:xsd#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <xsl:stylesheet
       xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
       xmlns:axsd="tag:rv1971@web.de,2021:alcamo-xsl:xsd#"
+      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
       xmlns:xsd="http://www.w3.org/2001/XMLSchema"
       xml:id="xslt"
       version="1.0"
-      exclude-result-prefixes="axsd xsd">
+      exclude-result-prefixes="axsd rdfs xsd">
     <xsl:import href="../xsl/xsd-access.xsl"/>
 
     <xsl:template match="/">
@@ -29,7 +31,7 @@
         <xsl:text> </xsl:text>
         <xsl:value-of select="@value"/>
         <xsl:text> </xsl:text>
-        <xsl:value-of select="$xsdElem/@a:title"/>
+        <xsl:value-of select="$xsdElem/@rdfs:label"/>
         <xsl:text> </xsl:text>
         <xsl:apply-templates select="$xsdElem" mode="a:id"/>
       </a:item>
@@ -40,12 +42,12 @@
 
   <xsd:import namespace="http://bar.example.info"/>
 
-  <xsd:attribute name="foo" a:title="Foo"/>
+  <xsd:attribute name="foo" rdfs:label="Foo"/>
 
-  <xsd:attributeGroup name="bar" a:title="Bar" id="corge"/>
+  <xsd:attributeGroup name="bar" rdfs:label="Bar" id="corge"/>
 
-  <xsd:element name="foo" a:title="Foo element">
-    <xsd:annotation id="inner-annotation" a:title="Corge annotation">
+  <xsd:element name="foo" rdfs:label="Foo element">
+    <xsd:annotation id="inner-annotation" rdfs:label="Corge annotation">
       <xsd:documentation>Lorem ipsum</xsd:documentation>
       <xsd:documentation id="inner-doc">Lorem ipsum</xsd:documentation>
     </xsd:annotation>
@@ -73,11 +75,11 @@
     </xsd:sequence>
   </xsd:element>
 
-  <xsd:group name="qux" a:title="Qux"/>
+  <xsd:group name="qux" rdfs:label="Qux"/>
 
-  <xsd:simpleType name="quux" a:title="Quux"/>
+  <xsd:simpleType name="quux" rdfs:label="Quux"/>
 
-  <xsd:complexType name="baz" a:title="Baz"/>
+  <xsd:complexType name="baz" rdfs:label="Baz"/>
 
   <a:data>
     <a:item key="axsd:attributes" value="foo"/>

@@ -78,14 +78,11 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <h2>Title generation</h2>
+      <h2>Name generation</h2>
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template
-      match="/*/*"
-      mode="a:title"
-      rdfs:label="Create heading text">
+  <xsl:template match="/*/*" mode="a:name" rdfs:label="Create name text">
     <xsl:text>Data </xsl:text>
 
     <code>
@@ -93,7 +90,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="/*/xsl:key" mode="a:title">
+  <xsl:template match="/*/xsl:key" mode="a:name">
     <xsl:text>Key </xsl:text>
 
     <code>
@@ -101,7 +98,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="/*/xsl:param" mode="a:title">
+  <xsl:template match="/*/xsl:param" mode="a:name">
     <xsl:text>Parameter </xsl:text>
 
     <code>
@@ -109,7 +106,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="/*/xsl:template[@name]" mode="a:title">
+  <xsl:template match="/*/xsl:template[@name]" mode="a:name">
     <xsl:text>Template </xsl:text>
 
     <code>
@@ -117,7 +114,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="/*/xsl:template[@match]" mode="a:title">
+  <xsl:template match="/*/xsl:template[@match]" mode="a:name">
     <xsl:text>Template </xsl:text>
 
     <code>
@@ -127,7 +124,7 @@
 
   <xsl:template
       match="/*/xsl:template[@match][@mode]"
-      mode="a:title">
+      mode="a:name">
     <xsl:text>Template </xsl:text>
 
     <code>
@@ -141,7 +138,7 @@
     </code>
   </xsl:template>
 
-  <xsl:template match="/*/xsl:variable" mode="a:title">
+  <xsl:template match="/*/xsl:variable" mode="a:name">
     <xsl:text>Variable </xsl:text>
 
     <code>
