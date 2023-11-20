@@ -275,9 +275,16 @@
   </xsd:annotation>
 
   <xsl:template
-      match="*|@*"
+      match="*"
       mode="a:label"
-      rdfs:label="Default label is empty"/>
+      rdfs:label="Default element label is empty"/>
+
+  <xsl:template
+      match="@*"
+      mode="a:label"
+      rdfs:label="Default attribute label is element label">
+    <xsl:apply-templates select=".." mode="a:label"/>
+  </xsl:template>
 
   <xsl:template
       match="*[@rdfs:label]"
@@ -294,12 +301,18 @@
   </xsl:template>
 
   <xsl:template
-      match="@*[../@rdfs:label]"
+      match="*[not(@rdfs:label) and @dc:title]"
       mode="a:label"
-      rdfs:label="Create label text from rdfs:label attribute">
-    <xsl:value-of select="../@rdfs:label"/>
+      rdfs:label="Create label text from dc:title attribute">
+    <xsl:value-of select="@dc:title"/>
   </xsl:template>
 
+  <xsl:template
+      match="*[not(rdfs:label) and dc:title]"
+      mode="a:label"
+      rdfs:label="Create label text from &lt;dc:title&gt; element">
+    <xsl:value-of select="dc:title[1]"/>
+  </xsl:template>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
