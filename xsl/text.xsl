@@ -16,7 +16,7 @@
     dc:title="Text generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-11-20">
+    dc:modified="2023-11-21">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -183,7 +183,7 @@
   <xsl:template
       match="*[normalize-space(text()) = '']"
       mode="a:name"
-      rdfs:label="For nodes with no text, create name from local name">
+      rdfs:label="For elements with no text, create name from local name">
     <xsl:call-template name="a:ucfirst-undash">
       <xsl:with-param name="text" select="local-name()"/>
     </xsl:call-template>
@@ -199,7 +199,7 @@
       name="a:id"
       match="*|@*"
       mode="a:id"
-      rdfs:label="Convert to lowercase ID, replacing spaces by hyphens and removing punctuation">
+      rdfs:label="Convert content to lowercase ID, replacing spaces by hyphens and removing punctuation">
     <xsl:param name="text" rdfs:label="Text to convert">
       <xsl:apply-templates select="." mode="a:name"/>
     </xsl:param>
@@ -213,7 +213,7 @@
   <xsl:template
       match="*[normalize-space(text()) = '']"
       mode="a:id"
-      rdfs:label="For nodes with no text, use local name as ID">
+      rdfs:label="For elements with no text, use local name as ID">
     <xsl:value-of select="local-name()"/>
   </xsl:template>
 
