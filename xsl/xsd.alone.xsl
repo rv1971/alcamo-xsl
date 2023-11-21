@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2023-11-15">
+    dc:modified="2023-11-21">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -388,7 +388,7 @@
     <xsl:value-of select="concat(', ', .)"/>
   </xsl:template>
 
-  <xsl:template match="xsd:*" mode="a:title">
+  <xsl:template match="xsd:*" mode="a:name">
     <xsl:choose>
       <xsl:when test="@abstract = 'true'">
         <xsl:for-each select="$a:xsdXslDoc">
@@ -427,7 +427,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="xsd:attribute[count(..|/*) = 2]" mode="a:title">
+  <xsl:template match="xsd:attribute[count(..|/*) = 2]" mode="a:name">
     <xsl:apply-templates select="@name|@ref" mode="axsd:title-suffix"/>
 
     <xsl:apply-templates select="@type" mode="axsd:title-suffix"/>
@@ -437,7 +437,7 @@
     <xsl:apply-templates select="@default|@fixed" mode="axsd:title-suffix"/>
   </xsl:template>
 
-  <xsl:template match="xsd:element[count(..|/*) = 2]" mode="a:title">
+  <xsl:template match="xsd:element[count(..|/*) = 2]" mode="a:name">
     <xsl:apply-templates select="@name|@ref" mode="axsd:title-suffix"/>
 
     <xsl:apply-templates select="@type" mode="axsd:title-suffix"/>
@@ -450,7 +450,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="xsd:enumeration" mode="a:title">
+  <xsl:template match="xsd:enumeration" mode="a:name">
     <xsl:apply-templates select="@value" mode="axsd:title-suffix"/>
   </xsl:template>
 
@@ -466,7 +466,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="a:title"/>
+      <xsl:apply-templates select="." mode="a:name"/>
 
       <xsl:if test="@rdfs:label">
         <xsl:text>&#xa0;– </xsl:text>
@@ -481,7 +481,7 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="a:title"/>
+      <xsl:apply-templates select="." mode="a:name"/>
 
       <xsl:if test="@rdfs:label">
         <xsl:text>&#xa0;– </xsl:text>
