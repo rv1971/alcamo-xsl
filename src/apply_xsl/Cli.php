@@ -5,11 +5,11 @@ namespace alcamo\xsl\apply_xsl;
 use alcamo\cli\AbstractCli;
 use alcamo\dom\Document;
 use alcamo\dom\xsl\Document as XslDocument;
+use alcamo\exception\ErrorHandler;
 use alcamo\xsl\XsltException;
 use GetOpt\{GetOpt, Operand};
 
 /** @todo
- * - create tests
  * - review code
  * - publish
  */
@@ -28,14 +28,15 @@ class Cli extends AbstractCli
                 'o',
                 GetOpt::REQUIRED_ARGUMENT,
                 'Write each output to a filename created replacing one %s '
-                . 'by the source file basename without suffix.',
+                . 'in the sprintf() format by the source file basename '
+                . 'without suffix.',
                 'sprintf()-fmt'
             ],
             'stringparam' => [
                 's',
                 GetOpt::MULTIPLE_ARGUMENT,
-                'Parameter to pass to stylesheet',
-                'name=value'
+                'Set parameter <qname> to string <value>',
+                'qname=value'
             ]
         ]
         + parent::OPTIONS;
@@ -47,29 +48,39 @@ class Cli extends AbstractCli
 
     private $xsltProcessor_; ///< XSLTProcessor
 
-    public function process($arguments = null): int
+    public function innerRun(): int
     {
-        parent::process($arguments);
-
-        $xsltProcessor = $this->getXsltProcessor();
+        $errorHandler = new ErrorHandler();
 
         foreach ($this->getOption('include') as $include) {
             require_once($include);
         }
+
+        $xsltProcessor = $this->getXsltProcessor();
 
         $outputFileFmt = $this->getOption('output');
 
         foreach ($this->getOperand('xmlFilenames') as $xmlFilename) {
             $xmlDocument = Document::newFromUrl($xmlFilename);
 
-            $xml = $xsltProcessor->transformToXML($xmlDocument);
+            try {
+                $xml = $xsltProcessor->transformToXML($xmlDocument);
 
-            if ($xml === false) {
-                throw (new XsltException())->setMessageContext(
+                if ($xml === false) {
+                    throw new XsltException();
+                }
+            } catch (\Throwable $e) {
+                if (!($e instanceof ExceptionInterface)) {
+                    $e = XsltException::newFromPrevious($e);
+                }
+
+                $e->addMessageContext(
                     [
                         'atUri' => $xmlFilename
                     ]
                 );
+
+                throw $e;
             }
 
             if (isset($outputFileFmt)) {
@@ -82,9 +93,9 @@ class Cli extends AbstractCli
             } else {
                 echo $xml;
             }
-
-            return 0;
         }
+
+        return 0;
     }
 
     public function getXsltProcessor(): \XSLTProcessor
@@ -105,7 +116,7 @@ class Cli extends AbstractCli
         );
 
         foreach ($this->getOption('stringparam') as $assignment) {
-            [ $name, $value ] = explode('=', $assignment);
+            [ $name, $value ] = explode('=', $assignment, 2);
 
             $xsltProcessor->setParameter('', $name, $value);
         }
