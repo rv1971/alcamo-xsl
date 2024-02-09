@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2024-01-23">
+    dc:modified="2024-02-09">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -847,6 +847,18 @@
 
   <xsl:template match="xsd:appinfo" mode="axsd:main">
     <section>
+      <p>
+        <xsl:text>Appinfo</xsl:text>
+        <xsl:variable name="ns" select="namespace::*[local-name() = '']"/>
+
+        <xsl:if test="$ns">
+          <xsl:text> for namespace </xsl:text>
+          <code>
+            <xsl:value-of select="$ns"/>
+          </code>
+        </xsl:if>
+      </p>
+
       <pre>
         <xsl:apply-templates mode="sh:xml"/>
       </pre>
