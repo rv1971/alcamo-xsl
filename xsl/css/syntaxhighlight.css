@@ -6,13 +6,6 @@ pre .sh-attr-value {
     color: #8b2271;
 }
 
-pre .sh-error {
-    color: #ff0000;
-}
-
-pre .sh-text {
-}
-
 pre .sh-comment {
     color: #c04d9a;
 }
@@ -21,6 +14,21 @@ pre .sh-element {
     color: #0000ff;
 }
 
+pre .sh-error {
+    color: #ff0000;
+}
+
+pre .sh-namespace-uri {
+    color: #4e9a06;
+}
+
 pre .sh-prefix {
     color: #483d8b;
+}
+
+pre .sh-xmlns-prefix {
+    color: #4e9a06;
+}
+
+pre .sh-text {
 }
