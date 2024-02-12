@@ -291,7 +291,21 @@
       name="sh:xml-namespace-uri"
       rdfs:label="Create &lt;span> for a namespace uri">
     <span class="sh-namespace-uri">
-      <xsl:value-of select="concat('&quot;', ., '&quot;')"/>
+      <xsl:text>"</xsl:text>
+
+      <xsl:choose>
+        <xsl:when test="starts-with(., 'http')">
+          <a href="{.}">
+            <xsl:value-of select="."/>
+          </a>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:value-of select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+
+      <xsl:text>"</xsl:text>
     </span>
   </xsl:template>
 
