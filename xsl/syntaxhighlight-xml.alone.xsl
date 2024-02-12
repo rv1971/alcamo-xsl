@@ -18,7 +18,7 @@
     dc:title="Syntax highlighting for XML code"
     dc:creator="https://github.com/rv1971"
     dc:created="2017-09-11"
-    dc:modified="2023-06-26">
+    dc:modified="2024-02-12">
   <xsd:annotation>
     <xsd:documentation>
       <h2>Introduction</h2>
@@ -84,11 +84,24 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="*" mode="sh:xml-attrs" rdfs:label="Format attributes">
+  <xsl:template
+      match="*"
+      mode="sh:xml-attrs"
+      rdfs:label="Format attributes and namespace declarations">
     <xsl:param name="prepend" rdfs:label="String to prepend to each line"/>
 
+    <xsl:variable name="namespaceDecls">
+      <xsl:call-template name="sh:xml-namespace-decls">
+        <xsl:with-param
+            name="prepend"
+            select="concat('&#x0a;', $sh:attrIndent, $prepend)"/>
+      </xsl:call-template>
+    </xsl:variable>
+
     <xsl:choose>
-      <xsl:when test="count(@*) > $sh:maxInlineAttrs">
+      <xsl:when test="count(@*) > $sh:maxInlineAttrs or $namespaceDecls != ''">
+        <xsl:copy-of select="$namespaceDecls"/>
+
         <xsl:apply-templates select="@*" mode="sh:xml">
           <xsl:with-param
               name="prepend"
@@ -201,7 +214,7 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsl:template match="@*" mode="sh:sep" rdfs:label="Create '='">
+  <xsl:template match="@*" mode="sh:sep" name="sh:sep" rdfs:label="Create '='">
     <xsl:text>=</xsl:text>
   </xsl:template>
 
@@ -227,6 +240,84 @@
     <xsl:apply-templates select="." mode="sh:sep"/>
 
     <xsl:apply-templates select="." mode="sh:value"/>
+  </xsl:template>
+
+  <xsl:template
+      match="node()"
+      mode="sh:namespace"
+      rdfs:label="Create &lt;span>s for a namespace declaration">
+    <xsl:param name="prepend" rdfs:label="String to prepend to each line"/>
+
+    <xsl:value-of select="$prepend"/>
+
+    <xsl:apply-templates select="." mode="sh:name"/>
+
+    <xsl:apply-templates select="." mode="sh:sep"/>
+
+    <xsl:apply-templates select="." mode="sh:value"/>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>Namespace declaration nodes are subdivided into the
+      <code>xmlns</code>prefix, the declared prefix (if any) and the
+      value, which are then wrapped into <code>&lt;span
+      class="sh-xmlns-prefix"></code>, <code>&lt;span
+      class="sh-prefix"></code> and <code>&lt;span
+      class="sh-namespace-uri"></code>, respectively.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      name="sh:xml-namespace-decl-prefix"
+      rdfs:label="Create &lt;span> for a namespace declaration prefix">
+    <xsl:choose>
+      <xsl:when test="local-name()">
+        <span class="sh-xmlns-prefix">xmlns</span>
+        <xsl:text>:</xsl:text>
+
+        <span class="sh-prefix">
+          <xsl:value-of select="local-name()"/>
+        </span>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <span class="sh-xmlns-prefix">xmlns</span>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template
+      name="sh:xml-namespace-uri"
+      rdfs:label="Create &lt;span> for a namespace uri">
+    <span class="sh-namespace-uri">
+      <xsl:value-of select="concat('&quot;', ., '&quot;')"/>
+    </span>
+  </xsl:template>
+
+  <xsl:template
+      name="sh:namespace"
+      rdfs:label="Format a namespace declaration">
+    <xsl:param name="prepend" rdfs:label="String to prepend to each line"/>
+    <xsl:value-of select="$prepend"/>
+    <xsl:call-template name="sh:xml-namespace-decl-prefix"/>
+    <xsl:call-template name="sh:sep"/>
+    <xsl:call-template name="sh:xml-namespace-uri"/>
+  </xsl:template>
+
+  <xsl:template
+      name="sh:xml-namespace-decls"
+      rdfs:label="Format namespace declarations">
+    <xsl:param name="prepend" rdfs:label="String to prepend to each line"/>
+
+    <xsl:for-each select="namespace::*">
+      <xsl:if
+          test="not(../../namespace::*[local-name() = local-name(current()) and string(.) = string(current())])">
+        <xsl:call-template name="sh:namespace">
+          <xsl:with-param name="prepend" select="$prepend"/>
+        </xsl:call-template>
+      </xsl:if>
+    </xsl:for-each>
   </xsl:template>
 
   <xsd:annotation>

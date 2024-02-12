@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
-<pre xmlns="http://www.w3.org/1999/xhtml">&lt;<span class="sh-prefix">a</span>:<span class="sh-element">doc</span>&gt;
+<pre xmlns="http://www.w3.org/1999/xhtml">&lt;<span class="sh-prefix">a</span>:<span class="sh-element">doc</span>
+    <span class="sh-xmlns-prefix">xmlns</span>:<span class="sh-prefix">xml</span>=<span class="sh-namespace-uri">"http://www.w3.org/XML/1998/namespace"</span>
+    <span class="sh-xmlns-prefix">xmlns</span>:<span class="sh-prefix">a</span>=<span class="sh-namespace-uri">"tag:rv1971@web.de,2021:alcamo-xsl#"</span>
+    <span class="sh-xmlns-prefix">xmlns</span>:<span class="sh-prefix">xsd</span>=<span class="sh-namespace-uri">"http://www.w3.org/2001/XMLSchema"</span>&gt;
   &lt;<span class="sh-prefix">xsl</span>:<span class="sh-element">stylesheet</span>
+      <span class="sh-xmlns-prefix">xmlns</span>:<span class="sh-prefix">sh</span>=<span class="sh-namespace-uri">"tag:rv1971@web.de,2021:alcamo-xsl:syntaxhighlight:xml#"</span>
+      <span class="sh-xmlns-prefix">xmlns</span>:<span class="sh-prefix">xsl</span>=<span class="sh-namespace-uri">"http://www.w3.org/1999/XSL/Transform"</span>
+      <span class="sh-xmlns-prefix">xmlns</span>=<span class="sh-namespace-uri">"http://www.w3.org/1999/xhtml"</span>
       <span class="sh-prefix">xml</span>:<span class="sh-attr">id</span>=<span class="sh-attr-value">"xslt"</span>
       <span class="sh-attr">version</span>=<span class="sh-attr-value">"1.0"</span>
       <span class="sh-attr">exclude-result-prefixes</span>=<span class="sh-attr-value">"a sh"</span>&gt;
@@ -34,7 +40,8 @@ be indented.</span>&lt;/<span class="sh-prefix">xsl</span>:<span class="sh-eleme
   &lt;<span class="sh-element">baz</span>
       <span class="sh-attr">content</span>=<span class="sh-attr-value">"elements without child nodes are not surrounded by empty lines"</span>/&gt;<p>Lorem <i>ipsum</i></p><div><p><b>dolor</b> sit amet,</p><p>consetetur sadipscing <u>elitr,</u></p></div><div><p>sed diam nonumy eirmod tempor invidunt</p><p>ut labore et dolore magna aliquyam erat,</p></div>  &lt;<span class="sh-prefix">xsd</span>:<span class="sh-element">annotation</span>&gt;<div><p>sed diam voluptua.</p></div>
 
-    &lt;<span class="sh-prefix">xsd</span>:<span class="sh-element">documentation</span>&gt;
+    &lt;<span class="sh-prefix">xsd</span>:<span class="sh-element">documentation</span>
+        <span class="sh-xmlns-prefix">xmlns</span>=<span class="sh-namespace-uri">"http://foo.example.info"</span>&gt;
       &lt;<span class="sh-element">p</span>&gt;
         <span class="sh-text">At vero eos et accusam et justo duo dolores et ea rebum.</span>
       &lt;/<span class="sh-element">p</span>&gt;
@@ -42,8 +49,10 @@ be indented.</span>&lt;/<span class="sh-prefix">xsl</span>:<span class="sh-eleme
   &lt;/<span class="sh-prefix">xsd</span>:<span class="sh-element">annotation</span>&gt;  &lt;<span class="sh-prefix">xsd</span>:<span class="sh-element">annotation</span>&gt;
     &lt;<span class="sh-prefix">xsd</span>:<span class="sh-element">documentation</span>&gt;<span class="sh-text">Stet clita kasd gubergren,</span>&lt;/<span class="sh-prefix">xsd</span>:<span class="sh-element">documentation</span>&gt;<div><p>no sea takimata sanctus est Lorem ipsum dolor sit amet.</p></div>
   &lt;/<span class="sh-prefix">xsd</span>:<span class="sh-element">annotation</span>&gt;  &lt;<span class="sh-prefix">xsd</span>:<span class="sh-element">annotation</span>&gt;
-    &lt;<span class="sh-prefix">xsd</span>:<span class="sh-element">documentation</span>&gt;<p>Lorem</p>
-      &lt;<span class="sh-element">foo</span>&gt;<span class="sh-text">ipsum</span>&lt;/<span class="sh-element">foo</span>&gt;
+    &lt;<span class="sh-prefix">xsd</span>:<span class="sh-element">documentation</span>
+        <span class="sh-xmlns-prefix">xmlns</span>=<span class="sh-namespace-uri">"http://www.w3.org/1999/xhtml"</span>&gt;<p>Lorem</p>
+      &lt;<span class="sh-element">foo</span>
+          <span class="sh-xmlns-prefix">xmlns</span>=<span class="sh-namespace-uri">"http://foo.example.info"</span>&gt;<span class="sh-text">ipsum</span>&lt;/<span class="sh-element">foo</span>&gt;
     &lt;/<span class="sh-prefix">xsd</span>:<span class="sh-element">documentation</span>&gt;
   &lt;/<span class="sh-prefix">xsd</span>:<span class="sh-element">annotation</span>&gt;
 &lt;/<span class="sh-prefix">a</span>:<span class="sh-element">doc</span>&gt;</pre>
