@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2024-02-14">
+    dc:modified="2024-02-19">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -127,31 +127,51 @@
 
   <xsl:template
       match="@schemaLocation"
-      mode="xsd:linkto-definition"
+      mode="xsd:linkto-external-schema-item"
       rdfs:label="Create &lt;a&gt;">
-    <xsl:param name="name"/>
-    <xsl:param name="key" select="'axsd:types'"/>
-    <xsl:param name="uriFragment" select="concat('type-', $name)"/>
+    <xsl:param name="qname" rdfs:label="Qualified name of item"/>
+    <xsl:param name="keyName" rdfs:label="XSL key to use for lookup"/>
+    <xsl:param
+        name="uriFragmentPrefix"
+        rdfs:label="fragment prefix to use for link"/>
+
+    <xsl:variable name="localName">
+      <xsl:choose>
+        <xsl:when test="contains($qname, ':')">
+          <xsl:value-of select="substring-after($qname, ':')"/>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:value-of select="$qname"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
 
     <xsl:variable name="schemaLocation" select="."/>
 
     <xsl:for-each select="document(.)">
-      <xsl:variable name="definition" select="key($key, $name)"/>
+      <xsl:variable name="definition" select="key($keyName, $localName)"/>
 
       <xsl:if test="$definition">
-        <a href="{$schemaLocation}#{$uriFragment}" class="code">
-          <xsl:value-of select="$name"/>
+        <a
+            href="{$schemaLocation}#{$uriFragmentPrefix}{$localName}"
+            class="code">
+          <xsl:value-of select="$qname"/>
         </a>
       </xsl:if>
     </xsl:for-each>
   </xsl:template>
 
   <xsl:template
-      name="xsd:linkto-type"
-      match="@base|@itemType|@type"
-      mode="a:linkto"
-      rdfs:label="Create &lt;code&gt; or &lt;a&gt;">
-    <xsl:param name="name" select="."/>
+      match="@*"
+      mode="xsd:linkto-schema-item"
+      name="xsd:linkto-schema-item"
+      rdfs:label="Create &lt;a&gt; or text">
+    <xsl:param name="name" rdfs:label="Name of item" select="."/>
+    <xsl:param name="keyName" rdfs:label="XSL key to use for lookup"/>
+    <xsl:param
+        name="uriFragmentPrefix"
+        rdfs:label="fragment prefix to use for link"/>
 
     <xsl:variable name="link">
       <xsl:choose>
@@ -162,15 +182,17 @@
 
           <xsl:apply-templates
               select="key('axsd:imports', $namespace)/@schemaLocation"
-              mode="xsd:linkto-definition">
+              mode="xsd:linkto-external-schema-item">
+            <xsl:with-param name="qname" select="$name"/>
+            <xsl:with-param name="keyName" select="$keyName"/>
             <xsl:with-param
-                name="name"
-                select="substring-after($name, ':')"/>
+                name="uriFragmentPrefix"
+                select="$uriFragmentPrefix"/>
           </xsl:apply-templates>
         </xsl:when>
 
-        <xsl:when test="key('axsd:types', $name)">
-          <a href="#type-{$name}" class="code">
+        <xsl:when test="key($keyName, $name)">
+          <a href="#{$uriFragmentPrefix}{$name}" class="code">
             <xsl:value-of select="$name"/>
           </a>
         </xsl:when>
@@ -178,8 +200,10 @@
         <xsl:otherwise>
           <xsl:apply-templates
               select="/*/xsd:include/@schemaLocation"
-              mode="xsd:linkto-definition">
-            <xsl:with-param name="name" select="$name"/>
+              mode="xsd:linkto-external-schema-item">
+            <xsl:with-param name="qname" select="$name"/>
+            <xsl:with-param name="keyName" select="$keyName"/>
+            <xsl:with-param name="uriFragmentPrefix" select="$uriFragmentPrefix"/>
           </xsl:apply-templates>
         </xsl:otherwise>
       </xsl:choose>
@@ -191,11 +215,22 @@
       </xsl:when>
 
       <xsl:otherwise>
-        <code>
-          <xsl:value-of select="$name"/>
-        </code>
+        <xsl:value-of select="$name"/>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template
+      name="xsd:linkto-type"
+      match="@base|@itemType|@type"
+      mode="a:linkto"
+      rdfs:label="Create &lt;code&gt; or &lt;a&gt;">
+    <code>
+      <xsl:apply-templates mode="xsd:linkto-schema-item" select=".">
+        <xsl:with-param name="keyName" select="'axsd:types'"/>
+        <xsl:with-param name="uriFragmentPrefix" select="'type-'"/>
+      </xsl:apply-templates>
+    </code>
   </xsl:template>
 
   <xsl:template
@@ -233,102 +268,30 @@
       rdfs:label="Create &lt;code&gt; or &lt;a&gt;">
     <xsl:variable name="keyName" select="concat('axsd:', local-name(..), 's')"/>
 
-    <xsl:variable name="link">
-      <xsl:choose>
-        <xsl:when test="contains(., ':')">
-          <code>
-            <xsl:value-of select="."/>
-          </code>
-        </xsl:when>
-
-        <xsl:when test="key($keyName, .)">
-          <a href="#{local-name(..)}-{.}" class="code">
-            <xsl:value-of select="."/>
-          </a>
-        </xsl:when>
-
-        <xsl:otherwise>
-          <xsl:variable name="ref" select="."/>
-
-          <xsl:for-each select="/*/xsd:include/@schemaLocation">
-            <xsl:variable name="schemaLocation" select="."/>
-
-            <xsl:for-each select="document(.)">
-              <xsl:variable
-                  name="definition"
-                  select="key($keyName, $ref)"/>
-
-              <xsl:if test="$definition">
-                <a
-                    href="{$schemaLocation}#{local-name($ref/..)}-{$ref}"
-                    class="code">
-                  <xsl:value-of select="$ref"/>
-                </a>
-              </xsl:if>
-            </xsl:for-each>
-          </xsl:for-each>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <xsl:choose>
-      <xsl:when test="$link != ''">
-        <xsl:copy-of select="$link"/>
-      </xsl:when>
-
-      <xsl:otherwise>
-        <code>
-          <xsl:value-of select="."/>
-        </code>
-      </xsl:otherwise>
-    </xsl:choose>
+    <code>
+      <xsl:apply-templates mode="xsd:linkto-schema-item" select=".">
+        <xsl:with-param name="keyName" select="$keyName"/>
+        <xsl:with-param
+            name="uriFragmentPrefix"
+            select="concat(local-name(..), '-')"/>
+      </xsl:apply-templates>
+    </code>
   </xsl:template>
 
   <xsl:template
       match="xsd:element/@ref"
       mode="a:linkto"
       rdfs:label="Create &lt;code&gt; or &lt;a&gt;">
-    <xsl:variable name="link">
-      <xsl:variable name="ref" select="."/>
+    <code>
+      <xsl:text>&lt;</xsl:text>
 
-      <xsl:choose>
-        <xsl:when test="contains(., ':')">
-          <code>
-            <xsl:value-of select="concat('&lt;', ., '&gt;')"/>
-          </code>
-        </xsl:when>
+      <xsl:apply-templates mode="xsd:linkto-schema-item" select=".">
+        <xsl:with-param name="keyName" select="'axsd:elements'"/>
+        <xsl:with-param name="uriFragmentPrefix" select="'element-'"/>
+      </xsl:apply-templates>
 
-        <xsl:when test="key('axsd:elements', .)">
-          <a href="#element-{.}" class="code">
-            <xsl:value-of select="concat('&lt;', ., '&gt;')"/>
-          </a>
-        </xsl:when>
-
-        <xsl:otherwise>
-          <xsl:apply-templates
-              select="/*/xsd:include/@schemaLocation"
-              mode="xsd:linkto-definition">
-            <xsl:with-param name="name" select="$ref"/>
-            <xsl:with-param name="key" select="'axsd:elements'"/>
-            <xsl:with-param
-                name="uriFragment"
-                select="concat('element-', $ref)"/>
-          </xsl:apply-templates>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <xsl:choose>
-      <xsl:when test="$link != ''">
-        <xsl:copy-of select="$link"/>
-      </xsl:when>
-
-      <xsl:otherwise>
-        <code>
-          <xsl:value-of select="concat('&lt;', ., '&gt;')"/>
-        </code>
-      </xsl:otherwise>
-    </xsl:choose>
+      <xsl:text>&gt;</xsl:text>
+    </code>
   </xsl:template>
 
   <xsd:annotation>
