@@ -12,19 +12,26 @@
     <xsl:template match="/">
       <a:result>
         <xsl:apply-templates select="/a:doc/a:data"/>
+        <xsl:apply-templates select="/a:doc/a:data/@*"/>
      </a:result>
     </xsl:template>
 
-    <xsl:template match="a:item">
+    <xsl:template match="a:item|a:data/@*">
       <a:item>
         <xsl:value-of select="."/>
         <xsl:value-of select="' '"/>
         <xsl:apply-templates select="." mode="a:local-name"/>
+        <xsl:value-of select="' '"/>
+        <xsl:apply-templates select="." mode="a:ns-name"/>
       </a:item>
     </xsl:template>
   </xsl:stylesheet>
 
-  <a:data>
+  <a:data
+      xmlns:bar="http://bar.example.org"
+      x1="foo"
+      x2="bar:baz"
+      x3=":qux">
     <a:item>foo</a:item>
     <a:item>bar:baz</a:item>
     <a:item>:qux</a:item>

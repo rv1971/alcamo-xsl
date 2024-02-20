@@ -170,6 +170,35 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template name="a:ns-name" match="*" mode="a:ns-name">
+    <xsl:param name="qname" select="." rdfs:label="Text to extract from"/>
+
+    <xsl:choose>
+      <xsl:when
+          test="contains($qname, ':') and substring-before($qname, ':') != ''">
+        <xsl:value-of
+            select="namespace::*[local-name() = substring-before($qname, ':')]"/>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:value-of select="namespace::*[local-name() = '']"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="@*" mode="a:ns-name">
+    <xsl:choose>
+      <xsl:when test="contains(., ':') and substring-before(., ':') != ''">
+        <xsl:value-of
+            select="../namespace::*[local-name() = substring-before(current(), ':')]"/>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:value-of select="../namespace::*[local-name() = '']"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Name generation</h2>
