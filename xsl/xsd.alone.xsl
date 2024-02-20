@@ -185,11 +185,11 @@
       <xsl:choose>
         <xsl:when test="contains($name, ':')">
           <xsl:variable
-              name="namespace"
+              name="nsName"
               select="../namespace::*[local-name() = substring-before($name, ':')]"/>
 
           <xsl:apply-templates
-              select="key('axsd:imports', $namespace)/@schemaLocation"
+              select="key('axsd:imports', $nsName)/@schemaLocation"
               mode="xsd:linkto-external-schema-item">
             <xsl:with-param name="qname" select="$name"/>
             <xsl:with-param name="keyName" select="$keyName"/>
@@ -1196,27 +1196,18 @@
       match="@base|@itemType|@type"
       mode="axsd:referenced-element-tr"
       rdfs:label="Create &lt;tr&gt;">
-    <xsl:variable name="qname" select="."/>
-
-    <xsl:variable name="namespace">
-      <xsl:choose>
-        <xsl:when test="contains($qname, ':')">
-          <xsl:value-of
-              select="../namespace::*[local-name() = substring-before($qname, ':')]"/>
-        </xsl:when>
-
-        <xsl:otherwise>
-          <xsl:value-of select="../namespace::*[local-name() = '']"/>
-        </xsl:otherwise>
-      </xsl:choose>
+    <xsl:variable name="nsName">
+      <xsl:apply-templates select="." mode="a:ns-name"/>
     </xsl:variable>
 
     <xsl:variable name="localName">
       <xsl:apply-templates select="." mode="a:local-name"/>
     </xsl:variable>
 
+    <xsl:variable name="qname" select="."/>
+
     <xsl:choose>
-      <xsl:when test="$namespace = /*/@targetNamespace">
+      <xsl:when test="$nsName = /*/@targetNamespace">
         <xsl:if test="not(/*/xsd:*[@name = $localName])">
           <xsl:apply-templates
               select="/*/xsd:include/@schemaLocation"
@@ -1231,7 +1222,7 @@
 
       <xsl:otherwise>
         <xsl:apply-templates
-            select="key('axsd:imports', $namespace)/@schemaLocation"
+            select="key('axsd:imports', $nsName)/@schemaLocation"
             mode="axsd:referenced-element-tr">
           <xsl:with-param name="qname" select="$qname"/>
           <xsl:with-param name="localName" select="$localName"/>
@@ -1246,27 +1237,18 @@
       match="@ref"
       mode="axsd:referenced-element-tr"
       rdfs:label="Create &lt;tr&gt;">
-    <xsl:variable name="qname" select="."/>
-
-    <xsl:variable name="namespace">
-      <xsl:choose>
-        <xsl:when test="contains($qname, ':')">
-          <xsl:value-of
-              select="../namespace::*[local-name() = substring-before($qname, ':')]"/>
-        </xsl:when>
-
-        <xsl:otherwise>
-          <xsl:value-of select="../namespace::*[local-name() = '']"/>
-        </xsl:otherwise>
-      </xsl:choose>
+    <xsl:variable name="nsName">
+      <xsl:apply-templates select="." mode="a:ns-name"/>
     </xsl:variable>
 
     <xsl:variable name="localName">
       <xsl:apply-templates select="." mode="a:local-name"/>
     </xsl:variable>
 
+    <xsl:variable name="qname" select="."/>
+
     <xsl:choose>
-      <xsl:when test="$namespace = /*/@targetNamespace">
+      <xsl:when test="$nsName = /*/@targetNamespace">
         <xsl:if test="not(/*/xsd:*[@name = $localName])">
           <xsl:apply-templates
               select="/*/xsd:include/@schemaLocation"
@@ -1285,7 +1267,7 @@
 
       <xsl:otherwise>
         <xsl:apply-templates
-            select="key('axsd:imports', $namespace)/@schemaLocation"
+            select="key('axsd:imports', $nsName)/@schemaLocation"
             mode="axsd:referenced-element-tr">
           <xsl:with-param name="qname" select="$qname"/>
           <xsl:with-param name="localName" select="$localName"/>
