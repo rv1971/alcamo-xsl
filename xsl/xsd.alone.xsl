@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2024-02-19">
+    dc:modified="2024-02-20">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -110,6 +110,20 @@
 
   <xsl:variable name="axsd:elementsWithId" select="//xsd:*[@id]"/>
 
+  <xsl:variable name="axsd:referencedElementsRows">
+    <xsl:for-each select="/*//@base|/*//@itemType|/*//@type|/*//@ref">
+      <xsl:sort/>
+
+      <xsl:variable
+          name="same"
+          select="/*//@*[. = current()][local-name() = 'base' or local-name() = 'itemType' or local-name() = 'type' or local-name() = 'ref']"/>
+
+      <xsl:if test="count($same[1]|.) = 1">
+        <xsl:apply-templates select="." mode="axsd:referenced-element-tr"/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:variable>
+
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Links</h2>
@@ -136,15 +150,9 @@
         rdfs:label="fragment prefix to use for link"/>
 
     <xsl:variable name="localName">
-      <xsl:choose>
-        <xsl:when test="contains($qname, ':')">
-          <xsl:value-of select="substring-after($qname, ':')"/>
-        </xsl:when>
-
-        <xsl:otherwise>
-          <xsl:value-of select="$qname"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:call-template name="a:local-name">
+        <xsl:with-param name="qname" select="$qname"/>
+      </xsl:call-template>
     </xsl:variable>
 
     <xsl:variable name="schemaLocation" select="."/>
@@ -1072,6 +1080,14 @@
             </p>
           </li>
 
+          <xsl:if test="$axsd:referencedElementsRows != ''">
+            <li>
+              <p>
+                <a href="#referenced-elements">Referenced elements</a>
+              </p>
+            </li>
+          </xsl:if>
+
           <xsl:if test="$axsd:elementsWithId">
             <li>
               <p>
@@ -1124,10 +1140,181 @@
             </td>
 
             <td>
-              <xsl:value-of select="@rdfs:label"/>
+              <xsl:apply-templates select="." mode="a:label"/>
             </td>
           </tr>
         </xsl:for-each>
+      </tbody>
+    </table>
+  </xsl:template>
+
+  <xsl:template
+      match="@schemaLocation"
+      mode="axsd:referenced-element-tr"
+      rdfs:label="Create &lt;tr&gt;">
+    <xsl:param name="qname" rdfs:label="Qualified name of item"/>
+    <xsl:param name="localName" rdfs:label="Local name of item"/>
+    <xsl:param name="keyName" rdfs:label="XSL key to use for lookup"/>
+    <xsl:param
+        name="uriFragmentPrefix"
+        rdfs:label="fragment prefix to use for link"/>
+
+    <xsl:variable name="schemaLocation" select="."/>
+
+    <xsl:for-each select="document(.)">
+      <xsl:variable name="definition" select="key($keyName, $localName)"/>
+
+      <xsl:if test="$definition">
+        <tr>
+          <td>
+            <a href="{$schemaLocation}">
+              <xsl:value-of select="$schemaLocation"/>
+            </a>
+          </td>
+
+          <td>
+            <xsl:value-of select="local-name($definition)"/>
+          </td>
+
+          <td>
+            <a
+                href="{$schemaLocation}#{$uriFragmentPrefix}{$localName}"
+                class="code">
+              <xsl:value-of select="$qname"/>
+            </a>
+          </td>
+
+          <td>
+            <xsl:apply-templates select="$definition" mode="a:label"/>
+          </td>
+        </tr>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template
+      match="@base|@itemType|@type"
+      mode="axsd:referenced-element-tr"
+      rdfs:label="Create &lt;tr&gt;">
+    <xsl:variable name="qname" select="."/>
+
+    <xsl:variable name="namespace">
+      <xsl:choose>
+        <xsl:when test="contains($qname, ':')">
+          <xsl:value-of
+              select="../namespace::*[local-name() = substring-before($qname, ':')]"/>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:value-of select="../namespace::*[local-name() = '']"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:variable name="localName">
+      <xsl:apply-templates select="." mode="a:local-name"/>
+    </xsl:variable>
+
+    <xsl:choose>
+      <xsl:when test="$namespace = /*/@targetNamespace">
+        <xsl:if test="not(/*/xsd:*[@name = $localName])">
+          <xsl:apply-templates
+              select="/*/xsd:include/@schemaLocation"
+              mode="axsd:referenced-element-tr">
+            <xsl:with-param name="qname" select="$qname"/>
+            <xsl:with-param name="localName" select="$localName"/>
+            <xsl:with-param name="keyName" select="'axsd:types'"/>
+            <xsl:with-param name="uriFragmentPrefix" select="'type-'"/>
+          </xsl:apply-templates>
+        </xsl:if>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:apply-templates
+            select="key('axsd:imports', $namespace)/@schemaLocation"
+            mode="axsd:referenced-element-tr">
+          <xsl:with-param name="qname" select="$qname"/>
+          <xsl:with-param name="localName" select="$localName"/>
+            <xsl:with-param name="keyName" select="'axsd:types'"/>
+            <xsl:with-param name="uriFragmentPrefix" select="'type-'"/>
+        </xsl:apply-templates>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template
+      match="@ref"
+      mode="axsd:referenced-element-tr"
+      rdfs:label="Create &lt;tr&gt;">
+    <xsl:variable name="qname" select="."/>
+
+    <xsl:variable name="namespace">
+      <xsl:choose>
+        <xsl:when test="contains($qname, ':')">
+          <xsl:value-of
+              select="../namespace::*[local-name() = substring-before($qname, ':')]"/>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:value-of select="../namespace::*[local-name() = '']"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:variable name="localName">
+      <xsl:apply-templates select="." mode="a:local-name"/>
+    </xsl:variable>
+
+    <xsl:choose>
+      <xsl:when test="$namespace = /*/@targetNamespace">
+        <xsl:if test="not(/*/xsd:*[@name = $localName])">
+          <xsl:apply-templates
+              select="/*/xsd:include/@schemaLocation"
+              mode="axsd:referenced-element-tr">
+            <xsl:with-param name="qname" select="$qname"/>
+            <xsl:with-param name="localName" select="$localName"/>
+            <xsl:with-param
+                name="keyName"
+                select="concat('axsd:', local-name(..), 's')"/>
+            <xsl:with-param
+                name="uriFragmentPrefix"
+                select="concat(local-name(..), '-')"/>
+          </xsl:apply-templates>
+        </xsl:if>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:apply-templates
+            select="key('axsd:imports', $namespace)/@schemaLocation"
+            mode="axsd:referenced-element-tr">
+          <xsl:with-param name="qname" select="$qname"/>
+          <xsl:with-param name="localName" select="$localName"/>
+          <xsl:with-param
+              name="keyName"
+              select="concat('axsd:', local-name(..), 's')"/>
+          <xsl:with-param
+              name="uriFragmentPrefix"
+              select="concat(local-name(..), '-')"/>
+        </xsl:apply-templates>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="*" mode="axsd:referenced-elements">
+    <h3 id="referenced-elements">Referenced elements in external XSDs</h3>
+
+    <table class="alcamo">
+      <thead>
+        <tr>
+          <th>Document</th>
+          <th>Tag name</th>
+          <th>Name</th>
+          <th>Label</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <xsl:copy-of select="$axsd:referencedElementsRows"/>
       </tbody>
     </table>
   </xsl:template>
@@ -1159,7 +1346,7 @@
             </td>
 
             <td>
-              <xsl:value-of select="@rdfs:label"/>
+              <xsl:apply-templates select="." mode="a:label"/>
             </td>
           </tr>
         </xsl:for-each>
@@ -1187,6 +1374,10 @@
     <h2 id="appendix">Appendix</h2>
 
     <xsl:apply-templates select="." mode="axsd:named-elements"/>
+
+    <xsl:if test="$axsd:referencedElementsRows != ''">
+      <xsl:apply-templates select="." mode="axsd:referenced-elements"/>
+    </xsl:if>
 
     <xsl:apply-templates
         select="$axsd:elementsWithId[1]"
