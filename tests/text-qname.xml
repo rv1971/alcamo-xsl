@@ -28,6 +28,7 @@
   </xsl:stylesheet>
 
   <a:data
+      xmlns="http://www.example.biz"
       xmlns:bar="http://bar.example.org"
       x1="foo"
       x2="bar:baz"
