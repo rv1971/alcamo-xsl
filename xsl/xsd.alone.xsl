@@ -610,7 +610,9 @@
   </xsl:template>
 
   <xsl:template match="xsd:*" mode="axsd:enum-overview">
-    <table class="{$axsd:enumOverviewClasses} alcamo">
+    <xsl:param name="class" select="$axsd:enumOverviewClasses"/>
+
+    <table class="{$class} alcamo">
       <thead>
         <tr>
           <th>Value</th>
@@ -734,6 +736,11 @@
   <xsl:template
       match="xsd:complexType"
       mode="axsd:main">
+    <xsl:param
+        name="listRestrictionsExtensions"
+        select="true()"
+        rdfs:label="Whether to list restrictions and extensions"/>
+
     <section>
       <xsl:apply-templates select="." mode="axsd:heading"/>
 
@@ -763,13 +770,20 @@
           select="*[not(self::xsd:annotation)][not(self::xsd:attribute)][not(self::xsd:attributeGroup)][not(self::xsd:anyAttribute)]"
           mode="axsd:main"/>
 
-      <xsl:apply-templates
-          select="self::*[@name]"
-          mode="axsd:restrictions-extensions"/>
+      <xsl:if test="$listRestrictionsExtensions">
+        <xsl:apply-templates
+            select="self::*[@name]"
+            mode="axsd:restrictions-extensions"/>
+      </xsl:if>
     </section>
   </xsl:template>
 
   <xsl:template match="xsd:schema/xsd:simpleType" mode="axsd:main">
+    <xsl:param
+        name="listRestrictions"
+        select="true()"
+        rdfs:label="Whether to list restrictions"/>
+
     <section>
       <xsl:apply-templates select="." mode="axsd:heading"/>
 
@@ -777,7 +791,9 @@
 
       <xsl:apply-templates mode="axsd:main"/>
 
-      <xsl:apply-templates select="." mode="axsd:restrictions-extensions"/>
+      <xsl:if test="$listRestrictions">
+        <xsl:apply-templates select="." mode="axsd:restrictions-extensions"/>
+      </xsl:if>
     </section>
   </xsl:template>
 
