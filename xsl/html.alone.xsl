@@ -19,7 +19,7 @@
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-11-20">
+    dc:modified="2024-03-15">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -491,6 +491,15 @@
       rdfs:label="Create &lt;td> containing call to a:auto">
     <td>
       <xsl:apply-templates select="." mode="a:auto"/>
+    </td>
+  </xsl:template>
+
+  <xsl:template
+      match="rdfs:comment|@rdfs:comment"
+      mode="a:td"
+      rdfs:label="Create &lt;td>">
+    <td>
+      <xsl:value-of select="."/>
     </td>
   </xsl:template>
 
