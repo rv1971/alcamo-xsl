@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2024-03-01">
+    dc:modified="2024-04-25">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -445,10 +445,18 @@
   </xsd:annotation>
 
   <xsl:template match="*" mode="axsd:heading">
+    <xsl:param name="class"/>
+
     <p>
       <xsl:attribute name="id">
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
+
+      <xsl:if test="$class">
+        <xsl:attribute name="class">
+          <xsl:value-of select="$class"/>
+        </xsl:attribute>
+      </xsl:if>
 
       <xsl:apply-templates select="." mode="a:name"/>
 
