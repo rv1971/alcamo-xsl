@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2024-04-25">
+    dc:modified="2024-06-06">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -233,11 +233,14 @@
       match="@base|@itemType|@type"
       mode="a:linkto"
       rdfs:label="Create &lt;code&gt; or &lt;a&gt;">
+    <xsl:param name="name" rdfs:label="Name of item" select="."/>
+
     <code>
-      <xsl:apply-templates mode="xsd:linkto-schema-item" select=".">
+      <xsl:call-template name="xsd:linkto-schema-item">
+        <xsl:with-param name="name" select="$name"/>
         <xsl:with-param name="keyName" select="'axsd:types'"/>
         <xsl:with-param name="uriFragmentPrefix" select="'type-'"/>
-      </xsl:apply-templates>
+      </xsl:call-template>
     </code>
   </xsl:template>
 
