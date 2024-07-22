@@ -18,6 +18,11 @@ class Cli extends AbstractCli
 {
     public const OPTIONS =
         [
+            'format' => [
+                'F',
+                GetOpt::NO_ARGUMENT,
+                'Reformat and reindent the output.'
+            ],
             'include' => [
                 'i',
                 GetOpt::MULTIPLE_ARGUMENT,
@@ -64,7 +69,13 @@ class Cli extends AbstractCli
             $xmlDocument = Document::newFromUrl($xmlFilename);
 
             try {
-                $xml = $xsltProcessor->transformToXML($xmlDocument);
+                if ($this->getOption('format')) {
+                    $newDocument = $xsltProcessor->transformToDoc($xmlDocument);
+                    $newDocument->formatOutput = true;
+                    $xml = $newDocument->saveXML();
+                } else {
+                    $xml = $xsltProcessor->transformToXml($xmlDocument);
+                }
 
                 if ($xml === false) {
                     throw new XsltException();
