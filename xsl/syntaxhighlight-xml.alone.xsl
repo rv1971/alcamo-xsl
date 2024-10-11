@@ -18,7 +18,7 @@
     dc:title="Syntax highlighting for XML code"
     dc:creator="https://github.com/rv1971"
     dc:created="2017-09-11"
-    dc:modified="2024-02-12">
+    dc:modified="2024-10-11">
   <xsd:annotation>
     <xsd:documentation>
       <h2>Introduction</h2>
@@ -467,7 +467,7 @@
     <xsl:choose>
       <xsl:when test="$sh:htmlPassthru">
         <div>
-          <xsl:apply-templates mode="a:copy"/>
+          <xsl:apply-templates select="." mode="a:copy"/>
         </div>
       </xsl:when>
 

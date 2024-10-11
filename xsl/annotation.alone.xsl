@@ -17,7 +17,7 @@
     dc:title="Process &lt;xsd:annotation&gt;"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-05-26">
+    dc:modified="2024-10-11">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -47,6 +47,18 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>Keys</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:key
+      name="a:documentations-with-id"
+      match="//xsd:documentation[@xml:id or @id]"
+      use="@xml:id|@id"
+      rdfs:label="&lt;xsd:documentation&gt; elements with ID"/>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Mode <code>a:copy</code></h2>
     </xsd:documentation>
   </xsd:annotation>
@@ -62,6 +74,30 @@
 
   <xsl:template match="xsd:annotation|xsd:documentation" mode="a:copy">
     <xsl:apply-templates select="@*|node()" mode="a:copy"/>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <p>Resolve <code>source</code> attributes in
+      <code>&lt;xsd:documentation&gt;</code>. The value of
+      <code>source</code> must be an URL that references an XML
+      document, with a fragment identifier that is the value of an
+      <code>xml:id</code> or <code>id</code> attribute of an
+      <code>&lt;xsd:documentation&gt;</code> element in that
+      document.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template match="xsd:documentation[@source]" mode="a:copy">
+    <xsl:variable name="fragment" select="substring-after(@source, '#')"/>
+
+    <xsl:for-each select="document(substring-before(@source, '#'), @source)">
+      <xsl:variable
+          name="documentation"
+          select="key('a:documentations-with-id', $fragment)"/>
+
+      <xsl:apply-templates select="$documentation/node()" mode="a:copy"/>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template
