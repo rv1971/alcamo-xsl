@@ -17,7 +17,7 @@
     dc:title="Process &lt;xsd:annotation&gt;"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2024-10-11">
+    dc:modified="2024-10-15">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -53,8 +53,8 @@
 
   <xsl:key
       name="a:documentations-with-id"
-      match="//xsd:documentation[@xml:id or @id]"
-      use="@xml:id|@id"
+      match="//xsd:documentation[@xml:id]"
+      use="@xml:id"
       rdfs:label="&lt;xsd:documentation&gt; elements with ID"/>
 
   <xsd:annotation>
