@@ -1,6 +1,6 @@
 <?php
 
-namespace alcamo\xsl\apply_xsl;
+namespace alcamo\xsl;
 
 use alcamo\cli\AbstractCli;
 use alcamo\dom\Document;
@@ -8,13 +8,14 @@ use alcamo\dom\xsl\Document as XslDocument;
 use alcamo\exception\ErrorHandler;
 use alcamo\xsl\XsltException;
 use GetOpt\{GetOpt, Operand};
+use Ramsey\Uuid\Uuid;
 
-/** @todo
- * - review code
- * - publish
- */
+function uuid(): string
+{
+    return Uuid::uuid4();
+}
 
-class Cli extends AbstractCli
+class ApplyXslCli extends AbstractCli
 {
     public const OPTIONS =
         [
