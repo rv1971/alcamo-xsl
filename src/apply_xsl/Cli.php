@@ -42,7 +42,12 @@ class Cli extends AbstractCli
                 GetOpt::MULTIPLE_ARGUMENT,
                 'Set parameter <qname> to string <value>',
                 'qname=value'
-            ]
+            ],
+            'xinclude' => [
+                'x',
+                GetOpt::NO_ARGUMENT,
+                'Do XInclude processing before XSL processing.'
+            ],
         ]
         + parent::OPTIONS;
 
@@ -65,8 +70,14 @@ class Cli extends AbstractCli
 
         $outputFileFmt = $this->getOption('output');
 
+        $loadFlags = 0;
+
+        if ($this->getOption('xinclude')) {
+            $loadFlags |= Document::XINCLUDE_AFTER_LOAD;
+        }
+
         foreach ($this->getOperand('xmlFilenames') as $xmlFilename) {
-            $xmlDocument = Document::newFromUrl($xmlFilename);
+            $xmlDocument = Document::newFromUrl($xmlFilename, 0, $loadFlags);
 
             try {
                 if ($this->getOption('format')) {
