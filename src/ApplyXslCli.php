@@ -19,6 +19,11 @@ class ApplyXslCli extends AbstractCli
 {
     public const OPTIONS =
         [
+            'comment' => [
+                'C',
+                GetOpt::NO_ARGUMENT,
+                'Include the command line as a comment into the output.'
+            ],
             'format' => [
                 'F',
                 GetOpt::NO_ARGUMENT,
@@ -81,13 +86,20 @@ class ApplyXslCli extends AbstractCli
             $xmlDocument = Document::newFromUrl($xmlFilename, 0, $loadFlags);
 
             try {
+                $newDocument = $xsltProcessor->transformToDoc($xmlDocument);
+
                 if ($this->getOption('format')) {
-                    $newDocument = $xsltProcessor->transformToDoc($xmlDocument);
                     $newDocument->formatOutput = true;
-                    $xml = $newDocument->saveXML();
-                } else {
-                    $xml = $xsltProcessor->transformToXml($xmlDocument);
                 }
+
+                if ($this->getOption('comment')) {
+                    $newDocument->insertBefore(
+                        $newDocument->createComment($this->createComment()),
+                        $newDocument->firstChild
+                    );
+                }
+
+                $xml = $newDocument->saveXML();
 
                 if ($xml === false) {
                     throw new XsltException();
@@ -147,5 +159,13 @@ class ApplyXslCli extends AbstractCli
         $xsltProcessor->registerPHPFunctions();
 
         return $xsltProcessor;
+    }
+
+    protected function createComment(): string
+    {
+        return "\n"
+            . "Generated " . date('c') . " by:\n\n"
+            . implode(' ', $_SERVER['argv'])
+            . "\n";
     }
 }
