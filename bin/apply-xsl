@@ -3,6 +3,12 @@
 
 namespace alcamo\xsl;
 
-include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+$autoloadPath = $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+
+if (!file_exists($autoloadPath)) {
+    $autoloadPath = __DIR__ . '/../../../autoload.php';
+}
+
+include $autoloadPath;
 
 exit((new ApplyXslCli([]))->run());
