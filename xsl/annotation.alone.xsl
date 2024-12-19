@@ -17,7 +17,7 @@
     dc:title="Process &lt;xsd:annotation&gt;"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2024-10-15">
+    dc:modified="2024-12-19">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -68,12 +68,13 @@
       mode="a:copy"
       rdfs:label="Copy nodes unchanged">
     <xsl:copy>
-      <xsl:apply-templates select="@*|node()" mode="a:copy"/>
+      <xsl:apply-templates select="@*" mode="a:copy"/>
+      <xsl:apply-templates select="node()" mode="a:copy"/>
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="xsd:annotation|xsd:documentation" mode="a:copy">
-    <xsl:apply-templates select="@*|node()" mode="a:copy"/>
+    <xsl:apply-templates select="node()" mode="a:copy"/>
   </xsl:template>
 
   <xsd:annotation>
