@@ -16,7 +16,7 @@
     dc:title="Text generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2023-11-21">
+    dc:modified="2025-06-25">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -50,39 +50,15 @@
       match="/*/a:numbers/a:number"
       use="@id"/>
 
-  <a:hexDigits rdfs:label="Hexadecimal digits">
-    <a:hexDigit id="0">0</a:hexDigit>
-    <a:hexDigit id="1">1</a:hexDigit>
-    <a:hexDigit id="2">2</a:hexDigit>
-    <a:hexDigit id="3">3</a:hexDigit>
-    <a:hexDigit id="4">4</a:hexDigit>
-    <a:hexDigit id="5">5</a:hexDigit>
-    <a:hexDigit id="6">6</a:hexDigit>
-    <a:hexDigit id="7">7</a:hexDigit>
-    <a:hexDigit id="8">8</a:hexDigit>
-    <a:hexDigit id="9">9</a:hexDigit>
-    <a:hexDigit id="10">A</a:hexDigit>
-    <a:hexDigit id="11">B</a:hexDigit>
-    <a:hexDigit id="12">C</a:hexDigit>
-    <a:hexDigit id="13">D</a:hexDigit>
-    <a:hexDigit id="14">E</a:hexDigit>
-    <a:hexDigit id="15">F</a:hexDigit>
-  </a:hexDigits>
-
-  <xsl:key
-      name="a:hexDigits"
-      match="/*/a:hexDigits/a:hexDigit"
-      use="@id"/>
-
   <xsl:variable
       name="a:textXslDoc"
       select="document('')"
       rdfs:label="This document"/>
 
-    <xsl:variable
-        name="a:infty"
-        select="2147483647"
-        rdfs:label="Number that will lead to empty string when used as offset in substring()"/>
+  <xsl:variable
+      name="a:infty"
+      select="2147483647"
+      rdfs:label="Number that will lead to empty string when used as offset in substring()"/>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -414,8 +390,10 @@
       </xsl:call-template>
     </xsl:if>
 
+    <xsl:variable name="hexDigits" select="'0123456789ABCDEF'"/>
+
     <xsl:for-each select="$a:textXslDoc">
-      <xsl:value-of select="string(key('a:hexDigits', $value mod 16))"/>
+      <xsl:value-of select="substring($hexDigits, $value mod 16 + 1, 1)"/>
     </xsl:for-each>
   </xsl:template>
 
@@ -448,6 +426,34 @@
             substring('0000000000000000000000000000000000000000000000000000000000000000', 1, $length - string-length($hex)),
             $hex
         )"/>
+  </xsl:template>
+
+  <xsl:template
+      name="a:hex2bin"
+      match="*|@*"
+      mode="a:hex2bin"
+      rdfs:label="Create binary representation">
+    <xsl:param name="value" select="." rdfs:label="Hex string to convert"/>
+
+    <xsl:variable name="hexDigit" select="substring($value, 1, 1)"/>
+
+    <xsl:choose>
+      <xsl:when test="$hexDigit &lt;= '9'">
+        <xsl:value-of
+            select="substring('0000000100100011010001010110011110001001', $hexDigit * 4 + 1, 4)"/>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:value-of
+            select="substring('101010111100110111101111', translate($hexDigit, 'ABCDEFabcdef', '012345012345') * 4 + 1, 4)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+
+    <xsl:if test="string-length($value) > 1">
+      <xsl:call-template name="a:hex2bin">
+        <xsl:with-param name="value" select="substring($value, 2)" />
+      </xsl:call-template>
+    </xsl:if>
   </xsl:template>
 
   <xsd:annotation>

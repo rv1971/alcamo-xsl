@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <a:item> </a:item>
+  <a:item>0 0000</a:item>
+  <a:item>00 00000000</a:item>
+  <a:item>00FEDCBA 00000000111111101101110010111010</a:item>
+  <a:item>0123456789abcdef 0000000100100011010001010110011110001001101010111100110111101111</a:item>
+</a:result>
