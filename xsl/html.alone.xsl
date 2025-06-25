@@ -19,7 +19,7 @@
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2024-06-26">
+    dc:modified="2025-06-25">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -543,6 +543,28 @@
       <xsl:apply-templates select="." mode="a:th"/>
       <xsl:apply-templates select="." mode="a:td"/>
     </tr>
+  </xsl:template>
+
+  <xsl:template
+      name="a:bin2tds"
+      match="*|@*"
+      mode="a:bin2tds"
+      rdfs:label="Create &lt;td>s from binary literal">
+    <xsl:param name="value" select="." rdfs:label="Binary literal"/>
+    <xsl:param name="content1" select="1" rdfs:label="Content to represent 1"/>
+
+    <td>
+      <xsl:if test="substring($value, 1, 1) = 1">
+        <xsl:value-of select="$content1"/>
+      </xsl:if>
+    </td>
+
+    <xsl:if test="string-length($value) > 1">
+      <xsl:call-template name="a:bin2tds">
+        <xsl:with-param name="value" select="substring($value, 2)" />
+        <xsl:with-param name="content1" select="$content1" />
+      </xsl:call-template>
+    </xsl:if>
   </xsl:template>
 
   <xsd:annotation>

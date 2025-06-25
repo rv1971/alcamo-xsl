@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#" xmlns="http://www.w3.org/1999/xhtml">
+  <ul>
+    <p>0111</p>
+    <td/>
+    <td>1</td>
+    <td>1</td>
+    <td>1</td>
+  </ul>
+  <ul>
+    <p>00101010</p>
+    <td/>
+    <td/>
+    <td>1</td>
+    <td/>
+    <td>1</td>
+    <td/>
+    <td>1</td>
+    <td/>
+  </ul>
+</a:result>
