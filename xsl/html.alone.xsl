@@ -551,17 +551,25 @@
       mode="a:bin2tds"
       rdfs:label="Create &lt;td>s from binary literal">
     <xsl:param name="value" select="." rdfs:label="Binary literal"/>
+    <xsl:param name="content0" select="0" rdfs:label="Content to represent 0"/>
     <xsl:param name="content1" select="1" rdfs:label="Content to represent 1"/>
 
     <td>
-      <xsl:if test="substring($value, 1, 1) = 1">
-        <xsl:value-of select="$content1"/>
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="substring($value, 1, 1) = 1">
+          <xsl:value-of select="$content1"/>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:value-of select="$content0"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </td>
 
     <xsl:if test="string-length($value) > 1">
       <xsl:call-template name="a:bin2tds">
         <xsl:with-param name="value" select="substring($value, 2)" />
+        <xsl:with-param name="content0" select="$content0" />
         <xsl:with-param name="content1" select="$content1" />
       </xsl:call-template>
     </xsl:if>
