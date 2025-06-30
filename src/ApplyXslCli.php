@@ -15,6 +15,11 @@ function uuid(): string
     return Uuid::uuid4();
 }
 
+function getLineNo($params): int
+{
+    return $params[0]->getLineNo();
+}
+
 class ApplyXslCli extends AbstractCli
 {
     public const OPTIONS =
