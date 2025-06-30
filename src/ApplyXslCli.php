@@ -67,6 +67,7 @@ class ApplyXslCli extends AbstractCli
         'xmlFilenames' => Operand::REQUIRED | Operand::MULTIPLE
     ];
 
+    private $outputMethod_;  ///< ?string
     private $xsltProcessor_; ///< XSLTProcessor
 
     public function innerRun(): int
@@ -91,23 +92,27 @@ class ApplyXslCli extends AbstractCli
             $xmlDocument = Document::newFromUrl($xmlFilename, 0, $loadFlags);
 
             try {
-                $newDocument = $xsltProcessor->transformToDoc($xmlDocument);
+                if ($this->outputMethod_ == 'text') {
+                    $output = $xsltProcessor->transformToXml($xmlDocument);
+                } else {
+                    $newDocument = $xsltProcessor->transformToDoc($xmlDocument);
 
-                if ($this->getOption('format')) {
-                    $newDocument->formatOutput = true;
-                }
+                    if ($this->getOption('format')) {
+                        $newDocument->formatOutput = true;
+                    }
 
-                if ($this->getOption('comment')) {
-                    $newDocument->insertBefore(
-                        $newDocument->createComment($this->createComment()),
-                        $newDocument->firstChild
-                    );
-                }
+                    if ($this->getOption('comment')) {
+                        $newDocument->insertBefore(
+                            $newDocument->createComment($this->createComment()),
+                            $newDocument->firstChild
+                        );
+                    }
 
-                $xml = $newDocument->saveXML();
+                    $output = $newDocument->saveXML();
 
-                if ($xml === false) {
-                    throw new XsltException();
+                    if ($output === false) {
+                        throw new XsltException();
+                    }
                 }
             } catch (\Throwable $e) {
                 if (!($e instanceof ExceptionInterface)) {
@@ -129,9 +134,9 @@ class ApplyXslCli extends AbstractCli
 
                 $this->reportProgress("$xmlFilename -> $outFilename");
 
-                file_put_contents($outFilename, $xml);
+                file_put_contents($outFilename, $output);
             } else {
-                echo $xml;
+                echo $output;
             }
         }
 
@@ -151,9 +156,14 @@ class ApplyXslCli extends AbstractCli
     {
         $xsltProcessor = new \XSLTProcessor();
 
-        $xsltProcessor->importStyleSheet(
-            XslDocument::newFromUrl($this->getOperand('xslFilename'))
-        );
+        $xsltDocument =
+            XslDocument::newFromUrl($this->getOperand('xslFilename'));
+
+        $output = $xsltDocument->query('/*/xsl:output')[0];
+
+        $this->outputMethod_ = isset($output) ? $output->method : null;
+
+        $xsltProcessor->importStyleSheet($xsltDocument);
 
         foreach ($this->getOption('stringparam') as $assignment) {
             [ $name, $value ] = explode('=', $assignment, 2);
