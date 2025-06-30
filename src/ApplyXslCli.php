@@ -91,6 +91,10 @@ class ApplyXslCli extends AbstractCli
         foreach ($this->getOperand('xmlFilenames') as $xmlFilename) {
             $xmlDocument = Document::newFromUrl($xmlFilename, 0, $loadFlags);
 
+            if ($this->getOption('xinclude')) {
+                $xmlDocument->reparse();
+            }
+
             try {
                 if ($this->outputMethod_ == 'text') {
                     $output = $xsltProcessor->transformToXml($xmlDocument);
