@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2024-10-11">
+    dc:modified="2025-08-14">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -497,14 +497,17 @@
     <xsl:apply-templates select="." mode="a:tr"/>
   </xsl:template>
 
-  <xsl:template match="@rdfs:label" mode="axsd:generic-attrs" priority="1.0"/>
+  <xsl:template
+      match="@owl:sameAs|@rdfs:comment|@rdfs:label"
+      mode="axsd:generic-attrs"
+      priority="1.0"/>
 
   <xsl:template match="@id" mode="axsd:generic-attrs">
     <tr id="{.}">
-      <th>id</th>
+      <th>ID</th>
 
       <td>
-        <xsl:value-of select="."/>
+        <code><xsl:value-of select="."/></code>
       </td>
     </tr>
   </xsl:template>
@@ -521,6 +524,16 @@
         </tbody>
       </table>
     </xsl:if>
+
+    <xsl:if test="@owl:sameAs">
+      <p>
+        <xsl:text>Same as </xsl:text>
+        <xsl:apply-templates select="@owl:sameAs" mode="a:auto"/>
+        <xsl:text>.</xsl:text>
+      </p>
+    </xsl:if>
+
+    <xsl:apply-templates select="@rdfs:comment" mode="a:p"/>
   </xsl:template>
 
   <xsd:annotation>
