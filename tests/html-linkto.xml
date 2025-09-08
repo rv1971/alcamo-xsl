@@ -30,7 +30,7 @@
         <xsl:value-of select="' '"/>
 
         <xsl:apply-templates select="@*" mode="a:auto">
-          <xsl:with-param name="urlPrefix" select="'http://www.example.info/'"/>
+          <xsl:with-param name="uriPrefix" select="'http://www.example.info/'"/>
         </xsl:apply-templates>
       </a:item>
     </xsl:template>
@@ -46,12 +46,12 @@
 
   <a:data>
     <dc:rights>http://example.com/rights</dc:rights>
-    <dc:rights>© Alice</dc:rights>
+    <dc:rights>data:,© Alice</dc:rights>
     <owl:sameAs>tag:bob@example.com,2023:foo</owl:sameAs>
     <owl:sameAs>https://example.com/testcase1</owl:sameAs>
     <rdf:type>http://www.example.info/foo.xsd#Bar</rdf:type>
     <a:item dc:rights="https://example.com/rights"/>
-    <a:item dc:rights="© Bob 1971"/>
+    <a:item dc:rights="data:,© Bob 1971"/>
     <a:item owl:sameAs="tag:example.com,2023:/testcase1"/>
     <a:item owl:sameAs="foo/bar"/>
     <a:item rdf:type="rdf-type/baz"/>

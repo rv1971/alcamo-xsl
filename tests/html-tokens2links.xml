@@ -24,7 +24,7 @@
         <xsl:apply-templates select="." mode="a:tokens2links"/>
 
         <xsl:apply-templates select="." mode="a:tokens2links">
-          <xsl:with-param name="urlPrefix" select="'https://www.example.org/'"/>
+          <xsl:with-param name="uriPrefix" select="'https://www.example.org/'"/>
         </xsl:apply-templates>
       </ul>
     </xsl:template>

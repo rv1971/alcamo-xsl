@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2025-08-14">
+    dc:modified="2025-09-08">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -640,7 +640,10 @@
       <thead>
         <tr>
           <th>Value</th>
-          <th>Label</th>
+
+          <xsl:if test="xsd:enumeration[@rdfs:label]">
+            <th>Label</th>
+          </xsl:if>
 
           <xsl:if test="xsd:enumeration[@owl:sameAs]">
             <th>Same as</th>
@@ -662,9 +665,11 @@
               </a>
             </td>
 
-            <td>
-              <xsl:value-of select="@rdfs:label"/>
-            </td>
+            <xsl:if test="../xsd:enumeration[@rdfs:label]">
+              <td>
+                <xsl:value-of select="@rdfs:label"/>
+              </td>
+            </xsl:if>
 
             <xsl:if test="../xsd:enumeration[@owl:sameAs]">
               <td>

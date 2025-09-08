@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#">
+  <a:item>tag:exmaple.org,2025:foo.xml#bar bar tag:exmaple.org,2025:foo.xml#bar</a:item>
+  <a:item>urn:iso:std:iso:261 urn:iso:std:iso:261 urn:iso:std:iso:261</a:item>
+  <a:item>data:,Lorem ipsum Lorem ipsum data:,Lorem ipsum</a:item>
+  <a:item>foo/bar foo/bar https://example.org/foo/bar</a:item>
+  <a:item>http://foo.html foo.html http://foo.html</a:item>
+  <a:item>https://bar.php bar.php https://bar.php</a:item>
+</a:result>

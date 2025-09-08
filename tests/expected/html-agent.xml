@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <a:result xmlns:a="tag:rv1971@web.de,2021:alcamo-xsl#" xmlns="http://www.w3.org/1999/xhtml">
-  <a:item>no-mail no-mail</a:item>
+  <a:item>relative-page <a href="relative-page">relative-page</a></a:item>
   <a:item>alice@example.org <a href="mailto:alice@example.org">alice</a></a:item>
   <a:item>mailto:bob@example.org <a href="mailto:bob@example.org">bob</a></a:item>
   <a:item>Ken &lt;ken@example.org&gt; <a href="mailto:ken@example.org">Ken</a></a:item>

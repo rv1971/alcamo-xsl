@@ -16,7 +16,7 @@
     dc:title="Text generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2025-06-25">
+    dc:modified="2025-09-08">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -171,6 +171,68 @@
 
       <xsl:otherwise>
         <xsl:value-of select="../namespace::*[local-name() = '']"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsd:annotation>
+    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
+      <h2>URI handling</h2>
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsl:template
+      name="a:prepend-uri"
+      match="*|@*"
+      mode="a:prepend-uri"
+      rdfs:label="Prepend prefix to URI if relative">
+    <xsl:param name="value" select="." rdfs:label="Value to format"/>
+    <xsl:param
+        name="uriPrefix"
+        select="''"
+        rdfs:label="URI to prepend to relative URI"/>
+
+    <xsl:choose>
+      <xsl:when test="starts-with($value, 'data:')
+                      or starts-with($value, 'http')
+                      or starts-with($value, 'mailto:')
+                      or starts-with($value, 'tag:')
+                      or starts-with($value, 'urn:')">
+        <xsl:value-of select="$value"/>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:value-of select="concat($uriPrefix, $value)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template
+      name="a:shorten-uri"
+      match="*|@*"
+      mode="a:shorten-uri"
+      rdfs:label="Reduce to fragment, if any, else strip HTTP[S] protocol">
+    <xsl:param name="value" select="." rdfs:label="Value to format"/>
+
+    <xsl:choose>
+      <xsl:when test="contains($value, '#')">
+        <xsl:value-of select="substring-after($value, '#')"/>
+      </xsl:when>
+
+      <xsl:when test="contains($value, 'data:,')">
+        <xsl:value-of select="substring-after($value, 'data:,')"/>
+      </xsl:when>
+
+      <xsl:when test="contains($value, 'https://')">
+        <xsl:value-of select="substring-after($value, 'https://')"/>
+      </xsl:when>
+
+      <xsl:when test="contains($value, 'http://')">
+        <xsl:value-of select="substring-after($value, 'http://')"/>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <xsl:value-of select="$value"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

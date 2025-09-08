@@ -19,7 +19,7 @@
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2025-06-25">
+    dc:modified="2025-09-08">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -36,7 +36,7 @@
 
   <xsl:variable
       name="a:xpointerToIdStart"
-      rdfs:label="String needed to extract an ID from a XPointer">xpointer(id("</xsl:variable>
+      rdfs:label="String needed to extract an ID from an XPointer">xpointer(id("</xsl:variable>
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -46,11 +46,8 @@
 
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <p>Create a <code>mailto</code> link if the value contains a
-      <code>@</code>. Also works with values that are already
-      <code>mailto:</code> URLs and with values of the form <code>Bob
-      &lt;bob@example.org&gt;</code>. If the value contains an
-      <code>@</code>, display the part before it.</p>
+      <p>Create a link if the value is an URI or an email address,
+      otherwise display it.</p>
 
       <p>This template rule does not check whether the input is a
       valid literal in one of the supported syntaxes, and gives
@@ -59,148 +56,72 @@
   </xsd:annotation>
 
   <xsl:template
-      name="a:mailto"
-      match="*|@*"
-      mode="a:mailto"
-      rdfs:label="Create mailto: link if value contains a @">
-    <xsl:param name="value" select="." rdfs:label="Value to format"/>
-
-    <xsl:choose>
-      <xsl:when test="starts-with($value, 'mailto:')">
-        <a href="{$value}">
-          <xsl:value-of
-              select="substring-before(substring-after($value, 'mailto:'), '@')"/>
-        </a>
-      </xsl:when>
-
-      <xsl:when test="contains($value, ' &lt;')">
-        <a href="mailto:{substring-before(substring-after($value, '&lt;'), '&gt;')}">
-          <xsl:value-of select="substring-before($value, ' &lt;')"/>
-        </a>
-      </xsl:when>
-
-      <xsl:when test="contains($value, '@')">
-        <a href="mailto:{$value}">
-          <xsl:value-of select="substring-before($value, '@')"/>
-        </a>
-      </xsl:when>
-
-      <xsl:otherwise>
-        <xsl:value-of select="$value"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template
       name="a:linkto"
       match="*|@*"
       mode="a:linkto"
-      rdfs:label="Create link unless tag URI">
-    <xsl:param name="url" select="." rdfs:label="Target URL"/>
-    <xsl:param
-        name="urlPrefix"
-        select="''"
-        rdfs:label="URL to prepend to target URL"/>
-
-    <xsl:choose>
-      <xsl:when test="starts-with($url, 'tag:')">
-        <xsl:value-of select="$url"/>
-      </xsl:when>
-
-      <xsl:otherwise>
-        <a href="{$urlPrefix}{$url}">
-          <xsl:value-of select="$url"/>
-        </a>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template
-      name="a:linkto-if-url"
-      match="*|@*"
-      mode="a:linkto-if-url"
-      rdfs:label="Create link if value is an URL">
+      rdfs:label="Create link to URI or e-mail address">
     <xsl:param name="value" select="." rdfs:label="Value to format"/>
-
-    <xsl:choose>
-      <xsl:when test="starts-with($value, 'https://')">
-        <a href="{$value}">
-          <xsl:value-of
-              select="substring-after($value, 'https://')"/>
-        </a>
-      </xsl:when>
-
-      <xsl:when test="starts-with($value, 'http://')">
-        <a href="{$value}">
-          <xsl:value-of
-              select="substring-after($value, 'http://')"/>
-        </a>
-      </xsl:when>
-
-      <xsl:otherwise>
-        <xsl:value-of select="$value"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template
-      name="a:agent"
-      match="*|@*"
-      mode="a:agent"
-      rdfs:label="Create link if value is an URL, else mailto: link if value contains a @">
-    <xsl:param name="value" select="." rdfs:label="Value to format"/>
-
-    <xsl:choose>
-      <xsl:when test="starts-with($value, 'https://')">
-        <a href="{$value}">
-          <xsl:value-of
-              select="substring-after($value, 'https://')"/>
-        </a>
-      </xsl:when>
-
-      <xsl:when test="starts-with($value, 'http://')">
-        <a href="{$value}">
-          <xsl:value-of
-              select="substring-after($value, 'http://')"/>
-        </a>
-      </xsl:when>
-
-      <xsl:otherwise>
-        <xsl:call-template name="a:mailto">
-          <xsl:with-param name="value" select="$value"/>
-        </xsl:call-template>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsd:annotation>
-    <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
-      <p>Create a link displaying the fragment. If the target URL
-      does not have a fragment, display the complete URL.</p>
-    </xsd:documentation>
-  </xsd:annotation>
-
-  <xsl:template
-      name="a:linkto-show-fragment"
-      match="*|@*"
-      mode="a:linkto-show-fragment"
-      rdfs:label="Create &lt;a&gt;">
     <xsl:param
-        name="urlPrefix"
+        name="uriPrefix"
         select="''"
-        rdfs:label="URL to prepend to link targets"/>
+        rdfs:label="URI to prepend to relative URI"/>
 
-    <a href="{$urlPrefix}{.}">
-      <xsl:choose>
-        <xsl:when test="contains(., '#')">
-          <xsl:value-of select="substring-after(., '#')"/>
-        </xsl:when>
+    <xsl:variable name="uri">
+      <xsl:call-template name="a:prepend-uri">
+        <xsl:with-param name="value" select="$value"/>
+        <xsl:with-param name="uriPrefix" select="$uriPrefix"/>
+      </xsl:call-template>
+    </xsl:variable>
 
-        <xsl:otherwise>
-          <xsl:value-of select="."/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </a>
+    <xsl:choose>
+      <xsl:when test="starts-with($uri, 'mailto:')">
+        <a href="{$uri}">
+          <xsl:value-of
+              select="substring-before(substring-after($uri, 'mailto:'), '@')"/>
+        </a>
+      </xsl:when>
+
+      <xsl:when test="starts-with($uri, 'data:')">
+        <xsl:value-of select="substring-after($uri, ',')"/>
+      </xsl:when>
+
+      <xsl:when test="starts-with($uri, 'urn:') or starts-with($uri, 'tag:')">
+        <xsl:value-of select="$uri"/>
+      </xsl:when>
+
+      <xsl:when test="contains($uri, '@')">
+        <xsl:choose>
+          <xsl:when test="contains(substring-before($uri, '@'), '&lt;')">
+            <a href="mailto:{substring-before(substring-after($uri, '&lt;'), '&gt;')}">
+              <xsl:value-of
+                  select="substring-before(normalize-space($uri), ' &lt;')"/>
+            </a>
+          </xsl:when>
+
+          <xsl:when test="not(contains(substring-before($uri, '@'), '/'))">
+            <a href="mailto:{$uri}">
+              <xsl:value-of select="substring-before($uri, '@')"/>
+            </a>
+          </xsl:when>
+
+          <xsl:otherwise>
+            <a href="{$uri}">
+              <xsl:call-template name="a:shorten-uri">
+                <xsl:with-param name="value" select="$value"/>
+              </xsl:call-template>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <a href="{$uri}">
+          <xsl:call-template name="a:shorten-uri">
+            <xsl:with-param name="value" select="$value"/>
+          </xsl:call-template>
+        </a>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsd:annotation>
@@ -216,13 +137,13 @@
       mode="a:linkto"
       rdfs:label="Create link to XIncluded resource">
     <xsl:param
-        name="urlPrefix"
+        name="uriPrefix"
         select="''"
-        rdfs:label="URL to prepend to link targets"/>
+        rdfs:label="URI to prepend to link targets"/>
 
     <a>
       <xsl:attribute name="href">
-        <xsl:value-of select="concat($urlPrefix, @href)"/>
+        <xsl:value-of select="concat($uriPrefix, @href)"/>
 
         <xsl:variable name="id">
           <xsl:apply-templates
@@ -419,9 +340,9 @@
         select="normalize-space()"
         rdfs:label="Space-separated list of remaining tokens"/>
     <xsl:param
-        name="urlPrefix"
+        name="uriPrefix"
         select="'#'"
-        rdfs:label="URL to prepend to link targets"/>
+        rdfs:label="URI to prepend to link targets"/>
 
     <xsl:if test="$tokens">
       <xsl:variable
@@ -429,7 +350,7 @@
           select="substring-before(concat($tokens, ' '), ' ')"/>
 
       <li>
-        <a href="{$urlPrefix}{$item}">
+        <a href="{$uriPrefix}{$item}">
           <xsl:value-of select="$item"/>
         </a>
       </li>
@@ -437,7 +358,7 @@
       <xsl:if test="substring-after($tokens, ' ')">
         <xsl:call-template name="a:tokens2links">
           <xsl:with-param name="tokens" select="substring-after($tokens, ' ')"/>
-          <xsl:with-param name="urlPrefix" select="$urlPrefix"/>
+          <xsl:with-param name="uriPrefix" select="$uriPrefix"/>
         </xsl:call-template>
       </xsl:if>
     </xsl:if>
@@ -641,17 +562,17 @@
   </xsd:annotation>
 
   <xsl:template
-      match="@dc:creator|dc:creator|@dc:publisher|dc:publisher|@dc:rightsHolder|dc:rightsHolder"
+      match="@dc:creator|dc:creator|@dc:publisher|dc:publisher|@dc:rights|dc:rights|@dc:rightsHolder|dc:rightsHolder|@rdf:type|rdf:type"
       mode="a:auto"
-      rdfs:label="Call a:agent">
-    <xsl:call-template name="a:agent"/>
-  </xsl:template>
+      rdfs:label="Call a:linkto">
+    <xsl:param
+        name="uriPrefix"
+        select="''"
+        rdfs:label="URI to prepend to link targets"/>
 
-  <xsl:template
-      match="@dc:rights|dc:rights"
-      mode="a:auto"
-      rdfs:label="Call a:linkto-if-url">
-    <xsl:call-template name="a:linkto-if-url"/>
+    <xsl:call-template name="a:linkto">
+      <xsl:with-param name="uriPrefix" select="$uriPrefix"/>
+    </xsl:call-template>
   </xsl:template>
 
   <xsl:template
@@ -659,12 +580,12 @@
       mode="a:auto"
       rdfs:label="Call a:linkto">
     <xsl:param
-        name="urlPrefix"
+        name="uriPrefix"
         select="''"
-        rdfs:label="URL to prepend to target URL"/>
+        rdfs:label="URI to prepend to target URL"/>
 
     <xsl:call-template name="a:linkto">
-      <xsl:with-param name="urlPrefix" select="$urlPrefix"/>
+      <xsl:with-param name="uriPrefix" select="$uriPrefix"/>
     </xsl:call-template>
   </xsl:template>
 
@@ -676,20 +597,6 @@
       Datatypes in RDF and OWL</a>.</p>
     </xsd:documentation>
   </xsd:annotation>
-
-  <xsl:template
-      match="@rdf:type|rdf:type"
-      mode="a:auto"
-      rdfs:label="Call a:linkto-show-fragment">
-    <xsl:param
-        name="urlPrefix"
-        select="''"
-        rdfs:label="URL to prepend to link targets"/>
-
-    <xsl:call-template name="a:linkto-show-fragment">
-      <xsl:with-param name="urlPrefix" select="$urlPrefix"/>
-    </xsl:call-template>
-  </xsl:template>
 
   <xsl:template
       match="@rdfs:comment|rdfs:comment"
