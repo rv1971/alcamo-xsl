@@ -3,11 +3,11 @@
 namespace alcamo\xsl;
 
 use alcamo\cli\AbstractCli;
-use alcamo\dom\Document;
-use alcamo\dom\xsl\Document as XslDocument;
+use alcamo\dom\extended\Document;
 use alcamo\exception\ErrorHandler;
+use alcamo\uri\FileUriFactory;
 use alcamo\xsl\XsltException;
-use GetOpt\{GetOpt, Operand};
+use GetOpt\Operand;
 use Ramsey\Uuid\Uuid;
 
 function uuid(): string
@@ -20,29 +20,34 @@ function getLineNo($params): int
     return $params[0]->getLineNo();
 }
 
+/**
+ * @brief CLI partially compatible with `xsltproc`.
+ *
+ * @date Last reviewed 2026-01-09
+ */
 class ApplyXslCli extends AbstractCli
 {
     public const OPTIONS =
         [
             'comment' => [
                 'C',
-                GetOpt::NO_ARGUMENT,
+                self::NO_ARGUMENT,
                 'Include the command line as a comment into the output.'
             ],
             'format' => [
                 'F',
-                GetOpt::NO_ARGUMENT,
+                self::NO_ARGUMENT,
                 'Reformat and reindent the output.'
             ],
             'include' => [
                 'i',
-                GetOpt::MULTIPLE_ARGUMENT,
+                self::MULTIPLE_ARGUMENT,
                 'Include php file containing functions to use in stylesheets.',
                 'filename'
             ],
             'output' => [
                 'o',
-                GetOpt::REQUIRED_ARGUMENT,
+                self::REQUIRED_ARGUMENT,
                 'Write each output to a filename created replacing one %s '
                 . 'in the sprintf() format by the source file basename '
                 . 'without suffix.',
@@ -50,13 +55,13 @@ class ApplyXslCli extends AbstractCli
             ],
             'stringparam' => [
                 's',
-                GetOpt::MULTIPLE_ARGUMENT,
+                self::MULTIPLE_ARGUMENT,
                 'Set parameter <qname> to string <value>',
                 'qname=value'
             ],
             'xinclude' => [
                 'x',
-                GetOpt::NO_ARGUMENT,
+                self::NO_ARGUMENT,
                 'Do XInclude processing before XSL processing.'
             ],
         ]
@@ -67,9 +72,6 @@ class ApplyXslCli extends AbstractCli
         'xmlFilenames' => Operand::REQUIRED | Operand::MULTIPLE
     ];
 
-    private $outputMethod_;  ///< ?string
-    private $xsltProcessor_; ///< XSLTProcessor
-
     public function innerRun(): int
     {
         $errorHandler = new ErrorHandler();
@@ -78,25 +80,30 @@ class ApplyXslCli extends AbstractCli
             require_once($include);
         }
 
-        $xsltProcessor = $this->getXsltProcessor();
+        $xsltProcessor = XsltProcessor::newFromStylesheetUri(
+            (new FileUriFactory())->create($this->getOperand('xslFilename'))
+        );
+
+        foreach ($this->getOption('stringparam') as $assignment) {
+            [ $name, $value ] = explode('=', $assignment, 2);
+
+            $xsltProcessor->setParameter('', $name, $value);
+        }
+
+        $outputMethod = $xsltProcessor->getOutput()
+            ? $xsltProcessor->getOutput()->method : null;
 
         $outputFileFmt = $this->getOption('output');
 
-        $loadFlags = 0;
-
-        if ($this->getOption('xinclude')) {
-            $loadFlags |= Document::XINCLUDE_AFTER_LOAD;
-        }
+        $loadFlags = $this->getOption('xinclude')
+            ? Document::XINCLUDE_AFTER_LOAD | Document::FORMAT_AND_REPARSE
+            : 0;
 
         foreach ($this->getOperand('xmlFilenames') as $xmlFilename) {
-            $xmlDocument = Document::newFromUrl($xmlFilename, 0, $loadFlags);
-
-            if ($this->getOption('xinclude')) {
-                $xmlDocument->reparse();
-            }
+            $xmlDocument = Document::newFromUri($xmlFilename, null, $loadFlags);
 
             try {
-                if ($this->outputMethod_ == 'text') {
+                if ($outputMethod == 'text') {
                     $output = $xsltProcessor->transformToXml($xmlDocument);
                 } else {
                     $newDocument = $xsltProcessor->transformToDoc($xmlDocument);
@@ -136,7 +143,7 @@ class ApplyXslCli extends AbstractCli
                 $outFilename =
                     sprintf($outputFileFmt, basename($xmlFilename, '.xml'));
 
-                $this->reportProgress("$xmlFilename -> $outFilename");
+                $this->getLogger()->notice("$xmlFilename -> $outFilename");
 
                 file_put_contents($outFilename, $output);
             } else {
@@ -145,39 +152,6 @@ class ApplyXslCli extends AbstractCli
         }
 
         return 0;
-    }
-
-    public function getXsltProcessor(): \XSLTProcessor
-    {
-        if (!isset($this->xsltProcessor_)) {
-            $this->xsltProcessor_ = $this->createXsltProcessor();
-        }
-
-        return $this->xsltProcessor_;
-    }
-
-    protected function createXsltProcessor(): \XSLTProcessor
-    {
-        $xsltProcessor = new \XSLTProcessor();
-
-        $xsltDocument =
-            XslDocument::newFromUrl($this->getOperand('xslFilename'));
-
-        $output = $xsltDocument->query('/*/xsl:output')[0];
-
-        $this->outputMethod_ = isset($output) ? $output->method : null;
-
-        $xsltProcessor->importStyleSheet($xsltDocument);
-
-        foreach ($this->getOption('stringparam') as $assignment) {
-            [ $name, $value ] = explode('=', $assignment, 2);
-
-            $xsltProcessor->setParameter('', $name, $value);
-        }
-
-        $xsltProcessor->registerPHPFunctions();
-
-        return $xsltProcessor;
     }
 
     protected function createComment(): string

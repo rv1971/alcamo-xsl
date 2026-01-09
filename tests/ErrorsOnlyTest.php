@@ -1,5 +1,9 @@
 <?php
 
+namespace alcamo\xsl;
+
+use alcamo\dom\extended\Document;
+use alcamo\uri\FileUriFactory;
 use PHPUnit\Framework\TestCase;
 
 class ErrorsOnlyTest extends TestCase
@@ -15,13 +19,11 @@ class ErrorsOnlyTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        $xsltDoc = new \DOMDocument();
+        $fileUriFactory = new FileUriFactory();
 
-        $xsltDoc->load(static::XSL_DIR . 'xsl.xsl');
-
-        self::$xsltProcessor_ = new \XSLTProcessor();
-
-        self::$xsltProcessor_->importStyleSheet($xsltDoc);
+        self::$xsltProcessor_ = XsltProcessor::newFromStylesheetUri(
+            $fileUriFactory->create(static::XSL_DIR . 'xsl.xsl')
+        );
 
         self::$xsltProcessor_->setParameter(
             self::ALCAMO_XSL_NS,
@@ -35,11 +37,9 @@ class ErrorsOnlyTest extends TestCase
             'output'
         );
 
-        $xsltDoc->load(static::XSL_DIR . 'xsd.xsl');
-
-        self::$xsdXsltProcessor_ = new \XSLTProcessor();
-
-        self::$xsdXsltProcessor_->importStyleSheet($xsltDoc);
+        self::$xsdXsltProcessor_ = XsltProcessor::newFromStylesheetUri(
+            $fileUriFactory->create(static::XSL_DIR . 'xsd.xsl')
+        );
 
         self::$xsdXsltProcessor_->setParameter(
             self::ALCAMO_XSL_NS,
@@ -57,24 +57,24 @@ class ErrorsOnlyTest extends TestCase
     /**
      * @dataProvider xslCleanProvider
      */
-    public function testXslClean($path): void
+    public function testXslClean($uri): void
     {
-        $doc = new DOMDocument();
-
-        $doc->load($path);
+        $doc = Document::newFromUri($uri);
 
         $this->assertNull(self::$xsltProcessor_->transformToXml($doc));
     }
 
     public function xslCleanProvider(): array
     {
-        $paths = [];
+        $fileUriFactory = new FileUriFactory();
+
+        $uris = [];
 
         foreach (glob(static::XSL_DIR . '*.xsl') as $path) {
-            $paths[] = [ basename($path) => $path ];
+            $uris[] = [ basename($path) => $fileUriFactory->create($path) ];
         }
 
-        return $paths;
+        return $uris;
     }
 
     /**
@@ -82,9 +82,10 @@ class ErrorsOnlyTest extends TestCase
      */
     public function testXslError($filename, $expectedError): void
     {
-        $doc = new DOMDocument();
-
-        $doc->load(__DIR__ . DIRECTORY_SEPARATOR . $filename);
+        $doc = Document::newFromUri(
+            (new FileUriFactory())
+                ->create(__DIR__ . DIRECTORY_SEPARATOR . $filename)
+        );
 
         $errorDoc = self::$xsltProcessor_->transformToDoc($doc);
 
@@ -127,9 +128,10 @@ EOT
      */
     public function testXsdXslError($filename, $expectedError): void
     {
-        $doc = new DOMDocument();
-
-        $doc->load(__DIR__ . DIRECTORY_SEPARATOR . $filename);
+        $doc = Document::newFromUri(
+            (new FileUriFactory())
+                ->create(__DIR__ . DIRECTORY_SEPARATOR . $filename)
+        );
 
         $errorDoc = self::$xsdXsltProcessor_->transformToDoc($doc);
 

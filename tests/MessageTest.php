@@ -1,5 +1,9 @@
 <?php
 
+namespace alcamo\xsl;
+
+use alcamo\dom\extended\Document;
+use alcamo\uri\FileUriFactory;
 use PHPUnit\Framework\TestCase;
 
 class MessageTest extends TestCase
@@ -25,23 +29,20 @@ class MessageTest extends TestCase
             E_RECOVERABLE_ERROR | E_WARNING | E_NOTICE
         );
 
-        $filePath = __DIR__ . DIRECTORY_SEPARATOR . $filename;
-
-        $doc = new DOMDocument();
-
-        $doc->load($filePath);
-
-        $xsltDoc = new DOMDocument();
-
-        $xsltDoc->documentURI = $filePath;
-
-        $xsltDoc->appendChild(
-            $xsltDoc->importNode($doc->getElementById('xslt'), true)
+        $doc = Document::newFromUri(
+            (new FileUriFactory())
+                ->create(__DIR__ . DIRECTORY_SEPARATOR . $filename)
         );
 
-        $xsltProcessor = new \XSLTProcessor();
+        $styleSheet = new Document();
 
-        $xsltProcessor->importStyleSheet($xsltDoc);
+        $styleSheet->appendChild(
+            $styleSheet->importNode($doc->getElementById('xslt'), true)
+        );
+
+        $styleSheet->documentURI = $doc->documentURI;
+
+        $xsltProcessor = XsltProcessor::newFromStylesheet($styleSheet);
 
         foreach ($params as $param) {
             [ $ns, $name, $value ] = $param;

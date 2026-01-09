@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<xsl:stylesheet
+    xmlns="http://xslt.example.org"
+    xmlns:php="http://php.net/xsl"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    version="1.0">
+  <xsl:output method="text"/>
+
+  <xsl:template match="/">
+    <xsl:value-of select="php:function('strtoupper', string(/*))"/>
+  </xsl:template>
+</xsl:stylesheet>

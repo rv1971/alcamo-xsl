@@ -1,5 +1,9 @@
 <?php
 
+namespace alcamo\xsl;
+
+use alcamo\dom\extended\Document;
+use alcamo\uri\FileUriFactory;
 use PHPUnit\Framework\TestCase;
 
 class Test extends TestCase
@@ -9,35 +13,26 @@ class Test extends TestCase
      */
     public function testXslt($filename): void
     {
-        $filePath = __DIR__ . DIRECTORY_SEPARATOR . $filename;
+        $uri = (new FileUriFactory())
+            ->create(__DIR__ . DIRECTORY_SEPARATOR . $filename);
 
-        $doc = new DOMDocument();
-
-        $doc->load($filePath);
+        $doc = Document::newFromUri($uri);
 
         $xslt = $doc->getElementById('xslt');
 
-        $xsltDoc = new DOMDocument();
-
         if (isset($xslt)) {
-            $xsltDoc->documentURI = $filePath;
+            $styleSheet = new Document();
 
-            $xsltDoc->appendChild($xsltDoc->importNode($xslt, true));
+            $styleSheet->documentURI = $uri;
+
+            $styleSheet->appendChild($styleSheet->importNode($xslt, true));
         } else {
-            $firstPi = (new \DOMXPath($doc))
-                ->query('/processing-instruction("xml-stylesheet")')[0];
-
-            $xsltDoc->load(
-                __DIR__ . DIRECTORY_SEPARATOR .
-                simplexml_load_string("<x {$firstPi->nodeValue}/>")['href']
-            );
+            $styleSheet = $doc->getXsltStylesheet();
         }
 
-        $xsltProcessor = new \XSLTProcessor();
+        $xsltProcessor = XsltProcessor::newFromStylesheet($styleSheet);
 
-        $xsltProcessor->importStyleSheet($xsltDoc);
-
-        $outputDoc = new DOMDocument();
+        $outputDoc = new Document();
 
         $outputDoc->loadXML(
             $xsltProcessor->transformToXml($doc),

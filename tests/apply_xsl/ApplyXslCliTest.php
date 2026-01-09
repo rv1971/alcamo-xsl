@@ -10,11 +10,11 @@ class ApplyXslCliTest extends TestCase
     {
         chdir(__DIR__);
 
-        $cli = new ApplyXslCli();
+        $cli = new ApplyXslCli([]);
 
         $this->expectOutputString(file_get_contents('bar.foo.expected.xml'));
 
-        $this->assertSame(0, $cli->run('-i myfunc.php foo.xsl foo.xml'));
+        $this->assertSame(0, $cli->run('-q -i myfunc.php foo.xsl foo.xml'));
     }
 
     public function testBatchRun(): void
@@ -34,7 +34,7 @@ class ApplyXslCliTest extends TestCase
         $this->assertSame(
             0,
             $cli->run(
-                '-i myfunc.php -o bar.%s.xml -s prefix==42= foo.xsl '
+                '-q -i myfunc.php -o bar.%s.xml -s prefix==42= foo.xsl '
                 . '../apply_xsl/foo.xml foo2.xml'
             )
         );

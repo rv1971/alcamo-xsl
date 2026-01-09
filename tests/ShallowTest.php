@@ -1,5 +1,8 @@
 <?php
 
+namespace alcamo\xsl;
+
+use alcamo\uri\FileUriFactory;
 use PHPUnit\Framework\TestCase;
 
 class ShallowTest extends TestCase
@@ -9,16 +12,17 @@ class ShallowTest extends TestCase
      */
     public function testXslt($filename): void
     {
-        $filePath = dirname(__DIR__) . DIRECTORY_SEPARATOR
-            . 'xsl' . DIRECTORY_SEPARATOR . $filename;
+        $fileUriFactory = new FileUriFactory();
 
-        $doc = new DOMDocument();
+        $xsltProcessor = XsltProcessor::newFromStylesheetUri(
+            $fileUriFactory->create(
+                dirname(__DIR__) . DIRECTORY_SEPARATOR
+                    . 'xsl' . DIRECTORY_SEPARATOR . $filename
+            )
+        );
 
-        $doc->load($filePath);
-
-        $xsltProcessor = new \XSLTProcessor();
-
-        $this->assertTrue($xsltProcessor->importStyleSheet($doc));
+        /* This simply tests that the XSLs are imported without errors. */
+        $this->assertInstanceOf(XsltProcessor::class, $xsltProcessor);
     }
 
     public function xsltProvider(): array
