@@ -8,24 +8,13 @@ use alcamo\exception\ErrorHandler;
 use alcamo\uri\FileUriFactory;
 use alcamo\xsl\XsltException;
 use GetOpt\Operand;
-use Ramsey\Uuid\Uuid;
-
-function uuid(): string
-{
-    return Uuid::uuid4();
-}
-
-function getLineNo($params): int
-{
-    return $params[0]->getLineNo();
-}
 
 /**
- * @brief CLI partially compatible with `xsltproc`.
+ * @brief CLI partially compatible with `xsltproc`
  *
  * @date Last reviewed 2026-01-09
  */
-class ApplyXslCli extends AbstractCli
+class ApplyXslCli extends AbstractCli implements XslFunctionsInterface
 {
     public const OPTIONS =
         [

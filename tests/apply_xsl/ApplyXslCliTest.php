@@ -12,9 +12,9 @@ class ApplyXslCliTest extends TestCase
 
         $cli = new ApplyXslCli([]);
 
-        $this->expectOutputString(file_get_contents('bar.foo.expected.xml'));
+        $this->expectOutputString(file_get_contents('functions.expected.xml'));
 
-        $this->assertSame(0, $cli->run('-q -i myfunc.php foo.xsl foo.xml'));
+        $this->assertSame(0, $cli->run('-q functions.xsl foo.xml'));
     }
 
     public function testBatchRun(): void
