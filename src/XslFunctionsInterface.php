@@ -20,10 +20,21 @@ function getLineNo($nodes): int
  * @brief Unparsed text read from URI supplied as argument
  *
  * Inspired by the XST 2.0 function
- * [unparsed-text](https://www.w3.org/TR/xslt20/#unparsed-text)
+ * [unparsed-text](https://www.w3.org/TR/xslt20/#unparse-d-text)
+ *
+ * Regarding URL resolution, the parameters $uri and $context work exactly as
+ * the parameters of the XSLT document() function.
  */
-function unparsedText($uri): string
+function unparsedText($uri, $context = null): string
 {
+    if (is_array($uri)) {
+        $uri = $uri[0]->resolveUri($uri[0]->textContent);
+    }
+
+    if (isset($context)) {
+        $uri = $context[0]->resolveUri($uri);
+    }
+
     return file_get_contents($uri);
 }
 

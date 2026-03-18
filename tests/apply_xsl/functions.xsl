@@ -14,7 +14,10 @@
         <xsl:value-of select="php:function('\alcamo\xsl\getLineNo', /*)"/>
       </bar>
       <bar>
-        <xsl:value-of select="php:function('\alcamo\xsl\unparsedText', 'text.txt')"/>
+        <xsl:value-of select="php:function('\alcamo\xsl\unparsedText', /*/@url)"/>
+      </bar>
+      <bar>
+        <xsl:value-of select="php:function('\alcamo\xsl\unparsedText', 'text.txt', /*)"/>
       </bar>
     </bar>
   </xsl:template>
