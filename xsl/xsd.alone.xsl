@@ -20,7 +20,7 @@
     dc:title="Format an XSD for human readers"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-21"
-    dc:modified="2025-09-08">
+    dc:modified="2026-04-15">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -1456,18 +1456,6 @@ There is an <code>&lt;h3&gt;<xsl:value-of
 select="$h3WithoutH2[1]"/>&lt;/h3&gt;</code>
 without a preceding <code>&lt;h2&gt;</code> in a documentation block.
 No TOC entry is generated for it.
-</p>
-    </xsl:if>
-
-    <xsl:variable
-        name="mixedAppinfo"
-        select="xsd:*/xsd:annotation/xsd:appinfo[axsd:example][*[not(self::axsd:example)]]"/>
-
-    <xsl:if test="$mixedAppinfo">
-      <p>
-There is an <code>&lt;xsd:appinfo&gt;</code> block
-containing examples as well as other stuff.
-The other stuff will be ignored.
 </p>
     </xsl:if>
   </xsl:template>
