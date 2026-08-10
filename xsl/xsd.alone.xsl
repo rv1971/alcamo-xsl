@@ -476,6 +476,8 @@
         <xsl:apply-templates select="." mode="a:id"/>
       </xsl:attribute>
 
+      <xsl:apply-templates select="@xml:id|@id" mode="a:span"/>
+
       <xsl:apply-templates select="." mode="a:name"/>
 
       <xsl:if test="@rdfs:label">
@@ -503,7 +505,7 @@
       priority="1.0"/>
 
   <xsl:template match="@id" mode="axsd:generic-attrs">
-    <tr id="{.}">
+    <tr>
       <th>ID</th>
 
       <td>

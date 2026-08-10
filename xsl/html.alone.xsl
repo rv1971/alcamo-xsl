@@ -19,7 +19,7 @@
     dc:title="HTML generation"
     dc:creator="https://github.com/rv1971"
     dc:created="2023-04-13"
-    dc:modified="2025-09-08">
+    dc:modified="2026-08-10">
   <xsd:annotation>
     <xsd:documentation xmlns="http://www.w3.org/1999/xhtml">
       <h2>Introduction</h2>
@@ -494,6 +494,13 @@
         <xsl:with-param name="content1" select="$content1" />
       </xsl:call-template>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template
+      match="@xml:id|@id"
+      mode="a:span"
+      rdfs:label="Create an empty &lt;span&gt;">
+    <span id="{.}"/>
   </xsl:template>
 
   <xsd:annotation>
